@@ -46,9 +46,8 @@ export const PanelFrame: FC<{
 }> = ({ ...props }) => {
   const [leftDrawer, setLeftDrawer] = useState<boolean>(false)
   const [rigthDrawer, setRigthDrawer] = useState<boolean>(false)
-  const router = useRouter()
-  const globalContext = useGlobalCtx()
-
+  // const router = useRouter()
+  // const globalContext = useGlobalCtx()
   useEffect(() => {
     const lm = localStorage.getItem("leftDrawerState")
     const rm = localStorage.getItem("rigthMenuState")
@@ -149,9 +148,9 @@ export const PanelFrame: FC<{
               }}
               component="nav"
             >
-              {globalContext.usuario.authorized
+              {/* {globalContext.usuario.authorized
                 ? globalContext.usuario.ambiente.aplication.map(
-                    (item, index) => (
+                    (item: any, index: any) => (
                       <ListItemButton
                         key={`menu-left-${index}-item`}
                         onClick={() => {
@@ -165,7 +164,7 @@ export const PanelFrame: FC<{
                       </ListItemButton>
                     )
                   )
-                : ""}
+                : ""} */}
             </List>
           )}
         </Toolbar>
@@ -210,14 +209,14 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  {globalContext.usuario.authorized ? (
+                  {/* {globalContext.usuario.authorized ? (
                     <Avatar
                       sx={{ width: 102, height: 102 }}
                       src={globalContext.usuario.foto}
                     />
                   ) : (
                     <Avatar sx={{ width: 102, height: 102 }} />
-                  )}
+                  )} */}
                 </Box>
               </ListItem>
               <ListItem>
@@ -228,7 +227,7 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  <i>{globalContext.usuario.nome}</i>
+                  {/* <i>{globalContext.usuario.nome}</i> */}
                 </Box>
               </ListItem>
               <Divider />
@@ -236,27 +235,29 @@ export const PanelFrame: FC<{
                 <Typography variant="caption">MENU DO USUÁRIO</Typography>
               </ListItem>
 
-              {globalContext.usuario.authorized
-                ? globalContext.usuario.ambiente.usuario.map((item, index) => (
-                    <ListItemButton
-                      key={`menu-left-${index}-item`}
-                      onClick={() => {
-                        router.push(item.path)
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Icon>{item.icon}</Icon>
-                      </ListItemIcon>
-                      <ListItemText primary={item.name} />
-                    </ListItemButton>
-                  ))
-                : ""}
+              {/* {globalContext.usuario.authorized
+                ? globalContext.usuario.ambiente.usuario.map(
+                    (item: any, index: any) => (
+                      <ListItemButton
+                        key={`menu-left-${index}-item`}
+                        onClick={() => {
+                          router.push(item.path)
+                        }}
+                      >
+                        <ListItemIcon>
+                          <Icon>{item.icon}</Icon>
+                        </ListItemIcon>
+                        <ListItemText primary={item.name} />
+                      </ListItemButton>
+                    )
+                  )
+                : ""} */}
 
               <Divider />
 
               <ListItemButton
                 onClick={() => {
-                  globalContext.usuario.logout()
+                  // globalContext.usuario.logout()
                 }}
               >
                 <ListItemIcon>

@@ -8,7 +8,7 @@ export function useGlobalCtx(): ContextoGlobal {
 }
 
 const GlobalCtxControll: FC<{ children?: ReactNode }> = ({ ...props }) => {
-  const context = new ContextoGlobal()
+  const context = {}
   return (
     <GlobalCtx.Provider value={context}>{props.children}</GlobalCtx.Provider>
   )

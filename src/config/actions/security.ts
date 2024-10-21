@@ -1,41 +1,45 @@
+import apiConfigs from "../apiConfigs"
+
 const security = {
   user: {
-    new: "/new",
-    select: (id: string) => `/${id}`,
-    update: (id: string) => `/${id}/update`,
-    delete: (id: string) => `/${id}/delete`,
-    search: "/",
-    authentication: "/authentication",
-    recoveryPassword: "/recovery_password",
-    confirmRecovery: "/confirm_recovery"
+    new: `${apiConfigs.security}/user/new`,
+    select: (id: string) => `${apiConfigs.security}/user/${id}`,
+    update: (id: string) => `${apiConfigs.security}/user/${id}/update`,
+    delete: (id: string) => `${apiConfigs.security}/user/${id}/delete`,
+    search: `${apiConfigs.security}/user`,
+    authentication: `${apiConfigs.security}/user/authentication`,
+    recoveryPassword: `${apiConfigs.security}/user/recovery_password`,
+    confirmRecovery: `${apiConfigs.security}/user/confirm_recovery`
   },
   group: {
-    new: "/new",
-    select: (id: string) => `/${id}`,
-    update: (id: string) => `/${id}/update`,
-    delete: (id: string) => `/${id}/delete`,
-    search: "/"
+    new: `${apiConfigs.security}/group/new`,
+    select: (id: string) => `${apiConfigs.security}/group/${id}`,
+    update: (id: string) => `${apiConfigs.security}/group/${id}/update`,
+    delete: (id: string) => `${apiConfigs.security}/group/${id}/delete`,
+    search: `${apiConfigs.security}/group`
   },
   feature: {
-    new: "/new",
-    select: (id: string) => `/${id}`,
-    update: (id: string) => `/${id}/update`,
-    delete: (id: string) => `/${id}/delete`,
-    search: "/"
+    new: `${apiConfigs.security}/feature/new`,
+    select: (id: string) => `${apiConfigs.security}/feature/${id}`,
+    update: (id: string) => `${apiConfigs.security}/feature/${id}/update`,
+    delete: (id: string) => `${apiConfigs.security}/feature/${id}/delete`,
+    search: `${apiConfigs.security}/feature`
   },
   deviceComponent: {
-    new: "/new",
-    select: (id: string) => `/${id}`,
-    update: (id: string) => `/${id}/update`,
-    delete: (id: string) => `/${id}/delete`,
-    search: "/"
+    new: `${apiConfigs.security}/device_component/new`,
+    select: (id: string) => `${apiConfigs.security}/device_component/${id}`,
+    update: (id: string) =>
+      `${apiConfigs.security}/device_component/${id}/update`,
+    delete: (id: string) =>
+      `${apiConfigs.security}/device_component/${id}/delete`,
+    search: `${apiConfigs.security}/device_component`
   },
   action: {
-    new: "/new",
-    select: (id: string) => `/${id}`,
-    update: (id: string) => `/${id}/update`,
-    delete: (id: string) => `/${id}/delete`,
-    search: "/"
+    new: `${apiConfigs.security}/action/new`,
+    select: (id: string) => `${apiConfigs.security}/action/${id}`,
+    update: (id: string) => `${apiConfigs.security}/action/${id}/update`,
+    delete: (id: string) => `${apiConfigs.security}/action/${id}/delete`,
+    search: `${apiConfigs.security}/action`
   }
 }
 

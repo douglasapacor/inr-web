@@ -1,50 +1,23 @@
-class ComponenteAmbiental {
-  path: string
-  icon: string
-  name: string
+// interface ComponenteAmbiental {
+//   path: string
+//   icon: string
+//   name: string
+//   acoes: string[]
+// }
 
-  constructor(path: string, icon: string, name: string) {
-    this.path = path
-    this.icon = icon
-    this.name = name
-  }
-}
+// interface Ambiente {
+//   aplication: ComponenteAmbiental[]
+//   usuario: ComponenteAmbiental[]
+// }
 
-class Ambiente {
-  aplication: ComponenteAmbiental[]
-  usuario: ComponenteAmbiental[]
+// interface Usuario {
+//   nome: string
+//   foto: string
+//   authorized: boolean
+//   ambiente: Ambiente
+//   authorize: () => void
+//   logout: () => void
+// }
 
-  constructor() {
-    this.aplication = []
-    this.usuario = []
-  }
-}
-
-class Usuario {
-  nome: string = ""
-  foto: string = ""
-  authorized: boolean = false
-  ambiente: Ambiente
-
-  constructor() {
-    this.ambiente = new Ambiente()
-  }
-
-  authorize() {
-    this.authorized = true
-  }
-
-  logout() {
-    this.authorized = false
-  }
-}
-
-export class ContextoGlobal {
-  usuario: Usuario
-
-  constructor() {
-    this.usuario = new Usuario()
-  }
-}
-
-export const globalCtxDefault: ContextoGlobal = new ContextoGlobal()
+export interface ContextoGlobal {}
+export const globalCtxDefault: ContextoGlobal = {}
