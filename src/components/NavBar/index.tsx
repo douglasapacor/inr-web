@@ -40,34 +40,34 @@ export const NavBar: FC = () => {
                   <a href="/site/boletim/noticias">
                     <Icon>library_books</Icon>Notícias
                   </a>
-                  <a href="/site/boletim/legislacao">
+                  <a href="/site/boletim/legislacoes">
                     <Icon>library_books</Icon>Legislação
                   </a>
-                  <a href="#">
+                  <a href="/site/boletim/jurisprudencias">
                     <Icon>menu_book</Icon>
                     Jurisprudência
                   </a>
-                  <a href="#">
+                  <a href="/site/boletim/opinioes">
                     <Icon>question_answer</Icon>
                     Opnião
                   </a>
-                  <a href="#">
+                  <a href="/site/boletim/perguntas-e-respostas">
                     <Icon>live_help</Icon>
                     Perguntas e Respostas
                   </a>
-                  <a href="#">
+                  <a href="/site/boletim/mensagens-editores">
                     <Icon>description</Icon>
                     Mensagen dos Editores
                   </a>
-                  <a href="#">
+                  <a href="/site/boletim/pareceresCGJ">
                     <Icon>description</Icon>
                     Pareceres CGJ SP
                   </a>
-                  <a href="#">
+                  <a href="/site/boletim/suplementos">
                     <Icon>format_quote</Icon>
                     Suplementos da consultoria INR
                   </a>
-                  <a href="#">
+                  <a href="/site/boletim/historias">
                     <Icon>format_quote</Icon>
                     Histórias do ofício
                   </a>

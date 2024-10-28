@@ -1,9 +1,12 @@
 import { DataGrid, PanelFrame } from "@/components"
 import security from "@/config/actions/security"
 import fetchApi from "@/lib/fetchApi"
+import { Add } from "@mui/icons-material"
 import {
+  Box,
   Button,
   Divider,
+  Fab,
   Grid,
   Icon,
   Paper,
@@ -11,6 +14,7 @@ import {
   Typography
 } from "@mui/material"
 import { NextPage } from "next"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
 const acoes: NextPage = () => {
@@ -24,6 +28,7 @@ const acoes: NextPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [loading, setLoading] = useState(false)
   const [gridLoading, setGridLoading] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     setLoading(true)
@@ -53,10 +58,6 @@ const acoes: NextPage = () => {
       setGridLoading(false)
       setAlerMessage(error.message)
       setShowAlert(true)
-
-      setTimeout(() => {
-        setShowAlert(false)
-      }, 6000)
     }
   }
 
@@ -78,9 +79,27 @@ const acoes: NextPage = () => {
           text: "Ações"
         }
       ]}
+      closeAlert={() => {
+        setShowAlert(false)
+      }}
+      outsideContent={
+        <Box
+          sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
+        >
+          <Fab
+            color="primary"
+            aria-label="add"
+            onClick={() => {
+              router.push("/painel/acao/management/new")
+            }}
+          >
+            <Add />
+          </Fab>
+        </Box>
+      }
     >
       <Paper sx={{ padding: 2 }}>
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={2} alignItems="center" textAlign="center">
           <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
             <TextField
               fullWidth

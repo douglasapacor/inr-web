@@ -1,10 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import { defaultResponse } from "./fetchApiProperties"
-import appConfig from "@/config/appConfig"
 
-const instance = axios.create({
-  baseURL: appConfig.base
-})
+const instance = axios.create()
 
 const get = async <T = any>(
   url: string,

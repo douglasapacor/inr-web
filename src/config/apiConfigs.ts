@@ -1,3 +1,4 @@
 export default {
-  security: "http://localhost:4000"
+  legacy: "http://localhost:3001",
+  security: "http://localhost:3002"
 }

@@ -22,13 +22,13 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
     <Html lang="pt-br">
       <Head>
         <meta name="theme-color" content={theme.palette.primary.main} />
-        <meta charSet="utf-8" />
+        <meta charSet="iso88591" />
         <link rel="icon" href="/favicon_16.png" sizes="16x16" />
         <link rel="icon" href="/favicon_32.png" sizes="32x32" />
         <meta name="referrer" content="always" />
         <meta name="description" content="INR Publicações (c) 2024" />
         <meta name="author" content="Douglas Pacor, Douglas Pacor Developer" />
-        <meta name="copyright" content="INR Publicações (c) 2016" />
+        <meta name="copyright" content="INR Publicações (c) 2024" />
         <meta name="application-name" content="INR Publicações" />
         <meta name="keywords" content="INR Publicações" />
         <meta name="emotion-insertion-point" content="" />
