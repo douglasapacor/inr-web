@@ -4,15 +4,15 @@ export const Banner: FC = () => {
   return (
     <div className="slideshow-container">
       <div className="fade">
-        <img src="/img_1.jpg" alt="1" style={{ width: "100%" }} />
+        <img src="/images/img_1.jpg" alt="1" style={{ width: "100%" }} />
       </div>
 
       <div className="slideshow fade">
-        <img src="/img_2.jpg" alt="2" style={{ width: "100%" }} />
+        <img src="/images/img_2.jpg" alt="2" style={{ width: "100%" }} />
       </div>
 
       <div className="slideshow fade">
-        <img src="/img_3.jpg" alt="3" style={{ width: "100%" }} />
+        <img src="/images/img_3.jpg" alt="3" style={{ width: "100%" }} />
       </div>
 
       <a className="prev">&#10094;</a>

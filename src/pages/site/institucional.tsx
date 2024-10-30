@@ -38,7 +38,7 @@ const CentralisedBoxIcon: FC<{ iconName: string; text: string }> = ({
 const Institucional: NextPage = () => {
   return (
     <SiteFrame>
-      <Grid container spacing={2}>
+      <Grid container>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <section
             style={{
@@ -46,7 +46,7 @@ const Institucional: NextPage = () => {
               height: 250,
               fontSize: "1.7rem",
               backgroundImage:
-                "url('https://inrpublicacoes.com.br/site/img/icones/textura_banner.png'), url('https://inrpublicacoes.com.br/site/img/institucional/banner.jpg')",
+                "url('/images/textura_banner.png'), url('/images/header_areas/institucional/banner.jpg')",
               backgroundPosition: "left top, center top",
               backgroundSize: "auto auto, 100%",
               backgroundRepeat: "repeat, no-repeat",

@@ -1,6 +1,6 @@
 @font-face {
   font-family: RobotoSlab;
-  src: url("/RobotoSlab.ttf");
+  src: url("/fonts/RobotoSlab.ttf");
 }
 
 /* #region Scroll*/
@@ -156,7 +156,7 @@ body::-webkit-scrollbar-thumb:active {
 }
 /* #endregion SlideShow*/
 
-/* #region BE-Page*/
+/* #region BEPage*/
 .be-main-ul {
   padding-left: 0;
   list-style: none;
@@ -224,18 +224,19 @@ body::-webkit-scrollbar-thumb:active {
   display: block;
   padding: 2em 1em;
   background-size: 50px auto;
-  background: url(https://inrpublicacoes.com.br/site/img/icones/icone_lupa_azul.svg)
-    10% 50% no-repeat;
+  background: url(/icons/icone_lupa_azul.svg) 10% 50% no-repeat;
   background-size: 50px auto;
   border: 1px solid #0093d8;
   transition: all 0.2s ease-in 0s;
   margin-bottom: 30px;
+  user-select: none;
+  cursor: pointer;
 }
 
 .be-main-db-button:hover,
 .be-main-db-button:focus {
   text-decoration: none;
-  background-image: url(https://inrpublicacoes.com.br/site/img/icones/icone_lupa_branca.svg);
+  background-image: url(/icons/icone_lupa_branca.svg);
   color: #fff;
   background-color: #0093d8;
   outline-offset: -2px;
