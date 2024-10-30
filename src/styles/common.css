@@ -2,6 +2,7 @@
   font-family: RobotoSlab;
   src: url("/RobotoSlab.ttf");
 }
+
 /* #region Scroll*/
 body::-webkit-scrollbar {
   width: 10px;
@@ -49,6 +50,7 @@ body::-webkit-scrollbar-thumb:active {
 
 .item-container:hover .item-content {
   display: block;
+  z-index: 999;
 }
 
 .item-title {
@@ -76,7 +78,7 @@ body::-webkit-scrollbar-thumb:active {
   display: none;
   position: absolute;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 3;
 }
 
 .item-content a {
@@ -153,3 +155,89 @@ body::-webkit-scrollbar-thumb:active {
   }
 }
 /* #endregion SlideShow*/
+
+/* #region BE-Page*/
+.be-main-ul {
+  padding-left: 0;
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 10px;
+  display: block;
+  list-style-type: none;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding-inline-start: 40px;
+}
+
+.be-main-li {
+  margin-bottom: 2em;
+}
+
+.be-main-a {
+  font-size: 17px;
+  margin-bottom: 2em;
+  color: #0172b6;
+  transition: color 0.2s linear, background 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.be-main-a:hover,
+.be-main-a:focus {
+  outline: inherit;
+  color: #1a1a4e;
+  text-decoration: underline;
+}
+
+.be-main-load-more-button {
+  display: block;
+  width: 320px;
+  cursor: pointer;
+  margin: 0 auto;
+  text-align: center;
+  background-color: white;
+  color: #3793db;
+  border: 1px solid #3793db;
+  transition: all 0.2s ease-in 0s;
+  user-select: none;
+  padding: 10px 0 0 0;
+}
+
+.be-main-load-more-button:hover,
+.be-main-load-more-button:active {
+  color: white;
+  background-color: #0093d8;
+}
+
+.be-main-load-more-button:hover .load-more_icon {
+  color: white;
+}
+
+.load-more_icon {
+  color: #3793db;
+  transition: all 0.2s ease-in 0s;
+}
+
+.be-main-db-button {
+  text-align: center;
+  color: #0093d8;
+  display: block;
+  padding: 2em 1em;
+  background-size: 50px auto;
+  background: url(https://inrpublicacoes.com.br/site/img/icones/icone_lupa_azul.svg)
+    10% 50% no-repeat;
+  background-size: 50px auto;
+  border: 1px solid #0093d8;
+  transition: all 0.2s ease-in 0s;
+  margin-bottom: 30px;
+}
+
+.be-main-db-button:hover,
+.be-main-db-button:focus {
+  text-decoration: none;
+  background-image: url(https://inrpublicacoes.com.br/site/img/icones/icone_lupa_branca.svg);
+  color: #fff;
+  background-color: #0093d8;
+  outline-offset: -2px;
+}
+/* #endregion */

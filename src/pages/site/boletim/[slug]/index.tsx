@@ -1,10 +1,12 @@
 import { SiteFrame } from "@/components"
 import legacy from "@/config/actions/legacy"
 import fetchApi from "@/lib/fetchApi"
-import { Container, Grid } from "@mui/material"
+import { Box, Container, Divider, Grid, Icon } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
 import parse from "html-react-parser"
 import he from "he"
+import sanitize from "@/lib/helpers/sinitize"
+import { KeyboardArrowDown } from "@mui/icons-material"
 
 type newsProps = {
   title: string
@@ -224,51 +226,71 @@ const BeFrame: NextPage<newsProps> = props => {
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Container>
-            <ul
-              style={{
-                paddingLeft: 0,
-                listStyle: "none !important",
-                marginTop: 0,
-                marginBottom: "10px",
-                display: "block",
-                listStyleType: "none",
-                marginBlockStart: "1em",
-                marginBlockEnd: "1em",
-                paddingInlineStart: "40px"
-              }}
-            >
+            <ul className="be-main-ul">
               {props.list.map((i, index) => (
                 <li
-                  style={{ marginBottom: "2em" }}
+                  className="be-main-li"
                   key={`${index}-list-item-${new Date().getDate()}`}
                 >
                   <a
-                    style={{
-                      fontSize: "17px",
-                      marginBottom: "2em !important",
-                      color: "#0172B6",
-                      transition: " color 0.2s linear, background 0.3s ease",
-                      textDecoration: "none",
-                      cursor: "pointer"
-                    }}
-                    href={`/boletim/pareceresCGJ/${i.id}/${parse(
-                      he
-                        .decode(i.titulo)
-                        .replace(/<\/?p>/g, "")
-                        .replace(/\s+/g, "-")
-                        .toLowerCase()
-                    )}`}
-                  >
-                    {`[+] ${
-                      i.datacad +
+                    className="be-main-a"
+                    href={`/site/boletim/pareceresCGJ/${i.id}/${sanitize(
                       parse(
-                        he.decode(` &ndash; ${i.titulo}`).replace(/<\/?p>/g, "")
-                      )
-                    }`}
+                        he.decode(i.titulo).replace(/<\/?p>/g, "")
+                      ).toString()
+                    ).urlFriendly()}`}
+                  >
+                    <time datatype="ano-mes-dia">{`[+] ${i.datacad} ${he.decode(
+                      " &ndash; "
+                    )}`}</time>
+
+                    <strong>
+                      {parse(he.decode(`${i.titulo}`).replace(/<\/?p>/g, ""))}
+                    </strong>
                   </a>
                 </li>
               ))}
             </ul>
+          </Container>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+          <Container>
+            <Box sx={{ width: "100%", marginBottom: "15px" }}>
+              <div className="be-main-load-more-button">
+                <strong>
+                  Clique aqui e veja mais
+                  <br />
+                  {props.title}
+                </strong>
+                <br />
+                <KeyboardArrowDown
+                  className="load-more_icon"
+                  sx={{
+                    fontSize: 50
+                  }}
+                />
+              </div>
+            </Box>
+          </Container>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+          <Container>
+            <Divider
+              color="#2196F3"
+              sx={{ height: 1, width: "100%", marginBottom: "15px" }}
+            />
+          </Container>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+          <Container>
+            <Box sx={{ width: "100%" }}>
+              <a className="be-main-db-button">
+                Não encontrou o que procurava?{" "}
+                <strong>
+                  Clique aqui e realize uma busca na Base de Dados INR.
+                </strong>
+              </a>
+            </Box>
           </Container>
         </Grid>
       </Grid>

@@ -22,7 +22,7 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
     <Html lang="pt-br">
       <Head>
         <meta name="theme-color" content={theme.palette.primary.main} />
-        <meta charSet="iso88591" />
+        <meta charSet="UTF-8" />
         <link rel="icon" href="/favicon_16.png" sizes="16x16" />
         <link rel="icon" href="/favicon_32.png" sizes="32x32" />
         <meta name="referrer" content="always" />
