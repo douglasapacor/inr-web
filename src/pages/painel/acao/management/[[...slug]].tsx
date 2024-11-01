@@ -53,7 +53,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
   const router = useRouter()
   const globalContext = useGlobalCtx()
 
-  const saveAction = async () => {
+  const create = async () => {
     try {
       setLoading(true)
 
@@ -83,6 +83,45 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
       setAlerMessage(error.message)
       setShowAlert(true)
     }
+  }
+
+  const update = async () => {
+    try {
+      setLoading(true)
+
+      const id = router.query.slug ? router.query.slug[0] : ""
+
+      const apiResult = await fetchApi.post(
+        security.action.update(id),
+        {
+          name: name,
+          canonical: canonical
+        },
+        {
+          headers: {
+            authorization: globalContext.user?.credential
+          }
+        }
+      )
+
+      if (!apiResult.success) throw new Error(apiResult.message)
+
+      setLoading(false)
+      setAlerMessage(apiResult.message || "")
+      setShowAlert(true)
+
+      const newId = apiResult.data.id
+      router.push(`/painel/acao/management/${newId}`)
+    } catch (error: any) {
+      setLoading(false)
+      setAlerMessage(error.message)
+      setShowAlert(true)
+    }
+  }
+
+  const saveAction = async () => {
+    if (props.mode === "creating") await create()
+    else if (props.mode === "visualizing") await update()
   }
 
   return (
@@ -147,6 +186,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
             </Grid>
           </Paper>
         </Grid>
+
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Box
             sx={{
@@ -165,6 +205,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
             >
               Voltar
             </Button>
+
             <Button variant="contained" endIcon={<Save />} onClick={saveAction}>
               Salvar
             </Button>
