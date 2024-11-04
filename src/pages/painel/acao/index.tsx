@@ -1,5 +1,6 @@
 import { DataGrid, PanelFrame } from "@/components"
 import security from "@/config/actions/security"
+import { useGlobalCtx } from "@/context/Global"
 import fetchApi from "@/lib/fetchApi"
 import { Add } from "@mui/icons-material"
 import {
@@ -15,7 +16,7 @@ import {
 } from "@mui/material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 const acoes: NextPage = () => {
   const [alerMessage, setAlerMessage] = useState("")
@@ -26,28 +27,28 @@ const acoes: NextPage = () => {
   const [count, setCount] = useState(0)
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [loading, setLoading] = useState(false)
   const [gridLoading, setGridLoading] = useState(false)
+  const globalCtx = useGlobalCtx()
   const router = useRouter()
-
-  useEffect(() => {
-    setLoading(true)
-
-    setTimeout(() => {
-      setLoading(false)
-    }, 4000)
-  }, [])
-
+  const deleteAcao = (id: number) => {}
   const search = async () => {
     try {
       setGridLoading(true)
 
-      const dataSearch = await fetchApi.post(security.action.search, {
-        name: name,
-        canonical: canon,
-        limit: rowsPerPage,
-        offset: page
-      })
+      const dataSearch = await fetchApi.post(
+        security.action.search,
+        {
+          name: name,
+          canonical: canon,
+          limit: rowsPerPage,
+          offset: page
+        },
+        {
+          headers: {
+            Authorization: globalCtx.user ? globalCtx.user.credential : ""
+          }
+        }
+      )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
 
@@ -66,7 +67,6 @@ const acoes: NextPage = () => {
       alerMessage={alerMessage}
       showAlert={showAlert}
       title="Ações"
-      loading={loading}
       locals={[
         {
           href: "/painel/inicio",
@@ -105,6 +105,11 @@ const acoes: NextPage = () => {
               fullWidth
               label="Nome"
               value={name}
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  search()
+                }
+              }}
               onChange={event => {
                 setName(event.target.value)
               }}
@@ -117,6 +122,11 @@ const acoes: NextPage = () => {
               value={canon}
               onChange={event => {
                 setCanon(event.target.value)
+              }}
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  search()
+                }
               }}
             />
           </Grid>
@@ -148,7 +158,6 @@ const acoes: NextPage = () => {
                 }
               ]}
               hasActions
-              selectable
               actions={[
                 {
                   icon: <Icon>visibility</Icon>,
@@ -161,6 +170,16 @@ const acoes: NextPage = () => {
                   text: "Excluir"
                 }
               ]}
+              actionTrigger={(id: number, actionName: string) => {
+                switch (actionName) {
+                  case "showAction":
+                    router.push(`/painel/acao/management/${id}`)
+                    break
+                  case "deleteAction":
+                    deleteAcao(id)
+                    break
+                }
+              }}
               pagination={{
                 count: count,
                 page: page,

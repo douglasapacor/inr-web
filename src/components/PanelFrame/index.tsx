@@ -32,7 +32,6 @@ export type local = {
   href: string
   iconName: string
 }
-
 export const PanelFrame: FC<{
   children?: ReactNode
   loading?: boolean
@@ -46,14 +45,19 @@ export const PanelFrame: FC<{
 }> = ({ ...props }) => {
   const [leftDrawer, setLeftDrawer] = useState<boolean>(false)
   const [rigthDrawer, setRigthDrawer] = useState<boolean>(false)
-  // const router = useRouter()
-  // const globalContext = useGlobalCtx()
+  const router = useRouter()
+  const globalContext = useGlobalCtx()
+
   useEffect(() => {
+    globalContext.loadLocals(localStorage.getItem("appUserData") || "")
+
     const lm = localStorage.getItem("leftDrawerState")
-    const rm = localStorage.getItem("rigthMenuState")
+    const rm = localStorage.getItem("rigthDrawerState")
+
     if (lm) setLeftDrawer(JSON.parse(lm))
     if (rm) setRigthDrawer(JSON.parse(rm))
   }, [])
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -98,7 +102,7 @@ export const PanelFrame: FC<{
               color="inherit"
               onClick={() => {
                 setRigthDrawer(rigthDrawer => {
-                  localStorage.setItem("rigthMenuState", `${!rigthDrawer}`)
+                  localStorage.setItem("rigthDrawerState", `${!rigthDrawer}`)
                   return !rigthDrawer
                 })
               }}
@@ -148,23 +152,21 @@ export const PanelFrame: FC<{
               }}
               component="nav"
             >
-              {/* {globalContext.usuario.authorized
-                ? globalContext.usuario.ambiente.aplication.map(
-                    (item: any, index: any) => (
-                      <ListItemButton
-                        key={`menu-left-${index}-item`}
-                        onClick={() => {
-                          router.push(item.path)
-                        }}
-                      >
-                        <ListItemIcon>
-                          <Icon>{item.icon}</Icon>
-                        </ListItemIcon>
-                        <ListItemText primary={item.name} />
-                      </ListItemButton>
-                    )
-                  )
-                : ""} */}
+              {globalContext.user && globalContext.user.authorized
+                ? globalContext.user.access.map((item: any, index: any) => (
+                    <ListItemButton
+                      key={`menu-left-${index}-item`}
+                      onClick={() => {
+                        router.push(item.path)
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon>{item.icon}</Icon>
+                      </ListItemIcon>
+                      <ListItemText primary={item.name} />
+                    </ListItemButton>
+                  ))
+                : ""}
             </List>
           )}
         </Toolbar>
@@ -209,14 +211,16 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  {/* {globalContext.usuario.authorized ? (
+                  {globalContext.user &&
+                  globalContext.user.authorized &&
+                  globalContext.user.foto !== "" ? (
                     <Avatar
                       sx={{ width: 102, height: 102 }}
-                      src={globalContext.usuario.foto}
+                      src={globalContext.user.foto}
                     />
                   ) : (
                     <Avatar sx={{ width: 102, height: 102 }} />
-                  )} */}
+                  )}
                 </Box>
               </ListItem>
               <ListItem>
@@ -227,7 +231,7 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  {/* <i>{globalContext.usuario.nome}</i> */}
+                  <i>{globalContext.user && globalContext.user.nome}</i>
                 </Box>
               </ListItem>
               <Divider />
@@ -257,7 +261,7 @@ export const PanelFrame: FC<{
 
               <ListItemButton
                 onClick={() => {
-                  // globalContext.usuario.logout()
+                  globalContext.logout()
                 }}
               >
                 <ListItemIcon>

@@ -1,4 +1,7 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material"
+import security from "@/config/actions/security"
+import { useGlobalCtx } from "@/context/Global"
+import fetchApi from "@/lib/fetchApi"
+import { Close, Visibility, VisibilityOff } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -11,14 +14,26 @@ import {
   InputAdornment,
   InputLabel,
   Paper,
-  TextField
+  Snackbar
 } from "@mui/material"
 import type { NextPage } from "next"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { useState } from "react"
 
 const AutenticacaoPainel: NextPage = () => {
-  const [showPassword, setShowPassword] = useState(false)
+  const [user, setUser] = useState<string>("")
+  const [userError, setUserError] = useState<boolean>(false)
+  const [password, setPassword] = useState<string>("")
+  const [passwordError, setPasswordError] = useState<boolean>(false)
+  const [keepConnected, setKeepConnected] = useState<boolean>(true)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [alert, setAlert] = useState<boolean>(false)
+  const [alertMessage, setAlertMessage] = useState<string>("")
+  const [lock, setLock] = useState<boolean>(false)
+  const globalCtx = useGlobalCtx()
+  const router = useRouter()
+  const closeAlert = () => setAlert(false)
   const handleClickShowPassword = () => setShowPassword(show => !show)
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -30,6 +45,64 @@ const AutenticacaoPainel: NextPage = () => {
   ) => {
     event.preventDefault()
   }
+  const goToRecoveryPassword = () => {
+    router.push("/painel/recuperar-senha")
+  }
+  const autehticationUser = async () => {
+    try {
+      if (user === "") {
+        setUserError(true)
+
+        setTimeout(() => {
+          setUserError(false)
+        }, 3000)
+
+        throw new Error("Preencha o campo usuário.")
+      }
+
+      if (password === "") {
+        setPasswordError(true)
+
+        setTimeout(() => {
+          setPasswordError(false)
+        }, 3000)
+
+        throw new Error("Preencha o campo senha.")
+      }
+
+      setLock(true)
+
+      const result = await fetchApi.post(security.user.authentication, {
+        login: user,
+        password: password
+      })
+
+      if (!result.success) throw new Error(result.message)
+
+      globalCtx.authorize(
+        result.data.name,
+        result.data.email,
+        result.data.photo,
+        result.data.cellphone,
+        {
+          name: result.data.group.name,
+          canonical: result.data.group.canonical
+        },
+        result.data.credential,
+        result.data.access,
+        keepConnected
+      )
+
+      router.push("/painel/inicio")
+
+      setLock(false)
+    } catch (error: any) {
+      setLock(false)
+      setAlertMessage(error.message)
+      setAlert(true)
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -63,10 +136,10 @@ const AutenticacaoPainel: NextPage = () => {
                       }}
                     >
                       <Image
-                        src="/logo_inr.svg"
+                        src="/logos/logo_inr.svg"
                         alt="Logo inr desde 1989"
-                        width={300}
-                        height={120}
+                        width={120}
+                        height={60}
                       />
                     </Box>
                   </Grid>
@@ -80,6 +153,11 @@ const AutenticacaoPainel: NextPage = () => {
                           <Icon>alternate_email</Icon>
                         </InputAdornment>
                       }
+                      error={userError}
+                      onChange={event => {
+                        setUser(event.target.value)
+                      }}
+                      disabled={lock}
                     />
                   </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -106,6 +184,11 @@ const AutenticacaoPainel: NextPage = () => {
                           </IconButton>
                         </InputAdornment>
                       }
+                      error={passwordError}
+                      onChange={event => {
+                        setPassword(event.target.value)
+                      }}
+                      disabled={lock}
                     />
                   </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -118,14 +201,33 @@ const AutenticacaoPainel: NextPage = () => {
                       }}
                     >
                       <FormControlLabel
-                        control={<Checkbox defaultChecked />}
+                        control={
+                          <Checkbox
+                            checked={keepConnected}
+                            disabled={lock}
+                            onChange={event => {
+                              setKeepConnected(event.target.checked)
+                            }}
+                          />
+                        }
                         label="Manter Conectado"
                       />
-                      <Button variant="text">Esqueci minha senha</Button>
+                      <Button
+                        disabled={lock}
+                        variant="text"
+                        onClick={goToRecoveryPassword}
+                      >
+                        Esqueci minha senha
+                      </Button>
                     </Box>
                   </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <Button fullWidth variant="contained">
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      onClick={autehticationUser}
+                      disabled={lock}
+                    >
                       Entrar
                     </Button>
                   </Grid>
@@ -136,20 +238,37 @@ const AutenticacaoPainel: NextPage = () => {
         </Grid>
 
         <Grid item xs={12} sm={12} md={9} lg={9} xl={9}>
-          <Box
-            sx={{
-              width: "100%",
-              height: "100vh",
-              background: theme => theme.palette.primary.light,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            asdas
+          <Box id="AuthSideSquare">
+            <Image
+              src="/logos/logo_inr_branco.svg"
+              alt="Logo inr desde 1989"
+              width={500}
+              height={320}
+            />
           </Box>
         </Grid>
       </Grid>
+
+      <Snackbar
+        open={alert}
+        autoHideDuration={6000}
+        onClose={() => {
+          closeAlert()
+        }}
+        message={alertMessage}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => {
+              closeAlert()
+            }}
+          >
+            <Close fontSize="small" />
+          </IconButton>
+        }
+      />
     </Box>
   )
 }
