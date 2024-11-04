@@ -30,7 +30,9 @@ const acoes: NextPage = () => {
   const [gridLoading, setGridLoading] = useState(false)
   const globalCtx = useGlobalCtx()
   const router = useRouter()
+
   const deleteAcao = (id: number) => {}
+
   const search = async () => {
     try {
       setGridLoading(true)
