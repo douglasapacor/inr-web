@@ -29,7 +29,7 @@ export const BottomLocation: FC = ({ ...props }) => {
               }}
             >
               <Image
-                src="/logo_inr_branco.svg"
+                src="/logos/logo_inr_branco.svg"
                 alt="Inr Publicações"
                 width={170}
                 height={65}

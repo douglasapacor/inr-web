@@ -37,7 +37,7 @@ const security = {
   action: {
     new: `${apiConfigs.security}/action/new`,
     select: (id: string) => `${apiConfigs.security}/action/${id}`,
-    update: (id: string) => `${apiConfigs.security}/action/${id}/update`,
+    update: (id: number) => `${apiConfigs.security}/action/${id}/update`,
     delete: (id: string) => `${apiConfigs.security}/action/${id}/delete`,
     search: `${apiConfigs.security}/action`
   }

@@ -1,23 +1,51 @@
-// interface ComponenteAmbiental {
-//   path: string
-//   icon: string
-//   name: string
-//   acoes: string[]
-// }
+export interface IUsuario {
+  nome: string
+  email: string
+  foto: string
+  cellphone: string
+  group: {
+    name: string
+    canonical: string
+  }
+  credential: string
+  access: {
+    name: string
+    icon: string
+    path: string
+    deviceId: number
+  }[]
+  authorized: boolean
+  keepConnected: boolean
+  connectedAt: Date | null
+}
 
-// interface Ambiente {
-//   aplication: ComponenteAmbiental[]
-//   usuario: ComponenteAmbiental[]
-// }
+export interface ContextoGlobal {
+  user: IUsuario | null
+  authorize: (
+    nome: string,
+    email: string,
+    foto: string,
+    cellphone: string,
+    group: {
+      name: string
+      canonical: string
+    },
+    credential: string,
+    access: {
+      name: string
+      icon: string
+      path: string
+      deviceId: number
+    }[],
+    keepConnected: boolean
+  ) => void
+  logout: () => void
+  loadLocals: (content: string) => void
+}
 
-// interface Usuario {
-//   nome: string
-//   foto: string
-//   authorized: boolean
-//   ambiente: Ambiente
-//   authorize: () => void
-//   logout: () => void
-// }
-
-export interface ContextoGlobal {}
-export const globalCtxDefault: ContextoGlobal = {}
+export const globalCtxDefault: ContextoGlobal = {
+  user: null,
+  authorize: () => {},
+  logout: () => {},
+  loadLocals: () => {}
+}

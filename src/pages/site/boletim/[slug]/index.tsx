@@ -1,16 +1,17 @@
 import { SiteFrame } from "@/components"
 import legacy from "@/config/actions/legacy"
 import fetchApi from "@/lib/fetchApi"
-import { Box, Container, Divider, Grid, Icon } from "@mui/material"
+import { Box, Button, Container, Divider, Grid, Icon } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
 import parse from "html-react-parser"
 import he from "he"
 import sanitize from "@/lib/helpers/sinitize"
 import { KeyboardArrowDown } from "@mui/icons-material"
+import { useState } from "react"
 
 type newsProps = {
   title: string
-  description: string
+  description: string | null
   tag: string
   text: string
   list: { id: number; titulo: string; datacad: string }[]
@@ -130,17 +131,17 @@ export const getServerSideProps: GetServerSideProps<
     return {
       props: {
         title: pageData.title,
-        description: desc.data,
+        description: desc.data ? desc.data : null,
         tag: slug,
         text: pageData.text,
-        list: fetch.data
+        list: fetch.data ? fetch.data : []
       }
     }
   } else {
     return {
       props: {
         title: pageData.title,
-        description: desc.data,
+        description: desc.data ? desc.data : null,
         tag: slug,
         text: pageData.text,
         list: []
@@ -150,6 +151,18 @@ export const getServerSideProps: GetServerSideProps<
 }
 
 const BeFrame: NextPage<newsProps> = props => {
+  const [supSelected, setSupSelected] = useState([true, false, false, false])
+
+  const changeButton = (btnIndex: number) => {
+    let tmp = [...supSelected]
+
+    for (let i = 0; i < tmp.length; i++) {
+      if (i === btnIndex) tmp[i] = true
+      else tmp[i] = false
+    }
+
+    setSupSelected(tmp)
+  }
   return (
     <SiteFrame>
       <Grid container>
@@ -157,14 +170,15 @@ const BeFrame: NextPage<newsProps> = props => {
           <section
             style={{
               width: "100%",
-              height: 250,
+              height: "250px",
               fontSize: "1.8rem",
-              backgroundImage: `url('https://inrpublicacoes.com.br/site/img/icones/textura_banner.png'), url('https://inrpublicacoes.com.br/site/img/${props.tag}/banner.jpg')`,
+              backgroundImage: `url('/images/textura_banner.png'), url('/images/header_areas/${props.tag}/banner.png')`,
               backgroundPosition: "left top, center top",
               backgroundSize: "auto auto, 100%",
               backgroundRepeat: "repeat, no-repeat",
               backgroundColor: "#006092",
               backgroundBlendMode: "difference, multiply",
+              backgroundAttachment: "scroll, fixed",
               position: "relative",
               overflow: "hidden",
               margin: "0 auto 1em",
@@ -187,6 +201,7 @@ const BeFrame: NextPage<newsProps> = props => {
             </h1>
           </section>
         </Grid>
+
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Container>
             <div
@@ -199,10 +214,13 @@ const BeFrame: NextPage<newsProps> = props => {
                 lineHeight: "1.42857143",
                 color: "#333"
               }}
-              dangerouslySetInnerHTML={{ __html: props.description }}
+              dangerouslySetInnerHTML={{
+                __html: props.description ? props.description : ""
+              }}
             />
           </Container>
         </Grid>
+
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Container>
             <div
@@ -224,6 +242,60 @@ const BeFrame: NextPage<newsProps> = props => {
             </div>
           </Container>
         </Grid>
+
+        {props.tag === "suplementos" && (
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+            <Container>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+                  <Button
+                    variant={supSelected[0] ? "contained" : "outlined"}
+                    fullWidth
+                    onClick={() => {
+                      changeButton(0)
+                    }}
+                  >
+                    Tributário
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+                  <Button
+                    variant={supSelected[1] ? "contained" : "outlined"}
+                    fullWidth
+                    onClick={() => {
+                      changeButton(1)
+                    }}
+                  >
+                    Trabalhista
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+                  <Button
+                    variant={supSelected[2] ? "contained" : "outlined"}
+                    fullWidth
+                    onClick={() => {
+                      changeButton(2)
+                    }}
+                  >
+                    Previdenciário
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+                  <Button
+                    variant={supSelected[3] ? "contained" : "outlined"}
+                    fullWidth
+                    onClick={() => {
+                      changeButton(3)
+                    }}
+                  >
+                    Geral
+                  </Button>
+                </Grid>
+              </Grid>
+            </Container>
+          </Grid>
+        )}
+
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Container>
             <ul className="be-main-ul">
@@ -234,15 +306,15 @@ const BeFrame: NextPage<newsProps> = props => {
                 >
                   <a
                     className="be-main-a"
-                    href={`/site/boletim/pareceresCGJ/${i.id}/${sanitize(
+                    href={`/site/boletim/${props.tag}/${i.id}/${sanitize(
                       parse(
                         he.decode(i.titulo).replace(/<\/?p>/g, "")
                       ).toString()
                     ).urlFriendly()}`}
                   >
-                    <time datatype="ano-mes-dia">{`[+] ${i.datacad} ${he.decode(
-                      " &ndash; "
-                    )}`}</time>
+                    <time datatype="ano-mes-dia">{`[ + ]  ${
+                      i.datacad
+                    } ${he.decode(" &ndash; ")}`}</time>
 
                     <strong>
                       {parse(he.decode(`${i.titulo}`).replace(/<\/?p>/g, ""))}
@@ -253,6 +325,7 @@ const BeFrame: NextPage<newsProps> = props => {
             </ul>
           </Container>
         </Grid>
+
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Container>
             <Box sx={{ width: "100%", marginBottom: "15px" }}>
@@ -273,6 +346,7 @@ const BeFrame: NextPage<newsProps> = props => {
             </Box>
           </Container>
         </Grid>
+
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Container>
             <Divider
@@ -281,6 +355,7 @@ const BeFrame: NextPage<newsProps> = props => {
             />
           </Container>
         </Grid>
+
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Container>
             <Box sx={{ width: "100%" }}>
