@@ -1,19 +1,19 @@
 import { SiteFrame } from "@/components"
 import legacy from "@/config/actions/legacy"
 import fetchApi from "@/lib/fetchApi"
-import { Box, Button, Container, Divider, Grid, Icon } from "@mui/material"
+import { Box, Button, Container, Divider, Grid } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
 import parse from "html-react-parser"
 import he from "he"
 import sanitize from "@/lib/helpers/sinitize"
 import { KeyboardArrowDown } from "@mui/icons-material"
-import { useState } from "react"
 
-type newsProps = {
+type bulletinProps = {
   title: string
   description: string | null
   tag: string
-  text: string
+  subtitle: string
+  extra: { id: number; titulo: string }[] | null
   list: { id: number; titulo: string; datacad: string }[]
 }
 
@@ -33,7 +33,7 @@ type slugTagsType = Record<
   {
     title: string
     descriptionId: number
-    text: string
+    subtitle: string
   }
 >
 
@@ -41,60 +41,65 @@ const slugTags: slugTagsType = {
   noticias: {
     title: "Notí­cias",
     descriptionId: 5,
-    text: "Últimas Notí­cias"
+    subtitle: "Últimas Notí­cias"
   },
   legislacoes: {
     title: "Legislação",
     descriptionId: 7,
-    text: "Últimos Atos Legais"
+    subtitle: "Últimos Atos Legais"
   },
   jurisprudencias: {
     title: "Jurisprudência",
     descriptionId: 6,
-    text: "Últimas Decisões"
+    subtitle: "Últimas Decisões"
   },
-  opinioes: { title: "Opinião", descriptionId: 9, text: "Últimos Artigos" },
+  opinioes: { title: "Opinião", descriptionId: 9, subtitle: "Últimos Artigos" },
   "perguntas-e-respostas": {
     title: "Perguntas e Respostas",
     descriptionId: 10,
-    text: "Últimas Consultas"
+    subtitle: "Últimas Consultas"
   },
   "mensagens-editores": {
     title: "Mensagens dos Editores",
     descriptionId: 26,
-    text: "Últimas Mensagens"
+    subtitle: "Últimas Mensagens"
   },
   pareceresCGJ: {
     title:
       "Pareceres não divulgados no DJe — \n\tCorregedoria Geral da Justiça do Estado de São Paulo",
     descriptionId: 8,
-    text: `Últimos Pareceres CGJ SP`
+    subtitle: `Últimos Pareceres CGJ SP`
   },
   suplementos: {
     title: "Suplementos da Consultoria INR",
     descriptionId: 15,
-    text: "Suplementos da Consultoria INR"
+    subtitle: "Suplementos da Consultoria INR"
   },
   historias: {
     title: "Histórias do ofício",
     descriptionId: 46,
-    text: "Últimas Histórias"
+    subtitle: "Últimas Histórias"
   }
 }
 
 export const getServerSideProps: GetServerSideProps<
-  newsProps
+  bulletinProps
 > = async context => {
-  const slug =
-    context.params && context.params.slug ? context.params.slug.toString() : ""
-  const pageData = slugTags[slug as keyof typeof slugTags]
+  const tag =
+    context.params && context.params.slug
+      ? context.params.slug.toString()
+      : null
+  const pageData = slugTags[tag as keyof typeof slugTags]
   const desc = await fetchApi.get(
     legacy.boletim.description(pageData.descriptionId)
   )
 
-  let fetch
+  if (!tag) throw new Error("Erro ao carregar a página.")
 
-  switch (slug) {
+  let fetch
+  let extra = null
+
+  switch (tag) {
     case "noticias":
       fetch = await await fetchApi.get(legacy.boletim.news.home)
       break
@@ -116,12 +121,10 @@ export const getServerSideProps: GetServerSideProps<
     case "pareceresCGJ":
       fetch = await await fetchApi.get(legacy.boletim.pareceres.home)
       break
-    // case "suplementos":
-    //   fetch = await await fetchApi.get(legacy.boletim.se.home)
-    //   break
-    // case "historias":
-    //   fetch = await await fetchApi.get(legacy.boletim.news.home)
-    //   break
+    case "suplementos":
+      extra = await fetchApi.get(legacy.boletim.supplements.temas)
+      fetch = await await fetchApi.get(legacy.boletim.supplements.home)
+      break
     default:
       fetch = { success: false }
       break
@@ -132,8 +135,9 @@ export const getServerSideProps: GetServerSideProps<
       props: {
         title: pageData.title,
         description: desc.data ? desc.data : null,
-        tag: slug,
-        text: pageData.text,
+        tag,
+        extra: extra ? extra.data : null,
+        subtitle: pageData.subtitle,
         list: fetch.data ? fetch.data : []
       }
     }
@@ -142,27 +146,16 @@ export const getServerSideProps: GetServerSideProps<
       props: {
         title: pageData.title,
         description: desc.data ? desc.data : null,
-        tag: slug,
-        text: pageData.text,
+        tag,
+        extra: extra ? extra.data : null,
+        subtitle: pageData.subtitle,
         list: []
       }
     }
   }
 }
 
-const BeFrame: NextPage<newsProps> = props => {
-  const [supSelected, setSupSelected] = useState([true, false, false, false])
-
-  const changeButton = (btnIndex: number) => {
-    let tmp = [...supSelected]
-
-    for (let i = 0; i < tmp.length; i++) {
-      if (i === btnIndex) tmp[i] = true
-      else tmp[i] = false
-    }
-
-    setSupSelected(tmp)
-  }
+const BeFrame: NextPage<bulletinProps> = props => {
   return (
     <SiteFrame>
       <Grid container>
@@ -237,7 +230,7 @@ const BeFrame: NextPage<newsProps> = props => {
                   color: "#006092"
                 }}
               >
-                {props.text}
+                {props.subtitle}
               </h2>
             </div>
           </Container>
@@ -245,54 +238,35 @@ const BeFrame: NextPage<newsProps> = props => {
 
         {props.tag === "suplementos" && (
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-            <Container>
-              <Grid container spacing={1}>
-                <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                  <Button
-                    variant={supSelected[0] ? "contained" : "outlined"}
-                    fullWidth
-                    onClick={() => {
-                      changeButton(0)
-                    }}
-                  >
-                    Tributário
-                  </Button>
-                </Grid>
-                <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                  <Button
-                    variant={supSelected[1] ? "contained" : "outlined"}
-                    fullWidth
-                    onClick={() => {
-                      changeButton(1)
-                    }}
-                  >
-                    Trabalhista
-                  </Button>
-                </Grid>
-                <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                  <Button
-                    variant={supSelected[2] ? "contained" : "outlined"}
-                    fullWidth
-                    onClick={() => {
-                      changeButton(2)
-                    }}
-                  >
-                    Previdenciário
-                  </Button>
-                </Grid>
-                <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                  <Button
-                    variant={supSelected[3] ? "contained" : "outlined"}
-                    fullWidth
-                    onClick={() => {
-                      changeButton(3)
-                    }}
-                  >
-                    Geral
-                  </Button>
-                </Grid>
-              </Grid>
-            </Container>
+            {props.extra && (
+              <Container>
+                <Box
+                  sx={{
+                    width: "100%",
+                    marginBottom: "40px",
+                    marginTop: "10px"
+                  }}
+                >
+                  <Grid container spacing={2}>
+                    {props.extra.map((item, index) => (
+                      <Grid
+                        key={`supplements-item-${index}`}
+                        item
+                        xs={12}
+                        sm={12}
+                        md={3}
+                        lg={3}
+                        xl={3}
+                      >
+                        <Button fullWidth variant="contained">
+                          {item.titulo}
+                        </Button>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              </Container>
+            )}
           </Grid>
         )}
 

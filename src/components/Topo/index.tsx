@@ -9,8 +9,6 @@ import {
   Container,
   Dialog,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   FormControlLabel,
   Grid,
   Icon,

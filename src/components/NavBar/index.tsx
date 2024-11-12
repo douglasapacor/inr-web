@@ -82,7 +82,7 @@ export const NavBar: FC = () => {
                   <a>INR</a>
                 </div>
                 <div className="item-content">
-                  <a href="#">
+                  <a href="/site/classificadores/PR">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlSpace="preserve"
@@ -115,7 +115,7 @@ export const NavBar: FC = () => {
                     Classificadores INR PR
                   </a>
 
-                  <a href="#">
+                  <a href="/site/classificadores/RS">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlSpace="preserve"
@@ -148,7 +148,7 @@ export const NavBar: FC = () => {
                     Classificadores INR RS
                   </a>
 
-                  <a href="#">
+                  <a href="/site/classificadores/SP">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       xmlSpace="preserve"
@@ -181,7 +181,7 @@ export const NavBar: FC = () => {
                     Classificadores INR SP
                   </a>
 
-                  <a href="#">
+                  <a href="/site/classificadores/atos_anteriores">
                     <Icon>library_books</Icon> Arquivos Acumulados dos
                     Classificadores SP
                   </a>

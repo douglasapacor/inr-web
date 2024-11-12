@@ -30,7 +30,20 @@ const legacy = {
     pareceres: {
       home: `${apiConfigs.legacy}/pareceres`,
       select: (id: string) => `${apiConfigs.legacy}/pareceres/${id}`
+    },
+    supplements: {
+      temas: `${apiConfigs.legacy}/supplements/themes/list`,
+      home: `${apiConfigs.legacy}/supplements`,
+      select: (id: string) => `${apiConfigs.legacy}/supplements/${id}`
     }
+  },
+  classificadores: {
+    stateInfo: (acronym: string) =>
+      `${apiConfigs.legacy}/classifiers/state?acronym=${acronym}`,
+    home: `${apiConfigs.legacy}/classifiers`,
+    selectIndex: (id: number) => `${apiConfigs.legacy}/classifiers/index/${id}`,
+    selectContent: (id: number) =>
+      `${apiConfigs.legacy}/classifiers/content/${id}/read`
   }
 }
 
