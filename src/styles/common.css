@@ -26,6 +26,7 @@ body::-webkit-scrollbar-thumb:hover {
 body::-webkit-scrollbar-thumb:active {
   background: #0d47a1;
 }
+
 /* #endregion Scroll*/
 
 /* #region DesktopNavigation*/
@@ -65,11 +66,11 @@ body::-webkit-scrollbar-thumb:active {
   flex-direction: column;
 }
 
-.item-title > a {
+.item-title>a {
   text-decoration: none;
 }
 
-.item-title > a:visited {
+.item-title>a:visited {
   color: #fff;
 }
 
@@ -98,10 +99,11 @@ body::-webkit-scrollbar-thumb:active {
 .item-content a:hover {
   background-color: #071f44;
 }
+
 /* #endregion DesktopNavigation*/
 
 /* #region SlideShow */
-#SlideShow > * {
+#SlideShow>* {
   box-sizing: border-box;
 }
 
@@ -150,10 +152,12 @@ body::-webkit-scrollbar-thumb:active {
   from {
     opacity: 0.4;
   }
+
   to {
     opacity: 1;
   }
 }
+
 /* #endregion SlideShow*/
 
 /* #region BEPage*/
@@ -241,6 +245,7 @@ body::-webkit-scrollbar-thumb:active {
   background-color: #0093d8;
   outline-offset: -2px;
 }
+
 /* #endregion */
 
 /* #region Auth*/
@@ -251,11 +256,10 @@ body::-webkit-scrollbar-thumb:active {
   justify-content: center;
   align-items: center;
   background: rgb(13, 71, 161);
-  background: linear-gradient(
-    225deg,
-    rgba(13, 71, 161, 1) 0%,
-    rgba(13, 71, 161, 1) 48%,
-    rgba(33, 150, 243, 0.5298494397759104) 100%
-  );
+  background: linear-gradient(225deg,
+      rgba(13, 71, 161, 1) 0%,
+      rgba(13, 71, 161, 1) 48%,
+      rgba(33, 150, 243, 0.5298494397759104) 100%);
 }
+
 /* #endregion */
