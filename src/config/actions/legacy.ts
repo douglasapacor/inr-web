@@ -41,9 +41,9 @@ const legacy = {
     stateInfo: (acronym: string) =>
       `${apiConfigs.legacy}/classifiers/state?acronym=${acronym}`,
     home: `${apiConfigs.legacy}/classifiers`,
-    selectIndex: (id: number) => `${apiConfigs.legacy}/classifiers/index/${id}`,
+    selectIndex: (id: number) => `${apiConfigs.legacy}/classifiers/${id}`,
     selectContent: (id: number) =>
-      `${apiConfigs.legacy}/classifiers/content/${id}/read`
+      `${apiConfigs.legacy}/classifiers/act-content?id=${id}`
   }
 }
 
