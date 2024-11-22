@@ -20,25 +20,25 @@ const security = {
   },
   feature: {
     new: `${apiConfigs.security}/feature/new`,
-    select: (id: string) => `${apiConfigs.security}/feature/${id}`,
-    update: (id: string) => `${apiConfigs.security}/feature/${id}/update`,
-    delete: (id: string) => `${apiConfigs.security}/feature/${id}/delete`,
+    select: (id: number) => `${apiConfigs.security}/feature/${id}`,
+    update: (id: number) => `${apiConfigs.security}/feature/${id}/update`,
+    delete: (id: number) => `${apiConfigs.security}/feature/${id}/delete`,
     search: `${apiConfigs.security}/feature`
   },
   deviceComponent: {
     new: `${apiConfigs.security}/device_component/new`,
-    select: (id: string) => `${apiConfigs.security}/device_component/${id}`,
-    update: (id: string) =>
+    select: (id: number) => `${apiConfigs.security}/device_component/${id}`,
+    update: (id: number) =>
       `${apiConfigs.security}/device_component/${id}/update`,
-    delete: (id: string) =>
+    delete: (id: number) =>
       `${apiConfigs.security}/device_component/${id}/delete`,
     search: `${apiConfigs.security}/device_component`
   },
   action: {
     new: `${apiConfigs.security}/action/new`,
-    select: (id: string) => `${apiConfigs.security}/action/${id}`,
+    select: (id: number) => `${apiConfigs.security}/action/${id}`,
     update: (id: number) => `${apiConfigs.security}/action/${id}/update`,
-    delete: (id: string) => `${apiConfigs.security}/action/${id}/delete`,
+    delete: (id: number) => `${apiConfigs.security}/action/${id}/delete`,
     search: `${apiConfigs.security}/action`
   }
 }

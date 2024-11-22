@@ -28,12 +28,11 @@ const deleteStyle = {
   boxShadow: 24,
   p: 2
 }
-
-const acoes: NextPage = () => {
+const recursos: NextPage = () => {
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
   const [name, setName] = useState("")
-  const [canon, setCanon] = useState("")
+  const [deviceId, setDeviceId] = useState(0)
   const [gridData, setGridData] = useState([])
   const [count, setCount] = useState(0)
   const [page, setPage] = useState(0)
@@ -43,18 +42,20 @@ const acoes: NextPage = () => {
   const [deleteThis, setDeleteThis] = useState<number | null>(null)
   const ctx = useContextMaster()
   const router = useRouter()
+
   const requestConfirmation = (id: number) => {
     setDeleteThis(id)
     setDeleteModal(true)
   }
 
-  const deleteAction = async () => {
+  const deleteComponent = async () => {
     try {
-      if (!deleteThis) throw new Error("Erro ao excluir Ação")
+      if (!deleteThis) throw new Error("Erro ao excluir recurso")
+
       setGridLoading(true)
       setDeleteModal(false)
 
-      const response = await fetchApi.del(security.action.delete(deleteThis), {
+      const response = await fetchApi.del(security.feature.delete(deleteThis), {
         headers: {
           Authorization: ctx.user ? ctx.user.credential : null
         }
@@ -79,10 +80,10 @@ const acoes: NextPage = () => {
       setGridLoading(true)
 
       const dataSearch = await fetchApi.post(
-        security.action.search,
+        security.feature.search,
         {
           name: name,
-          canonical: canon,
+          deviceId: deviceId,
           limit: rowsPerPage,
           offset: page
         },
@@ -109,7 +110,7 @@ const acoes: NextPage = () => {
     <PanelFrame
       alerMessage={alerMessage}
       showAlert={showAlert}
-      title="Ações"
+      title="Recursos"
       locals={[
         {
           href: "/painel/inicio",
@@ -117,9 +118,9 @@ const acoes: NextPage = () => {
           text: "Home"
         },
         {
-          href: "/painel/acao",
-          iconName: "bolt",
-          text: "Ações"
+          href: "/painel/componente",
+          iconName: "featured_play_list",
+          text: "Recursos"
         }
       ]}
       closeAlert={() => {
@@ -133,7 +134,7 @@ const acoes: NextPage = () => {
             color="primary"
             aria-label="add"
             onClick={() => {
-              router.push("/painel/acao/management/new")
+              router.push("/painel/recurso/management/new")
             }}
           >
             <Add />
@@ -161,10 +162,10 @@ const acoes: NextPage = () => {
           <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
             <TextField
               fullWidth
-              label="Nome canónico"
-              value={canon}
+              label="Identificação númérica"
+              value={deviceId}
               onChange={event => {
-                setCanon(event.target.value)
+                setDeviceId(+event.target.value)
               }}
               onKeyDown={e => {
                 if (e.key === "Enter") {
@@ -179,7 +180,7 @@ const acoes: NextPage = () => {
             </Button>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-            <Typography variant="body1">Ações existentes</Typography>
+            <Typography variant="body1">Recursos existentes</Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Divider />
@@ -195,8 +196,8 @@ const acoes: NextPage = () => {
                   align: "center"
                 },
                 {
-                  text: "Nome canónico",
-                  attrName: "canonical",
+                  text: "Identificação númérica",
+                  attrName: "deviceid",
                   align: "center"
                 }
               ]}
@@ -204,21 +205,21 @@ const acoes: NextPage = () => {
               actions={[
                 {
                   icon: <Icon>visibility</Icon>,
-                  name: "showAction",
+                  name: "showComponent",
                   text: "Visualizar"
                 },
                 {
                   icon: <Icon>delete</Icon>,
-                  name: "deleteAction",
+                  name: "deleteComponent",
                   text: "Excluir"
                 }
               ]}
               actionTrigger={(id: number, actionName: string) => {
                 switch (actionName) {
-                  case "showAction":
-                    router.push(`/painel/acao/management/${id}`)
+                  case "showComponent":
+                    router.push(`/painel/componente/management/${id}`)
                     break
-                  case "deleteAction":
+                  case "deleteComponent":
                     requestConfirmation(id)
                     break
                 }
@@ -289,7 +290,7 @@ const acoes: NextPage = () => {
                 <Button
                   variant="contained"
                   color="success"
-                  onClick={deleteAction}
+                  onClick={deleteComponent}
                 >
                   Confirmar
                 </Button>
@@ -302,4 +303,4 @@ const acoes: NextPage = () => {
   )
 }
 
-export default acoes
+export default recursos

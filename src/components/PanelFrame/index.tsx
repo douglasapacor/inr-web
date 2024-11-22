@@ -22,16 +22,18 @@ import { FC, ReactNode, useEffect, useState } from "react"
 import ApplicationBar from "./ApplicationBar"
 import { AccountCircle, Close, Menu } from "@mui/icons-material"
 import LoadingBox from "../loadingBox"
-import { useGlobalCtx } from "@/context/Global"
 import { useRouter } from "next/router"
 import ApplicationDrawer from "../ApplicationDrawer"
 import UserDrawer from "../UserDrawer"
 import Location from "../Location"
+import { useContextMaster } from "@/context/Master"
+
 export type local = {
   text: string
   href: string
   iconName: string
 }
+
 export const PanelFrame: FC<{
   children?: ReactNode
   loading?: boolean
@@ -43,25 +45,13 @@ export const PanelFrame: FC<{
   closeAlert?: () => void
   alerMessage?: string
 }> = ({ ...props }) => {
-  const [leftDrawer, setLeftDrawer] = useState<boolean>(false)
-  const [rigthDrawer, setRigthDrawer] = useState<boolean>(false)
   const router = useRouter()
-  const globalContext = useGlobalCtx()
-
-  useEffect(() => {
-    globalContext.loadLocals(localStorage.getItem("appUserData") || "")
-
-    const lm = localStorage.getItem("leftDrawerState")
-    const rm = localStorage.getItem("rigthDrawerState")
-
-    if (lm) setLeftDrawer(JSON.parse(lm))
-    if (rm) setRigthDrawer(JSON.parse(rm))
-  }, [])
+  const masterContext = useContextMaster()
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <ApplicationBar position="absolute" open={leftDrawer}>
+      <ApplicationBar position="absolute" open={masterContext.lMenu}>
         <Toolbar
           sx={{
             pr: "24px"
@@ -72,10 +62,7 @@ export const PanelFrame: FC<{
               edge="start"
               color="inherit"
               onClick={() => {
-                setLeftDrawer(leftDrawer => {
-                  localStorage.setItem("leftDrawerState", `${!leftDrawer}`)
-                  return !leftDrawer
-                })
+                masterContext.revertLeftState()
               }}
             >
               <Menu />
@@ -101,10 +88,7 @@ export const PanelFrame: FC<{
               edge="start"
               color="inherit"
               onClick={() => {
-                setRigthDrawer(rigthDrawer => {
-                  localStorage.setItem("rigthDrawerState", `${!rigthDrawer}`)
-                  return !rigthDrawer
-                })
+                masterContext.revertRigthState()
               }}
             >
               <AccountCircle />
@@ -120,7 +104,7 @@ export const PanelFrame: FC<{
           }
         }}
         variant="permanent"
-        open={leftDrawer}
+        open={masterContext.lMenu}
       >
         <Toolbar
           sx={{
@@ -152,8 +136,8 @@ export const PanelFrame: FC<{
               }}
               component="nav"
             >
-              {globalContext.user && globalContext.user.authorized
-                ? globalContext.user.access.map((item: any, index: any) => (
+              {masterContext.user
+                ? masterContext.user.access.map((item: any, index: any) => (
                     <ListItemButton
                       key={`menu-left-${index}-item`}
                       onClick={() => {
@@ -179,7 +163,7 @@ export const PanelFrame: FC<{
           }
         }}
         variant="permanent"
-        open={rigthDrawer}
+        open={masterContext.rMenu}
         anchor="right"
       >
         <Toolbar
@@ -211,12 +195,10 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  {globalContext.user &&
-                  globalContext.user.authorized &&
-                  globalContext.user.foto !== "" ? (
+                  {masterContext.user && masterContext.user.photo !== "" ? (
                     <Avatar
                       sx={{ width: 102, height: 102 }}
-                      src={globalContext.user.foto}
+                      src={masterContext.user.photo}
                     />
                   ) : (
                     <Avatar sx={{ width: 102, height: 102 }} />
@@ -231,7 +213,7 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  <i>{globalContext.user && globalContext.user.nome}</i>
+                  <i>{masterContext.user && masterContext.user.name}</i>
                 </Box>
               </ListItem>
               <Divider />
@@ -261,7 +243,7 @@ export const PanelFrame: FC<{
 
               <ListItemButton
                 onClick={() => {
-                  globalContext.logout()
+                  masterContext.logout()
                 }}
               >
                 <ListItemIcon>

@@ -1,4 +1,4 @@
-import { useGlobalCtx } from "@/context/Global"
+import { useContextMaster } from "@/context/Master"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import {
   Avatar,
@@ -24,7 +24,7 @@ import { useState, type FC } from "react"
 export const Topo: FC = () => {
   const [loginDialog, setLoginDialog] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const ctx = useGlobalCtx()
+  const ctx = useContextMaster()
   const handleClickOpen = () => {
     setLoginDialog(true)
   }
@@ -42,6 +42,7 @@ export const Topo: FC = () => {
   ) => {
     event.preventDefault()
   }
+
   return (
     <div
       style={{
@@ -72,7 +73,7 @@ export const Topo: FC = () => {
             </Box>
           </Grid>
 
-          {ctx.user && ctx.user.authorized ? (
+          {ctx.user ? (
             <Grid item xs={12} sm={6} md={6} lg={4} xl={4}>
               <Box
                 sx={{

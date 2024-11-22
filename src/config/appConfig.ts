@@ -1,5 +1,3 @@
-const appConfig = {
+export default {
   base: process.env.BASE
 }
-
-export default appConfig

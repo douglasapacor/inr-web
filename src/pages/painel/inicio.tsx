@@ -1,5 +1,4 @@
 import { PanelFrame } from "@/components"
-import { Box } from "@mui/material"
 import { NextPage } from "next"
 
 const home: NextPage = () => {

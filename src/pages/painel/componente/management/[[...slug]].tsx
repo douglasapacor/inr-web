@@ -1,5 +1,4 @@
 import { PanelFrame } from "@/components"
-import { cookies } from "next/headers"
 import security from "@/config/actions/security"
 import { useContextMaster } from "@/context/Master"
 import fetchApi from "@/lib/fetchApi"
@@ -18,19 +17,19 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 type mo = "visualizing" | "creating" | ""
 type ic = "visibility" | "create" | ""
-type action = {
+type component = {
   id: number
   name: string
-  canonical: string
+  deviceId: string
   createdName: string
   createdAt: Date
   updatedName: string | null
   updatedAt: Date | null
 }
-type acaoManagement = {
+type componentManagement = {
   locationIcon: ic
   mode: mo
-  action: action | null
+  component: component | null
 }
 const deleteStyle = {
   position: "absolute",
@@ -42,24 +41,32 @@ const deleteStyle = {
   boxShadow: 24,
   p: 2
 }
-
 export const getServerSideProps: GetServerSideProps<
-  acaoManagement
+  componentManagement
 > = async context => {
   const urlSlug = context.params?.slug
 
   if (!urlSlug) {
     return {
-      props: { locationIcon: "", mode: "", action: null },
+      props: { locationIcon: "", mode: "", component: null },
       redirect: {
         destination: "/painel/inicio?erro=2"
       }
     }
   }
 
+  if (!context.req.cookies["master-key-inr"]) {
+    return {
+      props: { locationIcon: "", mode: "", component: null },
+      redirect: {
+        destination: "/painel/inicio?erro=3"
+      }
+    }
+  }
+
   let icon: ic = ""
   let mode: mo = ""
-  let action: action | null = null
+  let component: component | null = null
 
   if (urlSlug[0] === "new") {
     icon = "create"
@@ -68,29 +75,32 @@ export const getServerSideProps: GetServerSideProps<
     icon = "visibility"
     mode = "visualizing"
 
-    const response = await fetchApi.get(security.action.select(+urlSlug[0]), {
-      headers: {
-        Authorization: context.req.cookies["master-key-inr"]
+    const response = await fetchApi.get(
+      security.deviceComponent.select(+urlSlug[0]),
+      {
+        headers: {
+          Authorization: context.req.cookies["master-key-inr"]
+        }
       }
-    })
+    )
 
     if (response.success) {
-      action = response.data
+      component = response.data
     }
   }
 
   return {
-    props: { locationIcon: icon, mode: mode, action }
+    props: { locationIcon: icon, mode: mode, component }
   }
 }
 
-const acaoSelecionada: NextPage<acaoManagement> = props => {
+const componentSelecionada: NextPage<componentManagement> = props => {
   const [id, setId] = useState<number | null>(
-    props.action ? props.action.id : null
+    props.component ? props.component.id : null
   )
-  const [name, setName] = useState(props.action ? props.action.name : "")
-  const [canonical, setCanonical] = useState(
-    props.action ? props.action.canonical : ""
+  const [name, setName] = useState(props.component ? props.component.name : "")
+  const [deviceId, setDeviceId] = useState(
+    props.component ? props.component.deviceId : 0
   )
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
@@ -99,15 +109,19 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
   const router = useRouter()
   const ctx = useContextMaster()
 
+  const requestConfirmation = () => {
+    setDeleteModal(true)
+  }
+
   const create = async () => {
     try {
       setLoading(true)
 
       const apiResult = await fetchApi.post(
-        security.action.new,
+        security.deviceComponent.new,
         {
-          name: name,
-          canonical: canonical
+          name,
+          deviceId
         },
         {
           headers: {
@@ -124,7 +138,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
 
       const newId = apiResult.data.id
       setId(newId)
-      router.push(`/painel/acao/management/${newId}`)
+      router.push(`/painel/componente/management/${newId}`)
     } catch (error: any) {
       setLoading(false)
       setAlerMessage(error.message)
@@ -139,10 +153,10 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
       if (!id) throw new Error("Erro ao editar.")
 
       const apiResult = await fetchApi.put(
-        security.action.update(id),
+        security.deviceComponent.update(id),
         {
           name: name,
-          canonical: canonical
+          deviceId: deviceId
         },
         {
           headers: {
@@ -157,7 +171,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
       setAlerMessage(apiResult.message || "")
       setShowAlert(true)
 
-      router.push(`/painel/acao/management/${id}`)
+      router.push(`/painel/componente/management/${id}`)
     } catch (error: any) {
       setLoading(false)
       setAlerMessage(error.message)
@@ -165,23 +179,14 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
     }
   }
 
-  const saveAction = async () => {
-    if (props.mode === "creating") await create()
-    else if (props.mode === "visualizing") await update()
-  }
-
-  const requestConfirmation = () => {
-    setDeleteModal(true)
-  }
-
-  const deleteAction = async () => {
+  const deleteComponent = async () => {
     try {
-      if (!id) throw new Error("Erro ao excluir Ação")
+      if (!id) throw new Error("Erro ao excluir Componente")
 
       setDeleteModal(false)
       setLoading(true)
 
-      const response = await fetchApi.del(security.action.delete(id), {
+      const response = await fetchApi.del(security.deviceComponent.delete(id), {
         headers: {
           Authorization: ctx.user ? ctx.user.credential : null
         }
@@ -191,7 +196,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
         setLoading(false)
         setAlerMessage(response.message || "")
         setShowAlert(true)
-        router.push(`/painel/acao`)
+        router.push(`/painel/componente`)
       } else throw new Error(response.message)
     } catch (error: any) {
       setDeleteModal(false)
@@ -201,11 +206,16 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
     }
   }
 
+  const saveComponent = async () => {
+    if (props.mode === "creating") await create()
+    else if (props.mode === "visualizing") await update()
+  }
+
   return (
     <PanelFrame
       alerMessage={alerMessage}
       showAlert={showAlert}
-      title="Ações"
+      title="Componente"
       loading={loading}
       locals={[
         {
@@ -214,19 +224,22 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
           text: "Home"
         },
         {
-          href: "/painel/acao",
-          iconName: "bolt",
+          href: "/painel/componente",
+          iconName: "settings_input_component",
           text: "Ações"
         },
         {
           href:
             props.mode === "creating"
-              ? "/painel/acao/management/new"
-              : `/painel/acao/management/${
+              ? "/painel/componente/management/new"
+              : `/painel/componente/management/${
                   router.query.slug ? router.query.slug[0] : ""
                 }`,
           iconName: props.locationIcon,
-          text: props.mode === "creating" ? "Criando ação" : "Vizualizando ação"
+          text:
+            props.mode === "creating"
+              ? "Criando componente"
+              : "Vizualizando componente"
         }
       ]}
       closeAlert={() => {
@@ -239,7 +252,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                 <TextField
-                  label="Nome"
+                  label="Nome do componente"
                   fullWidth
                   value={name}
                   inputProps={{
@@ -252,35 +265,39 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                 <TextField
-                  label="Nome canónico"
+                  label="identificação númérica"
                   fullWidth
-                  value={canonical}
+                  value={deviceId}
                   inputProps={{
                     maxLength: 40
                   }}
                   onChange={e => {
-                    setCanonical(e.target.value)
+                    setDeviceId(+e.target.value)
                   }}
                 />
               </Grid>
 
-              {props.action && (
+              {props.component && (
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                   <Typography variant="caption">
                     <strong>Criado por: </strong>
-                    {props.action.createdName}
+                    {props.component.createdName}
                     <strong> em: </strong>
-                    {new Date(props.action.createdAt).toLocaleDateString()}{" "}
-                    {new Date(props.action.createdAt).toLocaleTimeString()}
-                    {props.action && props.action.updatedAt ? (
+                    {new Date(
+                      props.component.createdAt
+                    ).toLocaleDateString()}{" "}
+                    {new Date(props.component.createdAt).toLocaleTimeString()}
+                    {props.component && props.component.updatedAt ? (
                       <>
                         <strong> Editado por: </strong>
-                        {props.action.updatedName}
+                        {props.component.updatedName}
                         <strong> em: </strong>
                         {new Date(
-                          props.action.updatedAt
+                          props.component.updatedAt
                         ).toLocaleDateString()}{" "}
-                        {new Date(props.action.updatedAt).toLocaleTimeString()}
+                        {new Date(
+                          props.component.updatedAt
+                        ).toLocaleTimeString()}
                       </>
                     ) : (
                       ""
@@ -305,7 +322,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
               color="warning"
               endIcon={<ArrowBackIosNew />}
               onClick={() => {
-                router.push("/painel/acao")
+                router.push("/painel/componente")
               }}
             >
               Voltar
@@ -322,7 +339,11 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
               excluir
             </Button>
 
-            <Button variant="contained" endIcon={<Save />} onClick={saveAction}>
+            <Button
+              variant="contained"
+              endIcon={<Save />}
+              onClick={saveComponent}
+            >
               Salvar
             </Button>
           </Box>
@@ -377,7 +398,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
                 <Button
                   variant="contained"
                   color="success"
-                  onClick={deleteAction}
+                  onClick={deleteComponent}
                 >
                   Confirmar
                 </Button>
@@ -390,4 +411,4 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
   )
 }
 
-export default acaoSelecionada
+export default componentSelecionada

@@ -1,5 +1,5 @@
 import security from "@/config/actions/security"
-import { useGlobalCtx } from "@/context/Global"
+import { useContextMaster } from "@/context/Master"
 import fetchApi from "@/lib/fetchApi"
 import { Close, Visibility, VisibilityOff } from "@mui/icons-material"
 import {
@@ -31,8 +31,8 @@ const AutenticacaoPainel: NextPage = () => {
   const [alert, setAlert] = useState<boolean>(false)
   const [alertMessage, setAlertMessage] = useState<string>("")
   const [lock, setLock] = useState<boolean>(false)
-  const globalCtx = useGlobalCtx()
   const router = useRouter()
+  const masterContext = useContextMaster()
   const closeAlert = () => setAlert(false)
   const handleClickShowPassword = () => setShowPassword(show => !show)
   const handleMouseDownPassword = (
@@ -79,23 +79,9 @@ const AutenticacaoPainel: NextPage = () => {
 
       if (!result.success) throw new Error(result.message)
 
-      globalCtx.authorize(
-        result.data.name,
-        result.data.email,
-        result.data.photo,
-        result.data.cellphone,
-        {
-          name: result.data.group.name,
-          canonical: result.data.group.canonical
-        },
-        result.data.credential,
-        result.data.access,
-        keepConnected
-      )
+      masterContext.login(result.data)
 
       router.push("/painel/inicio")
-
-      setLock(false)
     } catch (error: any) {
       setLock(false)
       setAlertMessage(error.message)

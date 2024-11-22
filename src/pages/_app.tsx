@@ -9,7 +9,9 @@ import "@/styles/common.css"
 import { CssBaseline, ThemeProvider } from "@mui/material"
 import type { AppProps } from "next/app"
 import Head from "next/head"
-import GlobalCtxControll from "@/context/Global"
+import MasterCtxControll from "@/context/Master"
+import LimitedCtxControll from "@/context/Limited"
+import { CookiesProvider } from "react-cookie"
 const clientSideEmotionCache = createEmotionCache()
 export interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
@@ -17,6 +19,7 @@ export interface MyAppProps extends AppProps {
 
 export default function App(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -25,9 +28,13 @@ export default function App(props: MyAppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <GlobalCtxControll>
-          <Component {...pageProps} />
-        </GlobalCtxControll>
+        <CookiesProvider>
+          <MasterCtxControll>
+            <LimitedCtxControll>
+              <Component {...pageProps} />
+            </LimitedCtxControll>
+          </MasterCtxControll>
+        </CookiesProvider>
       </ThemeProvider>
     </CacheProvider>
   )
