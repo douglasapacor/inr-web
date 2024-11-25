@@ -5,11 +5,15 @@ const instance = axios.create()
 
 const get = async <T = any>(
   url: string,
-  config?: AxiosRequestConfig<any>
+  auth?: string
 ): Promise<defaultResponse<T>> => {
   try {
     const responseHttpRequest: AxiosResponse<defaultResponse> =
-      await instance.get(url, config)
+      await instance.get(url, {
+        headers: {
+          Authorization: auth
+        }
+      })
 
     if (responseHttpRequest.status === 200) {
       if (responseHttpRequest.data.data) {
@@ -41,11 +45,15 @@ const get = async <T = any>(
 const post = async <T = any>(
   url: string,
   body?: any,
-  config?: AxiosRequestConfig<any>
+  auth?: string
 ): Promise<defaultResponse<T>> => {
   try {
     const responseHttpRequest: AxiosResponse<defaultResponse> =
-      await instance.post(url, body, config)
+      await instance.post(url, body, {
+        headers: {
+          Authorization: auth
+        }
+      })
 
     if (responseHttpRequest.status === 200) {
       if (responseHttpRequest.data.data) {
@@ -77,11 +85,15 @@ const post = async <T = any>(
 const put = async <T = any>(
   url: string,
   body?: any,
-  config?: AxiosRequestConfig<any>
+  auth?: string
 ): Promise<defaultResponse<T>> => {
   try {
     const responseHttpRequest: AxiosResponse<defaultResponse> =
-      await instance.put(url, body, config)
+      await instance.put(url, body, {
+        headers: {
+          Authorization: auth
+        }
+      })
 
     if (responseHttpRequest.status === 200) {
       if (responseHttpRequest.data.data) {
@@ -112,11 +124,15 @@ const put = async <T = any>(
 
 const del = async <T = any>(
   url: string,
-  config?: AxiosRequestConfig<any>
+  auth?: string
 ): Promise<defaultResponse<T>> => {
   try {
     const responseHttpRequest: AxiosResponse<defaultResponse> =
-      await instance.delete(url, config)
+      await instance.delete(url, {
+        headers: {
+          Authorization: auth
+        }
+      })
 
     if (responseHttpRequest.status === 200) {
       if (responseHttpRequest.data.data) {

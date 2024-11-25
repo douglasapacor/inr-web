@@ -1,9 +1,3 @@
-import { PanelFrame } from "@/components"
-import { cookies } from "next/headers"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import fetchApi from "@/lib/fetchApi"
-import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -13,35 +7,17 @@ import {
   TextField,
   Typography
 } from "@mui/material"
+import { PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
+import fetchApi from "@/lib/fetchApi"
+import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
-type mo = "visualizing" | "creating" | ""
-type ic = "visibility" | "create" | ""
-type action = {
-  id: number
-  name: string
-  canonical: string
-  createdName: string
-  createdAt: Date
-  updatedName: string | null
-  updatedAt: Date | null
-}
-type acaoManagement = {
-  locationIcon: ic
-  mode: mo
-  action: action | null
-}
-const deleteStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "#FAFAFA",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 2
-}
+import { acaoManagement, action } from "@/helpers/types/acao"
+import { locationIcon, pageMode } from "@/helpers/types/geral"
+import { deleteStyle } from "@/helpers/deleteStyle"
 
 export const getServerSideProps: GetServerSideProps<
   acaoManagement
@@ -57,8 +33,8 @@ export const getServerSideProps: GetServerSideProps<
     }
   }
 
-  let icon: ic = ""
-  let mode: mo = ""
+  let icon: locationIcon = ""
+  let mode: pageMode = ""
   let action: action | null = null
 
   if (urlSlug[0] === "new") {
@@ -68,11 +44,10 @@ export const getServerSideProps: GetServerSideProps<
     icon = "visibility"
     mode = "visualizing"
 
-    const response = await fetchApi.get(security.action.select(+urlSlug[0]), {
-      headers: {
-        Authorization: context.req.cookies["master-key-inr"]
-      }
-    })
+    const response = await fetchApi.get(
+      security.action.select(+urlSlug[0]),
+      context.req.cookies["master-key-inr"]
+    )
 
     if (response.success) {
       action = response.data
@@ -109,11 +84,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
           name: name,
           canonical: canonical
         },
-        {
-          headers: {
-            authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -144,11 +115,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
           name: name,
           canonical: canonical
         },
-        {
-          headers: {
-            authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -181,11 +148,10 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
       setDeleteModal(false)
       setLoading(true)
 
-      const response = await fetchApi.del(security.action.delete(id), {
-        headers: {
-          Authorization: ctx.user ? ctx.user.credential : null
-        }
-      })
+      const response = await fetchApi.del(
+        security.action.delete(id),
+        ctx.user ? ctx.user.credential : ""
+      )
 
       if (response.success) {
         setLoading(false)
@@ -250,6 +216,7 @@ const acaoSelecionada: NextPage<acaoManagement> = props => {
                   }}
                 />
               </Grid>
+
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                 <TextField
                   label="Nome canónico"

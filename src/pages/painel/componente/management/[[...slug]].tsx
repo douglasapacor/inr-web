@@ -1,8 +1,3 @@
-import { PanelFrame } from "@/components"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import fetchApi from "@/lib/fetchApi"
-import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -12,35 +7,18 @@ import {
   TextField,
   Typography
 } from "@mui/material"
+import { PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
+import { component, componentManagement } from "@/helpers/types/componente"
+import { locationIcon, pageMode } from "@/helpers/types/geral"
+import fetchApi from "@/lib/fetchApi"
+import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
-type mo = "visualizing" | "creating" | ""
-type ic = "visibility" | "create" | ""
-type component = {
-  id: number
-  name: string
-  deviceId: string
-  createdName: string
-  createdAt: Date
-  updatedName: string | null
-  updatedAt: Date | null
-}
-type componentManagement = {
-  locationIcon: ic
-  mode: mo
-  component: component | null
-}
-const deleteStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "#FAFAFA",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 2
-}
+import { deleteStyle } from "@/helpers/deleteStyle"
+
 export const getServerSideProps: GetServerSideProps<
   componentManagement
 > = async context => {
@@ -64,8 +42,8 @@ export const getServerSideProps: GetServerSideProps<
     }
   }
 
-  let icon: ic = ""
-  let mode: mo = ""
+  let icon: locationIcon = ""
+  let mode: pageMode = ""
   let component: component | null = null
 
   if (urlSlug[0] === "new") {
@@ -77,11 +55,7 @@ export const getServerSideProps: GetServerSideProps<
 
     const response = await fetchApi.get(
       security.deviceComponent.select(+urlSlug[0]),
-      {
-        headers: {
-          Authorization: context.req.cookies["master-key-inr"]
-        }
-      }
+      context.req.cookies["master-key-inr"]
     )
 
     if (response.success) {
@@ -123,11 +97,7 @@ const componentSelecionada: NextPage<componentManagement> = props => {
           name,
           deviceId
         },
-        {
-          headers: {
-            authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -158,11 +128,7 @@ const componentSelecionada: NextPage<componentManagement> = props => {
           name: name,
           deviceId: deviceId
         },
-        {
-          headers: {
-            authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -186,11 +152,10 @@ const componentSelecionada: NextPage<componentManagement> = props => {
       setDeleteModal(false)
       setLoading(true)
 
-      const response = await fetchApi.del(security.deviceComponent.delete(id), {
-        headers: {
-          Authorization: ctx.user ? ctx.user.credential : null
-        }
-      })
+      const response = await fetchApi.del(
+        security.deviceComponent.delete(id),
+        ctx.user ? ctx.user.credential : ""
+      )
 
       if (response.success) {
         setLoading(false)

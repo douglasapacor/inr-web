@@ -1,8 +1,3 @@
-import { DataGrid, PanelFrame } from "@/components"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import fetchApi from "@/lib/fetchApi"
-import { Add } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -15,19 +10,16 @@ import {
   TextField,
   Typography
 } from "@mui/material"
+import { DataGrid, PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
+import fetchApi from "@/lib/fetchApi"
+import { Add } from "@mui/icons-material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
-const deleteStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "#FAFAFA",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 2
-}
+import { deleteStyle } from "@/helpers/deleteStyle"
+
 const componentes: NextPage = () => {
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
@@ -57,11 +49,7 @@ const componentes: NextPage = () => {
 
       const response = await fetchApi.del(
         security.deviceComponent.delete(deleteThis),
-        {
-          headers: {
-            Authorization: ctx.user ? ctx.user.credential : null
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (response.success) {
@@ -90,11 +78,7 @@ const componentes: NextPage = () => {
           limit: rowsPerPage,
           offset: page
         },
-        {
-          headers: {
-            Authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)

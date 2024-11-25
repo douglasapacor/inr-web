@@ -2,7 +2,7 @@ import { PanelFrame } from "@/components"
 import { NextPage } from "next"
 
 const home: NextPage = () => {
-  return <PanelFrame>sadasdasdad</PanelFrame>
+  return <PanelFrame>Início</PanelFrame>
 }
 
 export default home

@@ -1,6 +1,7 @@
 import { DataGrid, PanelFrame } from "@/components"
 import security from "@/config/actions/security"
 import { useContextMaster } from "@/context/Master"
+import { deleteStyle } from "@/helpers/deleteStyle"
 import fetchApi from "@/lib/fetchApi"
 import { Add } from "@mui/icons-material"
 import {
@@ -18,21 +19,17 @@ import {
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
-const deleteStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "#FAFAFA",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 2
-}
+
 const recursos: NextPage = () => {
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
   const [name, setName] = useState("")
+  const [canonical, setCanonical] = useState("")
   const [deviceId, setDeviceId] = useState(0)
+  const [active, setActive] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [icon, setIcon] = useState("")
+  const [path, setPath] = useState("")
   const [gridData, setGridData] = useState([])
   const [count, setCount] = useState(0)
   const [page, setPage] = useState(0)
@@ -55,11 +52,10 @@ const recursos: NextPage = () => {
       setGridLoading(true)
       setDeleteModal(false)
 
-      const response = await fetchApi.del(security.feature.delete(deleteThis), {
-        headers: {
-          Authorization: ctx.user ? ctx.user.credential : null
-        }
-      })
+      const response = await fetchApi.del(
+        security.feature.delete(deleteThis),
+        ctx.user ? ctx.user.credential : ""
+      )
 
       if (response.success) {
         setGridLoading(false)
@@ -83,15 +79,16 @@ const recursos: NextPage = () => {
         security.feature.search,
         {
           name: name,
-          deviceId: deviceId,
+          canonical: canonical,
+          active: active,
+          visible: visible,
+          deviceComponentsId: deviceId,
+          icon: icon,
+          path: path,
           limit: rowsPerPage,
           offset: page
         },
-        {
-          headers: {
-            Authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)

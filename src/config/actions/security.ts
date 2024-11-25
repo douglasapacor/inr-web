@@ -39,7 +39,8 @@ const security = {
     select: (id: number) => `${apiConfigs.security}/action/${id}`,
     update: (id: number) => `${apiConfigs.security}/action/${id}/update`,
     delete: (id: number) => `${apiConfigs.security}/action/${id}/delete`,
-    search: `${apiConfigs.security}/action`
+    search: `${apiConfigs.security}/action`,
+    getAll: `${apiConfigs.security}/action/get-all`
   }
 }
 

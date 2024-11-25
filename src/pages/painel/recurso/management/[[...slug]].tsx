@@ -1,6 +1,13 @@
 import { PanelFrame } from "@/components"
 import security from "@/config/actions/security"
 import { useContextMaster } from "@/context/Master"
+import { deleteStyle } from "@/helpers/deleteStyle"
+import serverSide from "@/helpers/serverside/recursos"
+import {
+  actionFeatures,
+  deviceList,
+  featureManagement
+} from "@/helpers/types/recursos"
 import fetchApi from "@/lib/fetchApi"
 import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import {
@@ -23,140 +30,34 @@ import {
 import { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
-type mo = "visualizing" | "creating" | ""
-type ic = "visibility" | "create" | ""
-type feature = {
-  id: number
-  name: string
-  canonical: string
-  actions: number[]
-  active: boolean
-  visible: boolean
-  deviceComponentsId: number
-  icon: string
-  path: string
-  createdName: string
-  createdAt: Date
-  updatedName: string | null
-  updatedAt: Date | null
-}
-type deviceList = { id: number; name: string; deviceid: number }
-type featureManagement = {
-  locationIcon: ic
-  mode: mo
-  deviceList: deviceList[]
-  deviceListSize: number
-  feature: feature | null
-}
-const deleteStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "#FAFAFA",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 2
-}
+
 export const getServerSideProps: GetServerSideProps<
   featureManagement
 > = async context => {
-  try {
-    if (!context.req.cookies["master-key-inr"]) throw new Error("2")
-
-    const urlSlug = context.params?.slug
-    if (!urlSlug) throw new Error("1")
-
-    let icon: ic = "visibility"
-    let mode: mo = "visualizing"
-    let feature: feature | null = null
-
-    if (urlSlug[0] === "new") {
-      icon = "create"
-      mode = "creating"
-    } else {
-      const response = await fetchApi.get(
-        security.feature.select(+urlSlug[0]),
-        {
-          headers: {
-            Authorization: context.req.cookies["master-key-inr"]
-          }
-        }
-      )
-
-      if (response.success) feature = response.data
-    }
-
-    const compList = await fetchApi.post(
-      security.deviceComponent.search,
-      {
-        name: "",
-        deviceId: 0,
-        limit: 5,
-        offset: 0
-      },
-      {
-        headers: {
-          Authorization: context.req.cookies["master-key-inr"]
-        }
-      }
-    )
-
-    if (!compList.success) throw new Error("3")
-
-    return {
-      props: {
-        locationIcon: icon,
-        mode: mode,
-        deviceList: compList.data.list,
-        deviceListSize: compList.data.count,
-        feature
-      }
-    }
-  } catch (error: any) {
-    return {
-      props: {
-        locationIcon: "",
-        mode: "",
-        deviceList: [],
-        deviceListSize: 0,
-        feature: null
-      },
-      redirect: {
-        destination: `/painel/inicio?erro=${error.message}`
-      }
-    }
-  }
+  return serverSide(context)
 }
 
 const recursoSelecionado: NextPage<featureManagement> = props => {
-  const [id, setId] = useState<number | null>(
-    props.feature ? props.feature.id : null
-  )
+  const [id, setId] = useState<number | null>(props.feature.id)
   const [name, setName] = useState(props.feature ? props.feature.name : "")
-  const [canonical, setCanonical] = useState(
-    props.feature ? props.feature.canonical : ""
+  const [canonical, setCanonical] = useState(props.feature.canonical)
+  const [actions, setActions] = useState<actionFeatures[]>(
+    props.feature.actions
   )
-  const [actions, setActions] = useState(
-    props.feature ? props.feature.actions : []
-  )
-  const [active, setActive] = useState(
-    props.feature ? props.feature.active : false
-  )
-  const [visible, setVisible] = useState(
-    props.feature ? props.feature.visible : false
-  )
-  const [deviceList, setDeviceList] = useState<deviceList[]>(props.deviceList)
+  const [active, setActive] = useState(props.feature.active)
+  const [visible, setVisible] = useState(props.feature.visible)
+  const [deviceList, setDeviceList] = useState<deviceList[]>(props.device.list)
   const [deviceComponentsId, setDeviceComponentsId] = useState(
-    props.feature ? props.feature.deviceComponentsId : 0
+    props.feature.deviceComponentsId
   )
-  const [icon, setIcon] = useState(props.feature ? props.feature.icon : "")
-  const [path, setPath] = useState(props.feature ? props.feature.path : "")
+  const [icon, setIcon] = useState(props.feature.icon)
+  const [path, setPath] = useState(props.feature.path)
   const [page, setPage] = useState(1)
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
   const [loading, setLoading] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
+
   const router = useRouter()
   const ctx = useContextMaster()
 
@@ -169,15 +70,18 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
       setLoading(true)
 
       const apiResult = await fetchApi.post(
-        security.deviceComponent.new,
+        security.feature.new,
         {
-          name
+          actions,
+          name,
+          canonical,
+          active,
+          visible,
+          deviceComponentsId,
+          icon,
+          path
         },
-        {
-          headers: {
-            authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -186,9 +90,9 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
       setAlerMessage(apiResult.message || "")
       setShowAlert(true)
 
-      const newId = apiResult.data.id
-      setId(newId)
-      router.push(`/painel/componente/management/${newId}`)
+      setId(apiResult.data.id)
+
+      router.push(`/painel/recurso/management/${apiResult.data.id}`)
     } catch (error: any) {
       setLoading(false)
       setAlerMessage(error.message)
@@ -203,15 +107,18 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
       if (!id) throw new Error("Erro ao editar.")
 
       const apiResult = await fetchApi.put(
-        security.deviceComponent.update(id),
+        security.feature.update(id),
         {
-          name: name
+          actions,
+          name,
+          canonical,
+          active,
+          visible,
+          deviceComponentsId,
+          icon,
+          path
         },
-        {
-          headers: {
-            authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -220,7 +127,7 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
       setAlerMessage(apiResult.message || "")
       setShowAlert(true)
 
-      router.push(`/painel/componente/management/${id}`)
+      router.push(`/painel/recurso/management/${id}`)
     } catch (error: any) {
       setLoading(false)
       setAlerMessage(error.message)
@@ -235,17 +142,16 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
       setDeleteModal(false)
       setLoading(true)
 
-      const response = await fetchApi.del(security.deviceComponent.delete(id), {
-        headers: {
-          Authorization: ctx.user ? ctx.user.credential : null
-        }
-      })
+      const response = await fetchApi.del(
+        security.feature.delete(id),
+        ctx.user ? ctx.user.credential : ""
+      )
 
       if (response.success) {
         setLoading(false)
         setAlerMessage(response.message || "")
         setShowAlert(true)
-        router.push(`/painel/componente`)
+        router.push(`/painel/recurso`)
       } else throw new Error(response.message)
     } catch (error: any) {
       setDeleteModal(false)
@@ -256,28 +162,24 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
   }
 
   const saveComponent = async () => {
-    if (props.mode === "creating") await create()
-    else if (props.mode === "visualizing") await update()
+    if (props.pageMode === "creating") await create()
+    else if (props.pageMode === "visualizing") await update()
   }
 
   const loadMoreItems = async (e: any) => {
     const bottom =
       e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight
 
-    if (bottom && deviceList.length < props.deviceListSize) {
+    if (bottom && deviceList.length < props.device.length) {
       const dataSearch = await fetchApi.post(
-        security.deviceComponent.search,
+        security.feature.search,
         {
           name: "",
           deviceId: 0,
           limit: 5,
           offset: page
         },
-        {
-          headers: {
-            Authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
@@ -287,6 +189,12 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
         return p + 1
       })
     }
+  }
+
+  const processAction = (index: number, checked: boolean) => {
+    const tmp = [...actions]
+    tmp[index].checked = checked
+    setActions(tmp)
   }
 
   return (
@@ -308,14 +216,14 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
         },
         {
           href:
-            props.mode === "creating"
+            props.pageMode === "creating"
               ? "/painel/recurso/management/new"
               : `/painel/recurso/management/${
                   router.query.slug ? router.query.slug[0] : ""
                 }`,
           iconName: props.locationIcon,
           text:
-            props.mode === "creating"
+            props.pageMode === "creating"
               ? "Criando recurso"
               : "Vizualizando recurso"
         }
@@ -341,6 +249,7 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
                   }}
                 />
               </Grid>
+
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                 <TextField
                   label="Nome Canónico"
@@ -371,11 +280,15 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
 
               <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
                 <FormControlLabel
-                  control={<Switch checked={visible} />}
+                  control={
+                    <Switch
+                      checked={visible}
+                      onChange={(_, checked) => {
+                        setVisible(checked)
+                      }}
+                    />
+                  }
                   label="Visivel"
-                  onChange={(_, checked) => {
-                    setVisible(checked)
-                  }}
                 />
               </Grid>
 
@@ -465,27 +378,41 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
                         </strong>
                       </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                      <FormControlLabel
-                        control={<Checkbox defaultChecked />}
-                        label="Leitura"
-                      />
-                    </Grid>
+                    {actions.map((ac, index) => (
+                      <Grid
+                        key={`action-item-${ac.id}-${new Date().getDate()}`}
+                        item
+                        xs={12}
+                        sm={12}
+                        md={2}
+                        lg={2}
+                        xl={2}
+                      >
+                        <FormControlLabel
+                          control={<Checkbox />}
+                          label={ac.name}
+                          checked={ac.checked}
+                          onChange={(_, checked) => {
+                            processAction(index, checked)
+                          }}
+                        />
+                      </Grid>
+                    ))}
                   </Grid>
                 </Box>
               </Grid>
 
-              {props.feature && (
+              {props.feature.createdName && props.feature.createdAt && (
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                   <Typography variant="caption">
                     <strong>Criado por: </strong>
                     {props.feature.createdName}
                     <strong> em: </strong>
                     {new Date(
-                      props.feature.createdAt
+                      props.feature.createdAt ? props.feature.createdAt : ""
                     ).toLocaleDateString()}{" "}
                     {new Date(props.feature.createdAt).toLocaleTimeString()}
-                    {props.feature && props.feature.updatedAt ? (
+                    {props.feature.updatedName && props.feature.updatedAt && (
                       <>
                         <strong> Editado por: </strong>
                         {props.feature.updatedName}
@@ -495,8 +422,6 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
                         ).toLocaleDateString()}{" "}
                         {new Date(props.feature.updatedAt).toLocaleTimeString()}
                       </>
-                    ) : (
-                      ""
                     )}
                   </Typography>
                 </Grid>
@@ -518,7 +443,7 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
               color="warning"
               endIcon={<ArrowBackIosNew />}
               onClick={() => {
-                router.push("/painel/componente")
+                router.push("/painel/recurso")
               }}
             >
               Voltar

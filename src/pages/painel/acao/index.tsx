@@ -1,8 +1,3 @@
-import { DataGrid, PanelFrame } from "@/components"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import fetchApi from "@/lib/fetchApi"
-import { Add } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -15,6 +10,11 @@ import {
   TextField,
   Typography
 } from "@mui/material"
+import { DataGrid, PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
+import fetchApi from "@/lib/fetchApi"
+import { Add } from "@mui/icons-material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -54,11 +54,10 @@ const acoes: NextPage = () => {
       setGridLoading(true)
       setDeleteModal(false)
 
-      const response = await fetchApi.del(security.action.delete(deleteThis), {
-        headers: {
-          Authorization: ctx.user ? ctx.user.credential : null
-        }
-      })
+      const response = await fetchApi.del(
+        security.action.delete(deleteThis),
+        ctx.user ? ctx.user.credential : ""
+      )
 
       if (response.success) {
         setGridLoading(false)
@@ -86,11 +85,7 @@ const acoes: NextPage = () => {
           limit: rowsPerPage,
           offset: page
         },
-        {
-          headers: {
-            Authorization: ctx.user ? ctx.user.credential : ""
-          }
-        }
+        ctx.user ? ctx.user.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
