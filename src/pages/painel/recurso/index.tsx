@@ -1,33 +1,49 @@
-import { DataGrid, PanelFrame } from "@/components"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/deleteStyle"
-import fetchApi from "@/lib/fetchApi"
-import { Add } from "@mui/icons-material"
 import {
   Box,
   Button,
   Divider,
   Fab,
+  FormControl,
+  FormControlLabel,
   Grid,
   Icon,
+  InputLabel,
+  MenuItem,
   Modal,
   Paper,
+  Select,
+  SelectChangeEvent,
+  Switch,
   TextField,
   Typography
 } from "@mui/material"
-import { NextPage } from "next"
+import { DataGrid, PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
+import { deleteStyle } from "@/helpers/deleteStyle"
+import { serverSide } from "@/helpers/serverside/recursosIndex"
+import { featureIndexServerSide } from "@/helpers/types/recursosIndex"
+import fetchApi from "@/lib/fetchApi"
+import { Add } from "@mui/icons-material"
+import { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import { deviceList } from "@/helpers/types/recursos"
 
-const recursos: NextPage = () => {
+export const getServerSideProps: GetServerSideProps<
+  featureIndexServerSide
+> = async context => {
+  return serverSide(context)
+}
+
+const recursos: NextPage<featureIndexServerSide> = props => {
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
   const [name, setName] = useState("")
   const [canonical, setCanonical] = useState("")
   const [deviceId, setDeviceId] = useState(0)
-  const [active, setActive] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const [active, setActive] = useState(true)
+  const [visible, setVisible] = useState(true)
   const [icon, setIcon] = useState("")
   const [path, setPath] = useState("")
   const [gridData, setGridData] = useState([])
@@ -37,6 +53,7 @@ const recursos: NextPage = () => {
   const [gridLoading, setGridLoading] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteThis, setDeleteThis] = useState<number | null>(null)
+  const [deviceList, setDeviceList] = useState<deviceList[]>(props.device.list)
   const ctx = useContextMaster()
   const router = useRouter()
 
@@ -45,7 +62,7 @@ const recursos: NextPage = () => {
     setDeleteModal(true)
   }
 
-  const deleteComponent = async () => {
+  const deleteFeature = async () => {
     try {
       if (!deleteThis) throw new Error("Erro ao excluir recurso")
 
@@ -103,6 +120,31 @@ const recursos: NextPage = () => {
     }
   }
 
+  const loadMoreItems = async (e: any) => {
+    const bottom =
+      e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight
+
+    if (bottom && deviceList.length < props.device.length) {
+      const dataSearch = await fetchApi.post(
+        security.feature.search,
+        {
+          name: "",
+          deviceId: 0,
+          limit: 5,
+          offset: page
+        },
+        ctx.user ? ctx.user.credential : ""
+      )
+
+      if (!dataSearch.success) throw new Error(dataSearch.message)
+
+      setDeviceList(list => [...list, ...dataSearch.data.list])
+      setPage(p => {
+        return p + 1
+      })
+    }
+  }
+
   return (
     <PanelFrame
       alerMessage={alerMessage}
@@ -140,8 +182,8 @@ const recursos: NextPage = () => {
       }
     >
       <Paper sx={{ padding: 2 }}>
-        <Grid container spacing={2} alignItems="center" textAlign="center">
-          <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <TextField
               fullWidth
               label="Nome"
@@ -156,13 +198,13 @@ const recursos: NextPage = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
+          <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <TextField
               fullWidth
-              label="Identificação númérica"
-              value={deviceId}
+              label="Nome canónico"
+              value={canonical}
               onChange={event => {
-                setDeviceId(+event.target.value)
+                setCanonical(event.target.value)
               }}
               onKeyDown={e => {
                 if (e.key === "Enter") {
@@ -172,12 +214,98 @@ const recursos: NextPage = () => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
+            <FormControlLabel
+              label="Ativo"
+              control={
+                <Switch
+                  checked={active}
+                  onChange={(_, checked) => {
+                    setActive(checked)
+                  }}
+                />
+              }
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
+            <FormControlLabel
+              label="Visível"
+              control={
+                <Switch
+                  checked={visible}
+                  onChange={(_, checked) => {
+                    setVisible(checked)
+                  }}
+                />
+              }
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+            <FormControl fullWidth>
+              <InputLabel id="componentSelect">Componente</InputLabel>
+              <Select
+                value={deviceId}
+                MenuProps={{
+                  PaperProps: {
+                    onScroll: loadMoreItems
+                  },
+                  style: {
+                    maxHeight: 335
+                  }
+                }}
+                label="Componente"
+                labelId="componentSelect"
+                onChange={(e: SelectChangeEvent<number>) => {
+                  setDeviceId(+e.target.value)
+                }}
+              >
+                <MenuItem value={0}>Selecione...</MenuItem>
+                {deviceList.map(device => (
+                  <MenuItem
+                    key={`device-item-${new Date().getDate()}-${device.id}-${
+                      device.deviceid
+                    }`}
+                    value={device.id}
+                  >
+                    {device.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+            <TextField
+              fullWidth
+              label="Ícone"
+              value={icon}
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  search()
+                }
+              }}
+              onChange={event => {
+                setIcon(event.target.value)
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+            <TextField
+              fullWidth
+              label="path"
+              value={icon}
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  search()
+                }
+              }}
+              onChange={event => {
+                setPath(event.target.value)
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Button variant="contained" fullWidth onClick={search}>
               Buscar
             </Button>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-            <Typography variant="body1">Recursos existentes</Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Divider />
@@ -190,12 +318,30 @@ const recursos: NextPage = () => {
                 {
                   text: "Nome",
                   attrName: "name",
+                  align: "left"
+                },
+                {
+                  text: "Nome Canónico",
+                  attrName: "canonical",
+                  align: "left"
+                },
+                {
+                  text: "Ícone",
+                  attrName: "icon",
+                  custom: {
+                    isIcon: true
+                  },
                   align: "center"
                 },
                 {
-                  text: "Identificação númérica",
-                  attrName: "deviceid",
-                  align: "center"
+                  text: "Path",
+                  attrName: "path",
+                  align: "left"
+                },
+                {
+                  text: "componente",
+                  attrName: "devicecomponentsname",
+                  align: "left"
                 }
               ]}
               hasActions
@@ -214,7 +360,7 @@ const recursos: NextPage = () => {
               actionTrigger={(id: number, actionName: string) => {
                 switch (actionName) {
                   case "showComponent":
-                    router.push(`/painel/componente/management/${id}`)
+                    router.push(`/painel/recurso/management/${id}`)
                     break
                   case "deleteComponent":
                     requestConfirmation(id)
@@ -287,7 +433,7 @@ const recursos: NextPage = () => {
                 <Button
                   variant="contained"
                   color="success"
-                  onClick={deleteComponent}
+                  onClick={deleteFeature}
                 >
                   Confirmar
                 </Button>

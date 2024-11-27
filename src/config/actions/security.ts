@@ -13,9 +13,9 @@ const security = {
   },
   group: {
     new: `${apiConfigs.security}/group/new`,
-    select: (id: string) => `${apiConfigs.security}/group/${id}`,
-    update: (id: string) => `${apiConfigs.security}/group/${id}/update`,
-    delete: (id: string) => `${apiConfigs.security}/group/${id}/delete`,
+    select: (id: number) => `${apiConfigs.security}/group/${id}`,
+    update: (id: number) => `${apiConfigs.security}/group/${id}/update`,
+    delete: (id: number) => `${apiConfigs.security}/group/${id}/delete`,
     search: `${apiConfigs.security}/group`
   },
   feature: {
@@ -24,7 +24,8 @@ const security = {
     update: (id: number) => `${apiConfigs.security}/feature/${id}/update`,
     delete: (id: number) => `${apiConfigs.security}/feature/${id}/delete`,
     search: `${apiConfigs.security}/feature`,
-    actions: (id: number) => `${apiConfigs.security}/feature/actions/${id}`
+    actions: (id: number) => `${apiConfigs.security}/feature/actions/${id}`,
+    getAll: `${apiConfigs.security}/feature/get-all`
   },
   deviceComponent: {
     new: `${apiConfigs.security}/device_component/new`,

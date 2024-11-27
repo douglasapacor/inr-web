@@ -57,7 +57,6 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
   const [showAlert, setShowAlert] = useState(false)
   const [loading, setLoading] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
-
   const router = useRouter()
   const ctx = useContextMaster()
 
@@ -137,7 +136,7 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
 
   const deleteComponent = async () => {
     try {
-      if (!id) throw new Error("Erro ao excluir Componente")
+      if (!id) throw new Error("Erro ao excluir Recurso")
 
       setDeleteModal(false)
       setLoading(true)

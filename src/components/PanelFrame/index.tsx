@@ -141,7 +141,7 @@ export const PanelFrame: FC<{
                     <ListItemButton
                       key={`menu-left-${index}-item`}
                       onClick={() => {
-                        router.push(item.path)
+                        router.push(`/painel${item.path}`)
                       }}
                     >
                       <ListItemIcon>

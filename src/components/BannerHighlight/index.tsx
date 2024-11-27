@@ -1,12 +1,4 @@
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography
-} from "@mui/material"
+import { Box, Grid } from "@mui/material"
 import { FC } from "react"
 import parse from "html-react-parser"
 import he from "he"

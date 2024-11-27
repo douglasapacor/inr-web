@@ -55,7 +55,9 @@ const serverSide = async (
         content.feature.visible = response.data.visible
       }
 
-      const featureActions = await fetchApi.get(security.feature.actions(+urlSlug[0]))
+      const featureActions = await fetchApi.get(
+        security.feature.actions(+urlSlug[0])
+      )
 
       if (featureActions.success) {
         for (let i = 0; i < featureActions.data.length; i++) {
