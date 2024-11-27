@@ -23,7 +23,8 @@ const security = {
     select: (id: number) => `${apiConfigs.security}/feature/${id}`,
     update: (id: number) => `${apiConfigs.security}/feature/${id}/update`,
     delete: (id: number) => `${apiConfigs.security}/feature/${id}/delete`,
-    search: `${apiConfigs.security}/feature`
+    search: `${apiConfigs.security}/feature`,
+    actions: (id: number) => `${apiConfigs.security}/feature/actions/${id}`
   },
   deviceComponent: {
     new: `${apiConfigs.security}/device_component/new`,

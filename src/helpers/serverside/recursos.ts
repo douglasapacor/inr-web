@@ -54,6 +54,18 @@ const serverSide = async (
         content.feature.updatedName = response.data.updatedByName
         content.feature.visible = response.data.visible
       }
+
+      const featureActions = await fetchApi.get(security.feature.actions(+urlSlug[0]))
+
+      if (featureActions.success) {
+        for (let i = 0; i < featureActions.data.length; i++) {
+          for (let ii = 0; ii < actionList.length; ii++) {
+            if (featureActions.data[i].actionid === actionList[ii].id) {
+              actionList[ii].checked = true
+            }
+          }
+        }
+      }
     }
 
     content.feature.actions = actionList
