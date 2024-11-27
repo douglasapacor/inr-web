@@ -77,12 +77,7 @@ const ClassifierContent: FC<classifierBarContent> = ({ ...props }) => {
 
           const actContentResponse = await fetchApi.get(
             legacy.classificadores.selectContent(id),
-            {
-              headers: {
-                Authorization:
-                  "eyJhbGciOiJIUzI1NiJ9.eyJpZGNsaWVudGUiOjIyNjIsImlkdXN1YXJpbyI6NzU0MywiaWRncnVwb19zaXRlIjoxLCJhZG1pbiI6Ik4iLCJhdXRvcml6YWNhb190cmFiYWxoaXN0YSI6Ik4ifQ.wtqAHjEzKhWTKb-hFNrgVj4PikNLYLccsXlucJssvLI"
-              }
-            }
+            "eyJhbGciOiJIUzI1NiJ9.eyJpZGNsaWVudGUiOjIyNjIsImlkdXN1YXJpbyI6NzU0MywiaWRncnVwb19zaXRlIjoxLCJhZG1pbiI6Ik4iLCJhdXRvcml6YWNhb190cmFiYWxoaXN0YSI6Ik4ifQ.wtqAHjEzKhWTKb-hFNrgVj4PikNLYLccsXlucJssvLI"
           )
 
           if (actContentResponse.success) {

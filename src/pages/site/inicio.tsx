@@ -1,20 +1,54 @@
 import { Banner, SiteFrame } from "@/components"
-import { Favorite, Instagram, LinkedIn, ThumbUp } from "@mui/icons-material"
+import BannerHighlight from "@/components/BannerHighlight"
+import Highlight from "@/components/Highlight"
+import serverSide from "@/helpers/serverside/inicio"
 import {
-  Box,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  IconButton,
-  Typography
-} from "@mui/material"
-import { NextPage } from "next"
+  advertisingType,
+  destaqueLinksType,
+  inicioServerProps
+} from "@/helpers/types/inicio"
+import { Box, Container, Grid } from "@mui/material"
+import { GetServerSideProps, NextPage } from "next"
 
-const inicio: NextPage = () => {
+export const getServerSideProps: GetServerSideProps<
+  inicioServerProps
+> = async context => {
+  return serverSide(context)
+}
+
+const inicio: NextPage<inicioServerProps> = props => {
+  const HighlightItems = (params: {
+    destaques: destaqueLinksType[]
+    publicidades: advertisingType[]
+  }) => {
+    let bannerIndex = 0
+
+    const itensWithBanners = params.destaques.map((dtq, i) => {
+      const elements = [
+        <Highlight
+          key={`highlight-item-${i}`}
+          img={dtq.content ? dtq.content[0].img : ""}
+          label={dtq.label}
+          titulo={dtq.content ? dtq.content[0].titulo : ""}
+        />
+      ]
+
+      if ((i + 1) % 3 === 0 && bannerIndex < params.publicidades.length) {
+        elements.push(
+          <BannerHighlight
+            key={`banner-${bannerIndex}`}
+            textImg={params.publicidades[bannerIndex].texto}
+          />
+        )
+        bannerIndex++
+      }
+
+      return elements
+    })
+
+    return <>{itensWithBanners}</>
+  }
+
   return (
     <SiteFrame>
       <Banner />
@@ -26,375 +60,22 @@ const inicio: NextPage = () => {
                 sx={{
                   widht: "100%",
                   textAlign: "center",
-                  fontFamily: "'Segoe UI', sans-serif"
+                  fontFamily: "RobotoSlab !important",
+                  marginBottom: 4,
+                  color: "#006092",
+                  fontWeight: "500",
+                  lineHeight: "1.1",
+                  fontSize: "1.9rem"
                 }}
               >
-                <Typography variant="h4">DESTAQUES</Typography>
+                <h4>DESTAQUES</h4>
               </Box>
             </Grid>
 
-            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-              <Card elevation={3}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://inrpublicacoes.com.br/sistema/img_up/1727283894.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Notícias
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Falecimento do avô ou avó aposentada pode gerar pensão
-                      para o neto? – (INSS).
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <Favorite />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ThumbUp />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <Instagram />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-              <Card elevation={3}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://inrpublicacoes.com.br/sistema/img_up/1727283894.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Notícias
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Falecimento do avô ou avó aposentada pode gerar pensão
-                      para o neto? – (INSS).
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <Favorite />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ThumbUp />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <Instagram />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-              <Card elevation={3}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://inrpublicacoes.com.br/sistema/img_up/1727283894.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Notícias
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Falecimento do avô ou avó aposentada pode gerar pensão
-                      para o neto? – (INSS).
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <Favorite />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ThumbUp />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <Instagram />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              PUBLICIDADE
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-              <Card elevation={3}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://inrpublicacoes.com.br/sistema/img_up/1727283894.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Notícias
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Falecimento do avô ou avó aposentada pode gerar pensão
-                      para o neto? – (INSS).
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <Favorite />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ThumbUp />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <Instagram />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-              <Card elevation={3}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://inrpublicacoes.com.br/sistema/img_up/1727283894.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Notícias
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Falecimento do avô ou avó aposentada pode gerar pensão
-                      para o neto? – (INSS).
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <Favorite />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ThumbUp />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <Instagram />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-              <Card elevation={3}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://inrpublicacoes.com.br/sistema/img_up/1727283894.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Notícias
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Falecimento do avô ou avó aposentada pode gerar pensão
-                      para o neto? – (INSS).
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <Favorite />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ThumbUp />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <Instagram />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              PUBLICIDADE
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-              <Card elevation={3}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://inrpublicacoes.com.br/sistema/img_up/1727283894.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Notícias
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Falecimento do avô ou avó aposentada pode gerar pensão
-                      para o neto? – (INSS).
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <Favorite />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ThumbUp />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <Instagram />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-              <Card elevation={3}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://inrpublicacoes.com.br/sistema/img_up/1727283894.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Notícias
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Falecimento do avô ou avó aposentada pode gerar pensão
-                      para o neto? – (INSS).
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <Favorite />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ThumbUp />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <Instagram />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-              <Card elevation={3}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://inrpublicacoes.com.br/sistema/img_up/1727283894.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Notícias
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Falecimento do avô ou avó aposentada pode gerar pensão
-                      para o neto? – (INSS).
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <Favorite />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ThumbUp />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <Instagram />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              PUBLICIDADE
-            </Grid>
+            <HighlightItems
+              destaques={props.links}
+              publicidades={props.publicidade}
+            />
           </Grid>
         </Box>
       </Container>

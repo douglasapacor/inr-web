@@ -1,6 +1,9 @@
 import apiConfigs from "../apiConfigs"
 
 const legacy = {
+  home: {
+    inicio: `${apiConfigs.legacy}/home`
+  },
   boletim: {
     description: (id: number) => `${apiConfigs.legacy}/description/${id}`,
     news: {
@@ -43,7 +46,10 @@ const legacy = {
     home: `${apiConfigs.legacy}/classifiers`,
     selectIndex: (id: number) => `${apiConfigs.legacy}/classifiers/${id}`,
     selectContent: (id: number) =>
-      `${apiConfigs.legacy}/classifiers/act-content?id=${id}`
+      `${apiConfigs.legacy}/classifiers/act-content?id=${id}`,
+    selectPreviousActs: () => `${apiConfigs.legacy}/classifiers/previous-acts`,
+    selectPreviousBarActs: (id: number) =>
+      `${apiConfigs.legacy}/classifiers/previous-bars?idAto=${id}`
   }
 }
 
