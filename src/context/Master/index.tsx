@@ -78,7 +78,11 @@ const MasterCtxControll: FC<{ children?: ReactNode }> = ({ ...props }) => {
     const stringContent = localStorage.getItem("user")
 
     if (stringContent) {
-      setUser(JSON.parse(stringContent))
+      const userContent = JSON.parse(stringContent)
+
+      setUser(userContent)
+
+      setCookie("master-key-inr", userContent.credential, { path: "/" })
 
       const lm = localStorage.getItem("leftDrawerState")
       const rm = localStorage.getItem("rigthDrawerState")

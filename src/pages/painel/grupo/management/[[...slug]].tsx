@@ -5,16 +5,12 @@ import { deleteStyle } from "@/helpers/deleteStyle"
 import { serverSide } from "@/helpers/serverside/group"
 import { featureGroupType, groupType } from "@/helpers/types/group"
 import fetchApi from "@/lib/fetchApi"
-import {
-  ArrowBackIosNew,
-  Check,
-  Close,
-  Delete,
-  Save
-} from "@mui/icons-material"
+import theme from "@/styles/theme"
+import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import {
   Box,
   Button,
+  Checkbox,
   FormControl,
   FormControlLabel,
   Grid,
@@ -44,9 +40,13 @@ const GrupoManagement: NextPage<groupType> = props => {
   const [showAlert, setShowAlert] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [name, setName] = useState("")
-  const [canon, setCanon] = useState("")
-  const [active, setActive] = useState(true)
+  const [name, setName] = useState<string | null>(props.group.name)
+  const [canon, setCanon] = useState<string | null>(props.group.canonical)
+  const [color, setColor] = useState<string | undefined>(
+    props.group.color ? props.group.color : undefined
+  )
+  const [active, setActive] = useState(props.group.active)
+  const [superGroup, setSuperGroup] = useState(props.group.super)
   const [featureList, setFeatureList] = useState<featureGroupType[]>(
     props.features
   )
@@ -59,7 +59,7 @@ const GrupoManagement: NextPage<groupType> = props => {
 
   const deleteComponent = async () => {
     try {
-      if (!id) throw new Error("Erro ao excluir Recurso")
+      if (!id) throw new Error("Erro ao excluir Grupo")
 
       setDeleteModal(false)
       setLoading(true)
@@ -87,9 +87,23 @@ const GrupoManagement: NextPage<groupType> = props => {
     try {
       setLoading(true)
 
+      const f = featureList
+        .filter(f => f.checked)
+        .map(fm => ({
+          id: fm.id,
+          free: fm.freeForGroup
+        }))
+
       const apiResult = await fetchApi.post(
         security.group.new,
-        {},
+        {
+          name,
+          canonical: canon,
+          active,
+          super: superGroup,
+          color: color,
+          features: f
+        },
         ctx.user ? ctx.user.credential : ""
       )
 
@@ -115,9 +129,24 @@ const GrupoManagement: NextPage<groupType> = props => {
 
       if (!id) throw new Error("Erro ao editar.")
 
+      const f = featureList
+        .filter(f => f.checked)
+        .map(fm => ({
+          id: fm.id,
+          free: fm.freeForGroup
+        }))
+
       const apiResult = await fetchApi.put(
         security.group.update(id),
-        {},
+        {
+          id,
+          name,
+          canonical: canon,
+          active,
+          super: superGroup,
+          color,
+          features: f
+        },
         ctx.user ? ctx.user.credential : ""
       )
 
@@ -138,6 +167,23 @@ const GrupoManagement: NextPage<groupType> = props => {
   const saveGroup = async () => {
     if (props.pageMode === "creating") await create()
     else if (props.pageMode === "visualizing") await update()
+  }
+
+  const changeCheckedState = (index: number, checked: boolean) => {
+    const tmp = [...featureList]
+    tmp[index].checked = checked
+    setFeatureList(tmp)
+  }
+
+  const changeFreeState = (index: number, checked: boolean) => {
+    const tmp = [...featureList]
+    tmp[index].freeForGroup = checked
+
+    if (checked) {
+      tmp[index].checked = true
+    }
+
+    setFeatureList(tmp)
   }
 
   return (
@@ -192,19 +238,21 @@ const GrupoManagement: NextPage<groupType> = props => {
                   }}
                 />
               </Grid>
+
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
                 <TextField
                   label="Nome canónico"
                   fullWidth
-                  value={name}
+                  value={canon}
                   inputProps={{
                     maxLength: 40
                   }}
                   onChange={e => {
-                    setName(e.target.value)
+                    setCanon(e.target.value)
                   }}
                 />
               </Grid>
+
               <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
                 <Box
                   sx={{
@@ -226,6 +274,7 @@ const GrupoManagement: NextPage<groupType> = props => {
                   />
                 </Box>
               </Grid>
+
               <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
                 <Box
                   sx={{
@@ -237,9 +286,9 @@ const GrupoManagement: NextPage<groupType> = props => {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={active}
+                        checked={superGroup}
                         onChange={(_, checked) => {
-                          setActive(checked)
+                          setSuperGroup(checked)
                         }}
                       />
                     }
@@ -247,10 +296,19 @@ const GrupoManagement: NextPage<groupType> = props => {
                   />
                 </Box>
               </Grid>
+
               <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
                 <FormControl fullWidth>
                   <InputLabel id="colorSelect">cor</InputLabel>
-                  <Select fullWidth labelId="colorSelect" label="cor">
+                  <Select
+                    fullWidth
+                    labelId="colorSelect"
+                    label="cor"
+                    value={color}
+                    onChange={e => {
+                      setColor(e.target.value)
+                    }}
+                  >
                     <MenuItem value={undefined}>Selecione uma cor</MenuItem>
                     {props.colors.map((c, i) => (
                       <MenuItem
@@ -264,21 +322,34 @@ const GrupoManagement: NextPage<groupType> = props => {
                   </Select>
                 </FormControl>
               </Grid>
+
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <Box
                   sx={{
                     width: "100%",
-                    border: theme => `1px solid ${theme.palette.primary.dark}`,
+                    border: "1px solid black",
                     background: theme => theme.palette.secondary.contrastText,
-                    p: 2
+                    p: 1
                   }}
                 >
-                  <Grid container spacing={2}>
+                  <Grid container spacing={1}>
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                      <Typography variant="body2">Funções do grupo</Typography>
+                      <Box
+                        sx={{
+                          width: "100%",
+                          p: 2,
+                          background: theme.palette.primary.main,
+                          color: "#FFFFFF",
+                          textTransform: "uppercase"
+                        }}
+                      >
+                        <Typography variant="body2">
+                          Funções do grupo
+                        </Typography>
+                      </Box>
                     </Grid>
 
-                    {props.features.map((f, i) => (
+                    {featureList.map((f, i) => (
                       <Grid
                         key={`function-item-key-${i}`}
                         item
@@ -290,15 +361,7 @@ const GrupoManagement: NextPage<groupType> = props => {
                       >
                         <Paper sx={{ p: 2 }} elevation={1}>
                           <Grid container spacing={1}>
-                            <Grid
-                              key={`function-item-key-${i}`}
-                              item
-                              xs={4}
-                              sm={4}
-                              md={4}
-                              lg={4}
-                              xl={4}
-                            >
+                            <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
                               <Box
                                 sx={{
                                   width: "100%",
@@ -315,15 +378,7 @@ const GrupoManagement: NextPage<groupType> = props => {
                                 <Icon>{f.icon}</Icon>
                               </Box>
                             </Grid>
-                            <Grid
-                              key={`function-item-key-${i}`}
-                              item
-                              xs={8}
-                              sm={8}
-                              md={8}
-                              lg={8}
-                              xl={8}
-                            >
+                            <Grid item xs={8} sm={8} md={8} lg={8} xl={8}>
                               <Grid container spacing={1} alignContent="center">
                                 <Grid
                                   item
@@ -428,7 +483,7 @@ const GrupoManagement: NextPage<groupType> = props => {
                                         borderRadius: 1,
                                         fontSize: 14,
                                         textTransform: "lowercase",
-                                        p: 1
+                                        p: 0.5
                                       }}
                                     >
                                       {f.visible ? (
@@ -447,29 +502,39 @@ const GrupoManagement: NextPage<groupType> = props => {
                                   lg={12}
                                   xl={12}
                                 >
-                                  <Box
-                                    sx={{
-                                      width: "100%",
-                                      height: "100%",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyItems: "center",
-                                      justifyContent: "center",
-                                      textAlign: "center"
-                                    }}
-                                  >
-                                    <FormControlLabel
-                                      control={
-                                        <Switch
-                                          checked={f.checked}
-                                          onChange={(_, checked) => {}}
-                                        />
-                                      }
-                                      label={
-                                        f.checked ? "incluido" : "não incluido"
-                                      }
-                                    />
-                                  </Box>
+                                  <FormControlLabel
+                                    control={
+                                      <Switch
+                                        checked={f.checked}
+                                        onChange={(_, checked) => {
+                                          changeCheckedState(i, checked)
+                                        }}
+                                      />
+                                    }
+                                    label={
+                                      f.checked ? "incluido" : "não incluido"
+                                    }
+                                  />
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  xl={12}
+                                >
+                                  <FormControlLabel
+                                    control={
+                                      <Switch
+                                        checked={f.freeForGroup}
+                                        onChange={(_, checked) => {
+                                          changeFreeState(i, checked)
+                                        }}
+                                      />
+                                    }
+                                    label="livre"
+                                  />
                                 </Grid>
                               </Grid>
                             </Grid>
@@ -480,6 +545,31 @@ const GrupoManagement: NextPage<groupType> = props => {
                   </Grid>
                 </Box>
               </Grid>
+
+              {props.group.createdName && props.group.createdAt && (
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <Typography variant="caption">
+                    <strong>Criado por: </strong>
+                    {props.group.createdName}
+                    <strong> em: </strong>
+                    {new Date(
+                      props.group.createdAt ? props.group.createdAt : ""
+                    ).toLocaleDateString()}{" "}
+                    {new Date(props.group.createdAt).toLocaleTimeString()}
+                    {props.group.updatedName && props.group.updatedAt && (
+                      <>
+                        <strong> Editado por: </strong>
+                        {props.group.updatedName}
+                        <strong> em: </strong>
+                        {new Date(
+                          props.group.updatedAt
+                        ).toLocaleDateString()}{" "}
+                        {new Date(props.group.updatedAt).toLocaleTimeString()}
+                      </>
+                    )}
+                  </Typography>
+                </Grid>
+              )}
             </Grid>
           </Paper>
         </Grid>

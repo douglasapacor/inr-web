@@ -9,6 +9,7 @@ type featureGroupType = {
   visible: boolean
   deviceComponentsName: string
   checked: boolean
+  freeForGroup: boolean
 }
 
 type group = {
@@ -18,7 +19,10 @@ type group = {
   active: boolean
   super: boolean
   color: string
-  features: number[]
+  createdName: string | null
+  createdAt: Date | null
+  updatedName: string | null
+  updatedAt: Date | null
 }
 
 type colorsType = {
@@ -47,7 +51,10 @@ const contructor = (): groupType => {
       active: false,
       super: false,
       color: "",
-      features: []
+      createdName: null,
+      createdAt: null,
+      updatedName: null,
+      updatedAt: null
     }
   }
 }
