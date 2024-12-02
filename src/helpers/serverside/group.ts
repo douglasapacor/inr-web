@@ -14,7 +14,6 @@ const serverSide = async (
     if (!urlSlug) throw new Error("no Slug")
 
     const content = contructor()
-
     content.colors = colors
 
     const featureList = await fetchApi.get(

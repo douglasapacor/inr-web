@@ -20,7 +20,6 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { deleteStyle } from "@/helpers/deleteStyle"
 
-
 const acoes: NextPage = () => {
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
@@ -221,9 +220,6 @@ const acoes: NextPage = () => {
             <Button variant="contained" fullWidth onClick={search}>
               Buscar
             </Button>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-            <Typography variant="body1">Ações existentes</Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Divider />
