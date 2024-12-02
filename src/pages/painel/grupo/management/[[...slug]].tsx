@@ -1,16 +1,6 @@
-import { PanelFrame } from "@/components"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/deleteStyle"
-import { serverSide } from "@/helpers/serverside/group"
-import { featureGroupType, groupType } from "@/helpers/types/group"
-import fetchApi from "@/lib/fetchApi"
-import theme from "@/styles/theme"
-import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
   FormControlLabel,
   Grid,
@@ -24,6 +14,15 @@ import {
   TextField,
   Typography
 } from "@mui/material"
+import { PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
+import { deleteStyle } from "@/helpers/deleteStyle"
+import { serverSide } from "@/helpers/serverside/group"
+import { featureGroupType, groupType } from "@/helpers/types/group"
+import fetchApi from "@/lib/fetchApi"
+import theme from "@/styles/theme"
+import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -206,9 +205,8 @@ const GrupoManagement: NextPage<groupType> = props => {
           href:
             props.pageMode === "creating"
               ? "/painel/grupo/management/new"
-              : `/painel/grupo/management/${
-                  router.query.slug ? router.query.slug[0] : ""
-                }`,
+              : `/painel/grupo/management/${router.query.slug ? router.query.slug[0] : ""
+              }`,
           iconName: props.locationIcon,
           text:
             props.pageMode === "creating"

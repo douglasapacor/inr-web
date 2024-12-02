@@ -120,6 +120,72 @@ const recursos: NextPage<featureIndexServerSide> = props => {
     }
   }
 
+  const handlePage = async (p: number) => {
+    try {
+      setGridLoading(true)
+      setPage(p)
+
+      const dataSearch = await fetchApi.post(
+        security.feature.search,
+        {
+          name: name,
+          canonical: canonical,
+          active: active,
+          visible: visible,
+          deviceComponentsId: deviceId,
+          icon: icon,
+          path: path,
+          limit: rowsPerPage,
+          offset: p
+        },
+        ctx.user ? ctx.user.credential : ""
+      )
+
+      if (!dataSearch.success) throw new Error(dataSearch.message)
+
+      setGridData(dataSearch.data.list)
+      setCount(dataSearch.data.count)
+      setGridLoading(false)
+    } catch (error: any) {
+      setGridLoading(false)
+      setAlerMessage(error.message)
+      setShowAlert(true)
+    }
+  }
+
+  const handleRowsPerPage = async (rpp: number) => {
+    try {
+      setGridLoading(true)
+      setRowsPerPage(rpp)
+
+      const dataSearch = await fetchApi.post(
+        security.feature.search,
+        {
+          name: name,
+          canonical: canonical,
+          active: active,
+          visible: visible,
+          deviceComponentsId: deviceId,
+          icon: icon,
+          path: path,
+          limit: rpp,
+          offset: page
+        },
+        ctx.user ? ctx.user.credential : ""
+      )
+
+      if (!dataSearch.success) throw new Error(dataSearch.message)
+
+      setGridData(dataSearch.data.list)
+      setCount(dataSearch.data.count)
+      setGridLoading(false)
+    } catch (error: any) {
+      setGridLoading(false)
+      setAlerMessage(error.message)
+      setShowAlert(true)
+    }
+  }
+
   const loadMoreItems = async (e: any) => {
     const bottom =
       e.target.scrollHeight === e.target.scrollTop + e.target.clientHeight
@@ -261,9 +327,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
                 <MenuItem value={0}>Selecione...</MenuItem>
                 {deviceList.map(device => (
                   <MenuItem
-                    key={`device-item-${new Date().getDate()}-${device.id}-${
-                      device.deviceid
-                    }`}
+                    key={`device-item-${new Date().getDate()}-${device.id}-${device.deviceid
+                      }`}
                     value={device.id}
                   >
                     {device.name}
@@ -373,10 +438,10 @@ const recursos: NextPage<featureIndexServerSide> = props => {
                 rowsPerPage: rowsPerPage,
                 rowsPerPageOptions: [10, 20, 30, 60],
                 onPageChange(page) {
-                  setPage(page)
+                  handlePage(page)
                 },
                 onRowsPerPageChange(rowsPerPAge) {
-                  setRowsPerPage(rowsPerPAge)
+                  handleRowsPerPage(rowsPerPAge)
                 }
               }}
             />

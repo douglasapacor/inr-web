@@ -1,9 +1,3 @@
-import { DataGrid, PanelFrame } from "@/components"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/deleteStyle"
-import fetchApi from "@/lib/fetchApi"
-import { Add } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -18,6 +12,12 @@ import {
   TextField,
   Typography
 } from "@mui/material"
+import { DataGrid, PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
+import { deleteStyle } from "@/helpers/deleteStyle"
+import fetchApi from "@/lib/fetchApi"
+import { Add } from "@mui/icons-material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -138,6 +138,7 @@ const GrupoIndex: NextPage = props => {
       setShowAlert(true)
     }
   }
+
   const handleRowsPerPage = async (rpp: number) => {
     try {
       setGridLoading(true)
@@ -167,6 +168,7 @@ const GrupoIndex: NextPage = props => {
       setShowAlert(true)
     }
   }
+
   return (
     <PanelFrame
       alerMessage={alerMessage}
@@ -308,21 +310,21 @@ const GrupoIndex: NextPage = props => {
               actions={[
                 {
                   icon: <Icon>visibility</Icon>,
-                  name: "showComponent",
+                  name: "showGroup",
                   text: "Visualizar"
                 },
                 {
                   icon: <Icon>delete</Icon>,
-                  name: "deleteComponent",
+                  name: "deleteGroup",
                   text: "Excluir"
                 }
               ]}
               actionTrigger={(id: number, actionName: string) => {
                 switch (actionName) {
-                  case "showComponent":
-                    router.push(`/painel/componente/management/${id}`)
+                  case "showGroup":
+                    router.push(`/painel/grupo/management/${id}`)
                     break
-                  case "deleteComponent":
+                  case "deleteGroup":
                     requestConfirmation(id)
                     break
                 }

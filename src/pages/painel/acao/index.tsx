@@ -18,16 +18,8 @@ import { Add } from "@mui/icons-material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
-const deleteStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "#FAFAFA",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 2
-}
+import { deleteStyle } from "@/helpers/deleteStyle"
+
 
 const acoes: NextPage = () => {
   const [alerMessage, setAlerMessage] = useState("")
@@ -43,6 +35,7 @@ const acoes: NextPage = () => {
   const [deleteThis, setDeleteThis] = useState<number | null>(null)
   const ctx = useContextMaster()
   const router = useRouter()
+
   const requestConfirmation = (id: number) => {
     setDeleteThis(id)
     setDeleteModal(true)
@@ -92,6 +85,62 @@ const acoes: NextPage = () => {
 
       setCount(dataSearch.data.count)
       setGridData(dataSearch.data.list)
+      setGridLoading(false)
+    } catch (error: any) {
+      setGridLoading(false)
+      setAlerMessage(error.message)
+      setShowAlert(true)
+    }
+  }
+
+  const handlePage = async (p: number) => {
+    try {
+      setGridLoading(true)
+      setPage(p)
+
+      const dataSearch = await fetchApi.post(
+        security.action.search,
+        {
+          name: name,
+          canonical: canon,
+          limit: rowsPerPage,
+          offset: p
+        },
+        ctx.user ? ctx.user.credential : ""
+      )
+
+      if (!dataSearch.success) throw new Error(dataSearch.message)
+
+      setGridData(dataSearch.data.list)
+      setCount(dataSearch.data.count)
+      setGridLoading(false)
+    } catch (error: any) {
+      setGridLoading(false)
+      setAlerMessage(error.message)
+      setShowAlert(true)
+    }
+  }
+
+  const handleRowsPerPage = async (rpp: number) => {
+    try {
+      setGridLoading(true)
+      setRowsPerPage(rpp)
+
+      const dataSearch = await fetchApi.post(
+        security.action.search,
+        {
+          name: name,
+          canonical: canon,
+          limit: rpp,
+          offset: page
+        },
+        ctx.user ? ctx.user.credential : ""
+      )
+
+      if (!dataSearch.success) throw new Error(dataSearch.message)
+
+      setGridData(dataSearch.data.list)
+      setCount(dataSearch.data.count)
       setGridLoading(false)
     } catch (error: any) {
       setGridLoading(false)
@@ -224,10 +273,10 @@ const acoes: NextPage = () => {
                 rowsPerPage: rowsPerPage,
                 rowsPerPageOptions: [10, 20, 30, 60],
                 onPageChange(page) {
-                  setPage(page)
+                  handlePage(page)
                 },
                 onRowsPerPageChange(rowsPerPAge) {
-                  setRowsPerPage(rowsPerPAge)
+                  handleRowsPerPage(rowsPerPAge)
                 }
               }}
             />

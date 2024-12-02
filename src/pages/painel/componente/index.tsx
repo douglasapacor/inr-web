@@ -93,6 +93,62 @@ const componentes: NextPage = () => {
     }
   }
 
+  const handlePage = async (p: number) => {
+    try {
+      setGridLoading(true)
+      setPage(p)
+
+      const dataSearch = await fetchApi.post(
+        security.deviceComponent.search,
+        {
+          name: name,
+          deviceId: deviceId,
+          limit: rowsPerPage,
+          offset: p
+        },
+        ctx.user ? ctx.user.credential : ""
+      )
+
+      if (!dataSearch.success) throw new Error(dataSearch.message)
+
+      setGridData(dataSearch.data.list)
+      setCount(dataSearch.data.count)
+      setGridLoading(false)
+    } catch (error: any) {
+      setGridLoading(false)
+      setAlerMessage(error.message)
+      setShowAlert(true)
+    }
+  }
+
+  const handleRowsPerPage = async (rpp: number) => {
+    try {
+      setGridLoading(true)
+      setRowsPerPage(rpp)
+
+      const dataSearch = await fetchApi.post(
+        security.deviceComponent.search,
+        {
+          name: name,
+          deviceId: deviceId,
+          limit: rowsPerPage,
+          offset: rpp
+        },
+        ctx.user ? ctx.user.credential : ""
+      )
+
+      if (!dataSearch.success) throw new Error(dataSearch.message)
+
+      setGridData(dataSearch.data.list)
+      setCount(dataSearch.data.count)
+      setGridLoading(false)
+    } catch (error: any) {
+      setGridLoading(false)
+      setAlerMessage(error.message)
+      setShowAlert(true)
+    }
+  }
+
   return (
     <PanelFrame
       alerMessage={alerMessage}
@@ -217,10 +273,10 @@ const componentes: NextPage = () => {
                 rowsPerPage: rowsPerPage,
                 rowsPerPageOptions: [10, 20, 30, 60],
                 onPageChange(page) {
-                  setPage(page)
+                  handlePage(page)
                 },
                 onRowsPerPageChange(rowsPerPAge) {
-                  setRowsPerPage(rowsPerPAge)
+                  handleRowsPerPage(rowsPerPAge)
                 }
               }}
             />
