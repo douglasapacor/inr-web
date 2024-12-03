@@ -1,6 +1,7 @@
 import { PanelFrame } from "@/components";
+import Board from "@/components/Board";
 import { Add } from "@mui/icons-material";
-import { Box, Fab } from "@mui/material";
+import { Box, Fab, Grid, Paper } from "@mui/material";
 import { NextPage } from "next";
 import { useState } from "react";
 
@@ -10,7 +11,7 @@ const Boards: NextPage = () => {
   return <PanelFrame
     alerMessage={alerMessage}
     showAlert={showAlert}
-    title="Tarefas"
+    title="Quadros de tarefas"
     locals={[
       {
         href: "/painel/inicio",
@@ -41,7 +42,14 @@ const Boards: NextPage = () => {
         </Fab>
       </Box>
     }
-  ></PanelFrame>
+    dense
+  >
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
+        <Board color="#4CAF50" />
+      </Grid>
+    </Grid>
+  </PanelFrame>
 }
 
 export default Boards

@@ -44,6 +44,7 @@ export const PanelFrame: FC<{
   showAlert?: boolean
   closeAlert?: () => void
   alerMessage?: string
+  dense?: boolean
 }> = ({ ...props }) => {
   const router = useRouter()
   const masterContext = useContextMaster()
@@ -138,18 +139,18 @@ export const PanelFrame: FC<{
             >
               {masterContext.user
                 ? masterContext.user.access.map((item: any, index: any) => (
-                    <ListItemButton
-                      key={`menu-left-${index}-item`}
-                      onClick={() => {
-                        router.push(`/painel${item.path}`)
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Icon>{item.icon}</Icon>
-                      </ListItemIcon>
-                      <ListItemText primary={item.name} />
-                    </ListItemButton>
-                  ))
+                  <ListItemButton
+                    key={`menu-left-${index}-item`}
+                    onClick={() => {
+                      router.push(`/painel${item.path}`)
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon>{item.icon}</Icon>
+                    </ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                ))
                 : ""}
             </List>
           )}
@@ -266,45 +267,85 @@ export const PanelFrame: FC<{
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <Location location={props.locals} />
-            </Grid>
-
-            {props.title && (
-              <Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
-                <Typography
-                  variant="h4"
-                  sx={{ color: theme => theme.palette.primary.light }}
-                >
-                  <strong>{props.title}</strong>
-                </Typography>
-              </Grid>
-            )}
-
-            {props.outsideContent && (
-              <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                {props.outsideContent}
-              </Grid>
-            )}
-
-            {props.showMandatoryMessage && (
+        {
+          !props.dense ? <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                <Typography
-                  variant="caption"
-                  sx={{ color: theme => theme.palette.primary.light }}
-                >
-                  Os campos marcados com * são de preenchimento obrigatório.
-                </Typography>
+                <Location location={props.locals} />
               </Grid>
-            )}
 
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              {props.children}
+              {props.title && (
+                <Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: theme => theme.palette.primary.light }}
+                  >
+                    <strong>{props.title}</strong>
+                  </Typography>
+                </Grid>
+              )}
+
+              {props.outsideContent && (
+                <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+                  {props.outsideContent}
+                </Grid>
+              )}
+
+              {props.showMandatoryMessage && (
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: theme => theme.palette.primary.light }}
+                  >
+                    Os campos marcados com * são de preenchimento obrigatório.
+                  </Typography>
+                </Grid>
+              )}
+
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                {props.children}
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
+          </Container> : <Box sx={{ width: "100%", p: 5 }}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                <Location location={props.locals} />
+              </Grid>
+
+              {props.title && (
+                <Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: theme => theme.palette.primary.light }}
+                  >
+                    <strong>{props.title}</strong>
+                  </Typography>
+                </Grid>
+              )}
+
+              {props.outsideContent && (
+                <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+                  {props.outsideContent}
+                </Grid>
+              )}
+
+              {props.showMandatoryMessage && (
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: theme => theme.palette.primary.light }}
+                  >
+                    Os campos marcados com * são de preenchimento obrigatório.
+                  </Typography>
+                </Grid>
+              )}
+
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                {props.children}
+              </Grid>
+            </Grid>
+          </Box>
+        }
       </Box>
 
       <Snackbar

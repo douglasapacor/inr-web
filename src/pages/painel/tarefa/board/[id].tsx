@@ -1,6 +1,11 @@
 import { PanelFrame } from "@/components";
+import { Grid, Paper } from "@mui/material";
 import { NextPage } from "next";
 import { useState } from "react";
+
+type boardType = {
+  name: string
+}
 
 const BoardContent: NextPage = () => {
   const [alerMessage, setAlerMessage] = useState("")
@@ -8,7 +13,7 @@ const BoardContent: NextPage = () => {
   return <PanelFrame
     alerMessage={alerMessage}
     showAlert={showAlert}
-    title="Recursos"
+    title="Nome do quadro"
     locals={[
       {
         href: "/painel/inicio",
@@ -16,15 +21,26 @@ const BoardContent: NextPage = () => {
         text: "Home"
       },
       {
-        href: "/painel/componente",
-        iconName: "featured_play_list",
-        text: "Recursos"
+        href: "/painel/tarefa",
+        iconName: "dashboard",
+        text: "Tarefas"
+      }, {
+        href: "/painel/tarefa/board/sadasdasdad",
+        iconName: "space_dashboard",
+        text: "nome do quadro"
       }
     ]}
     closeAlert={() => {
       setShowAlert(false)
     }}
-  ></PanelFrame>
+    dense
+  >
+    <Grid container>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+
+      </Grid>
+    </Grid>
+  </PanelFrame>
 }
 
 export default BoardContent
