@@ -56,7 +56,8 @@ const serverSide = async (
       }
 
       const featureActions = await fetchApi.get(
-        security.feature.actions(+urlSlug[0])
+        security.feature.actions(+urlSlug[0]),
+        context.req.cookies["master-key-inr"]
       )
 
       if (featureActions.success) {

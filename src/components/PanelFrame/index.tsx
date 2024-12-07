@@ -138,19 +138,23 @@ export const PanelFrame: FC<{
               component="nav"
             >
               {masterContext.user
-                ? masterContext.user.access.map((item: any, index: any) => (
-                  <ListItemButton
-                    key={`menu-left-${index}-item`}
-                    onClick={() => {
-                      router.push(`/painel${item.path}`)
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Icon>{item.icon}</Icon>
-                    </ListItemIcon>
-                    <ListItemText primary={item.name} />
-                  </ListItemButton>
-                ))
+                ? masterContext.user.access.map((item: any, index: any) =>
+                    item.visible ? (
+                      <ListItemButton
+                        key={`menu-left-${index}-item`}
+                        onClick={() => {
+                          router.push(`/painel${item.path}`)
+                        }}
+                      >
+                        <ListItemIcon>
+                          <Icon>{item.icon}</Icon>
+                        </ListItemIcon>
+                        <ListItemText primary={item.name} />
+                      </ListItemButton>
+                    ) : (
+                      ""
+                    )
+                  )
                 : ""}
             </List>
           )}
@@ -267,8 +271,8 @@ export const PanelFrame: FC<{
         }}
       >
         <Toolbar />
-        {
-          !props.dense ? <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        {!props.dense ? (
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <Location location={props.locals} />
@@ -306,7 +310,9 @@ export const PanelFrame: FC<{
                 {props.children}
               </Grid>
             </Grid>
-          </Container> : <Box sx={{ width: "100%", p: 5 }}>
+          </Container>
+        ) : (
+          <Box sx={{ width: "100%", p: 5 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <Location location={props.locals} />
@@ -345,7 +351,7 @@ export const PanelFrame: FC<{
               </Grid>
             </Grid>
           </Box>
-        }
+        )}
       </Box>
 
       <Snackbar

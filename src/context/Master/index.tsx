@@ -40,18 +40,21 @@ const MasterCtxControll: FC<{ children?: ReactNode }> = ({ ...props }) => {
       name: string
       icon: string
       path: string
+      visible: boolean
       deviceId: number
     }[]
   }) => {
     setUser(usr)
     localStorage.setItem("user", JSON.stringify(usr))
     setCookie("master-key-inr", usr.credential, { path: "/" })
+    console.log(usr)
   }
 
   const logout = () => {
     setUser(null)
     localStorage.removeItem("user")
     removeCookie("master-key-inr", { path: "/" })
+    window.location.assign("/painel/autenticacao")
   }
 
   const registerLMenu = (value: boolean) => {

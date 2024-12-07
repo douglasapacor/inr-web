@@ -13,6 +13,7 @@ export interface masterUser {
     name: string
     icon: string
     path: string
+    visible: boolean
     deviceId: number
   }[]
 }
