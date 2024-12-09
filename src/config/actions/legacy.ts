@@ -2,7 +2,8 @@ import apiConfigs from "../apiConfigs"
 
 const legacy = {
   home: {
-    inicio: `${apiConfigs.legacy}/home`
+    inicio: `${apiConfigs.legacy}/home`,
+    curriculum: `${apiConfigs.legacy}/home/curriculum`
   },
   boletim: {
     description: (id: number) => `${apiConfigs.legacy}/description/${id}`,
