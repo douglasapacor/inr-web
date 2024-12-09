@@ -30,13 +30,14 @@ body::-webkit-scrollbar-thumb:hover {
 body::-webkit-scrollbar-thumb:active {
   background: #0d47a1;
 }
+
 /* #endregion Scroll*/
 
 /*  #region taskScroll*/
 #TaskContainer {
   display: flex;
   width: 100%;
-  height: 67vh;
+  height: 66vh;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -59,23 +60,6 @@ body::-webkit-scrollbar-thumb:active {
   background-clip: padding-box;
 }
 
-#TaskColumnAdd {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80px;
-  width: var(--task-column-length);
-  background: white;
-  border-radius: 5px;
-  opacity: 0.3;
-  flex-shrink: 0;
-  cursor: pointer;
-}
-
-#TaskColumnAdd:hover {
-  opacity: 1;
-}
-
 #TaskColumn {
   display: flex;
   flex: 0 0 auto;
@@ -87,7 +71,7 @@ body::-webkit-scrollbar-thumb:active {
   box-sizing: border-box;
   background: #212121;
   border-radius: 5px;
-  padding: 8px;
+  padding: 10px;
 }
 
 #TaskColumn::-webkit-scrollbar {
@@ -95,32 +79,30 @@ body::-webkit-scrollbar-thumb:active {
 }
 
 #TaskColumn::-webkit-scrollbar-track {
-  background: #9e9e9e;
+  background: #212121;
 }
 
 #TaskColumn::-webkit-scrollbar-thumb {
-  background: #212121;
+  background: #9e9e9e;
   background-clip: padding-box;
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
-#TaskButtonAddCard {
-  width: 100%;
+#TaskColumnAdd {
   display: flex;
-  height: 50px;
-  justify-content: center;
-  align-items: center;
-  background: #616161;
-  border-radius: 3px;
-  opacity: 0.3;
-  cursor: pointer;
+  flex: 0 0 auto;
+  flex-direction: column;
+  width: var(--task-column-length);
+  max-height: 100%;
+  margin-right: 10px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 8px;
 }
 
-#TaskButtonAddCard:hover {
-  opacity: 1;
-}
 /*  #endregion taskScroll*/
 
 /* #region DesktopNavigation*/
@@ -160,11 +142,11 @@ body::-webkit-scrollbar-thumb:active {
   flex-direction: column;
 }
 
-.item-title > a {
+.item-title>a {
   text-decoration: none;
 }
 
-.item-title > a:visited {
+.item-title>a:visited {
   color: #fff;
 }
 
@@ -197,7 +179,7 @@ body::-webkit-scrollbar-thumb:active {
 /* #endregion DesktopNavigation*/
 
 /* #region SlideShow */
-#SlideShow > * {
+#SlideShow>* {
   box-sizing: border-box;
 }
 
@@ -350,13 +332,12 @@ body::-webkit-scrollbar-thumb:active {
   justify-content: center;
   align-items: center;
   background: rgb(13, 71, 161);
-  background: linear-gradient(
-    225deg,
-    rgba(13, 71, 161, 1) 0%,
-    rgba(13, 71, 161, 1) 48%,
-    rgba(33, 150, 243, 0.5298494397759104) 100%
-  );
+  background: linear-gradient(225deg,
+      rgba(13, 71, 161, 1) 0%,
+      rgba(13, 71, 161, 1) 48%,
+      rgba(33, 150, 243, 0.5298494397759104) 100%);
 }
+
 /* #endregion */
 
 /* #region classifiers*/
@@ -471,4 +452,5 @@ body::-webkit-scrollbar-thumb:active {
   color: #333;
   user-select: none;
 }
+
 /* #endregion classifiers*/
