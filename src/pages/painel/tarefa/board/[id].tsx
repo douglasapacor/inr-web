@@ -3,11 +3,18 @@ import { serverSide } from "@/helpers/serverside/boardContext"
 import { boardContext } from "@/helpers/types/boardContext"
 import {
   Add,
-  AddAlarm,
   ArrowBack,
+  ArrowBackIos,
+  ArrowDownward,
+  ArrowForward,
+  ArrowForwardIos,
+  ArrowUpward,
   Delete,
   Edit,
-  MoreHoriz
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+  MoreHoriz,
+  Visibility
 } from "@mui/icons-material"
 import {
   Avatar,
@@ -19,11 +26,12 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Modal,
   Tooltip,
   Typography
 } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
-import { MouseEvent, useState } from "react"
+import { useState } from "react"
 
 export const getServerSideProps: GetServerSideProps<
   boardContext
@@ -34,15 +42,30 @@ export const getServerSideProps: GetServerSideProps<
 const BoardContent: NextPage<boardContext> = ({ ...props }) => {
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
+  const [cardModal, setCardModal] = useState(true)
   const [boardContent, setBoardContent] = useState<boardContext>(props)
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [cardEl, setCardEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const openCard = Boolean(cardEl)
+
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const handleCardClick = (event: any) => {
+    setCardEl(event.currentTarget)
+  }
+
+  const handleCardClose = () => {
+    setCardEl(null)
+  }
+
   return (
     <PanelFrame
       alerMessage={alerMessage}
@@ -127,7 +150,6 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                           </div>
                         </Box>
                         <Menu
-                          id="basic-menu"
                           anchorEl={anchorEl}
                           open={open}
                           onClose={handleClose}
@@ -169,6 +191,33 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                             </ListItemIcon>
                             <ListItemText>Mover p/ Esquerda</ListItemText>
                           </MenuItem>
+                          <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                              <ArrowForward
+                                fontSize="small"
+                                sx={{ color: "white" }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText>Mover p/ Direita</ListItemText>
+                          </MenuItem>
+                          <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                              <ArrowBackIos
+                                fontSize="small"
+                                sx={{ color: "white" }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText>Mover p/ o inicio</ListItemText>
+                          </MenuItem>
+                          <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                              <ArrowForwardIos
+                                fontSize="small"
+                                sx={{ color: "white" }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText>Mover p/ o fim</ListItemText>
+                          </MenuItem>
                         </Menu>
                       </Grid>
                     </Grid>
@@ -189,8 +238,10 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                           width: "100%",
                           height: "70px",
                           background: "#424242",
-                          borderRadius: 1
+                          borderRadius: 1,
+                          cursor: "pointer"
                         }}
+                        onClick={() => { }}
                       >
                         <div
                           style={{
@@ -217,7 +268,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                               {cards.name}
                             </Grid>
                             <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-                              <div style={{ cursor: "pointer" }}>
+                              <div style={{ cursor: "pointer" }} onClick={handleCardClick}>
                                 <MoreHoriz fontSize="small" />
                               </div>
                             </Grid>
@@ -230,6 +281,57 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                               xl={12}
                             ></Grid>
                           </Grid>
+                          <Menu
+                            anchorEl={cardEl}
+                            open={openCard}
+                            onClose={handleCardClose}
+                            sx={{
+                              "& .MuiMenu-paper": {
+                                backgroundColor: "#212121",
+                                color: "white"
+                              }
+                            }}
+                          >
+                            <MenuItem onClick={handleCardClose}>
+                              <ListItemIcon>
+                                <Visibility
+                                  fontSize="small"
+                                  sx={{ color: "white" }}
+                                />
+                              </ListItemIcon>
+                              <ListItemText>Visualizar</ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={handleCardClose}>
+                              <ListItemIcon>
+                                <Edit fontSize="small" sx={{ color: "white" }} />
+                              </ListItemIcon>
+                              <ListItemText>Renomear cartão</ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={handleCardClose}>
+                              <ListItemIcon>
+                                <ArrowDownward fontSize="small" sx={{ color: "white" }} />
+                              </ListItemIcon>
+                              <ListItemText>Mover p/ baixo</ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={handleCardClose}>
+                              <ListItemIcon>
+                                <KeyboardArrowDown fontSize="small" sx={{ color: "white" }} />
+                              </ListItemIcon>
+                              <ListItemText>Mover p/ o fim</ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={handleCardClose}>
+                              <ListItemIcon>
+                                <ArrowUpward fontSize="small" sx={{ color: "white" }} />
+                              </ListItemIcon>
+                              <ListItemText>Mover p/ cima</ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={handleCardClose}>
+                              <ListItemIcon>
+                                <KeyboardArrowUp fontSize="small" sx={{ color: "white" }} />
+                              </ListItemIcon>
+                              <ListItemText>Mover p/ o início</ListItemText>
+                            </MenuItem>
+                          </Menu>
                         </div>
                       </Box>
                     </Grid>
@@ -262,6 +364,10 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
           </div>
         </Grid>
       </Grid>
+      <Modal
+        open={cardModal}
+        onClose={() => { }}
+      ><></></Modal>
     </PanelFrame>
   )
 }
