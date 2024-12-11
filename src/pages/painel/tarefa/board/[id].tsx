@@ -1,4 +1,10 @@
 import { PanelFrame } from "@/components"
+import {
+  cardContentStyle,
+  CssSelect,
+  CssTextField
+} from "@/helpers/cardContentStyle"
+import colors from "@/helpers/colors"
 import { serverSide } from "@/helpers/serverside/boardContext"
 import { boardContext } from "@/helpers/types/boardContext"
 import {
@@ -9,24 +15,35 @@ import {
   ArrowForward,
   ArrowForwardIos,
   ArrowUpward,
+  AttachFile,
+  Close,
   Delete,
   Edit,
   KeyboardArrowDown,
   KeyboardArrowUp,
   MoreHoriz,
+  Send,
   Visibility
 } from "@mui/icons-material"
 import {
   Avatar,
   Box,
   Button,
+  Chip,
   Divider,
+  FormControl,
   Grid,
+  IconButton,
+  InputLabel,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
   Modal,
+  OutlinedInput,
+  Select,
+  Stack,
+  TextField,
   Tooltip,
   Typography
 } from "@mui/material"
@@ -64,6 +81,17 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
 
   const handleCardClose = () => {
     setCardEl(null)
+  }
+
+  const ITEM_HEIGHT = 48
+  const ITEM_PADDING_TOP = 8
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250
+      }
+    }
   }
 
   return (
@@ -241,13 +269,22 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                           borderRadius: 1,
                           cursor: "pointer"
                         }}
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <div
                           style={{
                             color: "white",
-                            fontFamily:
-                              "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Droid Sans, Helvetica Neue, sans-serif",
+                            fontFamily: [
+                              "-apple-system",
+                              "BlinkMacSystemFont",
+                              "Segoe UI",
+                              "Roboto",
+                              "Noto Sans",
+                              "Ubuntu",
+                              "Droid Sans",
+                              "Helvetica Neue",
+                              "sans-serif"
+                            ].join(","),
                             fontSize: "14px",
                             fontWeight: "400",
                             width: "100%",
@@ -268,7 +305,10 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                               {cards.name}
                             </Grid>
                             <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-                              <div style={{ cursor: "pointer" }} onClick={handleCardClick}>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={handleCardClick}
+                              >
                                 <MoreHoriz fontSize="small" />
                               </div>
                             </Grid>
@@ -303,31 +343,46 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                             </MenuItem>
                             <MenuItem onClick={handleCardClose}>
                               <ListItemIcon>
-                                <Edit fontSize="small" sx={{ color: "white" }} />
+                                <Edit
+                                  fontSize="small"
+                                  sx={{ color: "white" }}
+                                />
                               </ListItemIcon>
                               <ListItemText>Renomear cartão</ListItemText>
                             </MenuItem>
                             <MenuItem onClick={handleCardClose}>
                               <ListItemIcon>
-                                <ArrowDownward fontSize="small" sx={{ color: "white" }} />
+                                <ArrowDownward
+                                  fontSize="small"
+                                  sx={{ color: "white" }}
+                                />
                               </ListItemIcon>
                               <ListItemText>Mover p/ baixo</ListItemText>
                             </MenuItem>
                             <MenuItem onClick={handleCardClose}>
                               <ListItemIcon>
-                                <KeyboardArrowDown fontSize="small" sx={{ color: "white" }} />
+                                <KeyboardArrowDown
+                                  fontSize="small"
+                                  sx={{ color: "white" }}
+                                />
                               </ListItemIcon>
                               <ListItemText>Mover p/ o fim</ListItemText>
                             </MenuItem>
                             <MenuItem onClick={handleCardClose}>
                               <ListItemIcon>
-                                <ArrowUpward fontSize="small" sx={{ color: "white" }} />
+                                <ArrowUpward
+                                  fontSize="small"
+                                  sx={{ color: "white" }}
+                                />
                               </ListItemIcon>
                               <ListItemText>Mover p/ cima</ListItemText>
                             </MenuItem>
                             <MenuItem onClick={handleCardClose}>
                               <ListItemIcon>
-                                <KeyboardArrowUp fontSize="small" sx={{ color: "white" }} />
+                                <KeyboardArrowUp
+                                  fontSize="small"
+                                  sx={{ color: "white" }}
+                                />
                               </ListItemIcon>
                               <ListItemText>Mover p/ o início</ListItemText>
                             </MenuItem>
@@ -366,8 +421,346 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
       </Grid>
       <Modal
         open={cardModal}
-        onClose={() => { }}
-      ><></></Modal>
+        onClose={() => {
+          setCardModal(false)
+        }}
+      >
+        <Box sx={cardContentStyle}>
+          <Grid container spacing={2}>
+            <Grid item xs={11} sm={11} md={11} lg={11} xl={11}>
+              <CssTextField
+                fullWidth
+                label="Título"
+                InputProps={{ style: { color: "white" } }}
+                variant="standard"
+              />
+            </Grid>
+
+            <Grid item xs={1} sm={1} md={1} lg={1} xl={1}>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center"
+                }}
+              >
+                <IconButton>
+                  <Close sx={{ color: "white" }} />
+                </IconButton>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <FormControl fullWidth>
+                    <CssTextField
+                      multiline
+                      minRows={26}
+                      label="Descrição"
+                      InputProps={{ style: { color: "white" } }}
+                    />
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={11} md={11} lg={11} xl={11}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      position: "relative",
+                      width: "100%",
+                      height: "73px",
+                      background: "#424242",
+                      border: "1px solid white",
+                      borderRadius: 1,
+                      p: 1,
+                      overflowY: "hidden",
+                      overflowX: "scroll",
+                      "&::-webkit-scrollbar": {
+                        height: "8px"
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        background: "#424242"
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        background: "#212121",
+                        backgroundClip: "padding-box",
+                        borderRadius: "10px",
+                        border: "2px solid transparent"
+                      }
+                    }}
+                  >
+                    <Stack direction="row" spacing={1}>
+                      <Chip
+                        label="asdasd"
+                        onDelete={() => {
+                          console.log("asdasdasd")
+                        }}
+                      />
+                    </Stack>
+                  </Box>
+                </Grid>
+
+                <Grid item xs={12} sm={1} md={1} lg={1} xl={1}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "100%",
+                      height: "100%"
+                    }}
+                  >
+                    <IconButton>
+                      <AttachFile sx={{ color: "white" }} />
+                    </IconButton>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <FormControl fullWidth>
+                    <InputLabel
+                      sx={{
+                        color: "white",
+                        "&.Mui-focused": { color: "white" }
+                      }}
+                    >
+                      Coluna
+                    </InputLabel>
+                    <CssSelect
+                      variant="outlined"
+                      fullWidth
+                      labelId="columnSelect"
+                      label="Coluna"
+                      value={1}
+                      onChange={e => {}}
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            bgcolor: "#212121",
+                            color: "white"
+                          }
+                        }
+                      }}
+                    >
+                      <MenuItem value={1}>Coluna</MenuItem>
+                      <MenuItem value={2}>Coluna2</MenuItem>
+                    </CssSelect>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <FormControl fullWidth>
+                    <InputLabel
+                      sx={{
+                        color: "white",
+                        "&.Mui-focused": { color: "white" }
+                      }}
+                      id="stateSelect"
+                    >
+                      Status
+                    </InputLabel>
+                    <CssSelect
+                      fullWidth
+                      variant="outlined"
+                      labelId="stateSelect"
+                      label="Status"
+                      onChange={e => {}}
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            bgcolor: "#212121",
+                            color: "white"
+                          }
+                        }
+                      }}
+                    >
+                      <MenuItem value={undefined}>Status</MenuItem>
+                    </CssSelect>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <FormControl fullWidth>
+                    <InputLabel
+                      sx={{
+                        color: "white",
+                        "&.Mui-focused": { color: "white" }
+                      }}
+                      id="participantes-id-select"
+                    >
+                      Participantes
+                    </InputLabel>
+                    <CssSelect
+                      labelId="participantes-id-select"
+                      multiple
+                      value={[]}
+                      input={
+                        <OutlinedInput
+                          id="select-multiple-chip"
+                          label="Participantes"
+                        />
+                      }
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            bgcolor: "#212121",
+                            color: "white"
+                          }
+                        }
+                      }}
+                      renderValue={(selected: any) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selected.map((value: any) => (
+                            <Chip key={value} label={value} />
+                          ))}
+                        </Box>
+                      )}
+                    >
+                      <MenuItem value={"asd"}>sddasdasd</MenuItem>
+                    </CssSelect>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <FormControl fullWidth>
+                    <InputLabel
+                      sx={{
+                        color: "white",
+                        "&.Mui-focused": { color: "white" }
+                      }}
+                      id="dep-id-select"
+                    >
+                      Dependencias
+                    </InputLabel>
+                    <CssSelect
+                      labelId="dep-id-select"
+                      multiple
+                      value={[]}
+                      input={
+                        <OutlinedInput
+                          id="select-multiple-chip"
+                          label="Dependencias"
+                        />
+                      }
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            bgcolor: "#212121",
+                            color: "white"
+                          }
+                        }
+                      }}
+                      renderValue={(selected: any) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selected.map((value: any) => (
+                            <Chip key={value} label={value} />
+                          ))}
+                        </Box>
+                      )}
+                    >
+                      <MenuItem value={"asd"}>sddasdasd</MenuItem>
+                    </CssSelect>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <Typography variant="caption" sx={{ marginLeft: 1 }}>
+                    Atividades:
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <FormControl fullWidth>
+                    <CssTextField
+                      multiline
+                      maxRows={3}
+                      placeholder="Adicione um comentário"
+                      InputProps={{
+                        style: { color: "white" },
+                        endAdornment: (
+                          <IconButton>
+                            <Send sx={{ color: "white" }} />
+                          </IconButton>
+                        )
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      width: "100%",
+                      height: 306,
+                      background: "#212121",
+                      borderRadius: 1,
+                      p: 1,
+                      overflowY: "scroll",
+                      "&::-webkit-scrollbar": {
+                        width: "8px"
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        background: "#212121"
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        background: "#424242",
+                        backgroundClip: "padding-box",
+                        borderRadius: "10px",
+                        border: "2px solid transparent"
+                      }
+                    }}
+                  >
+                    <Grid container>
+                      <Grid item xs={12} sm={1} md={1} lg={1} xl={1}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100%"
+                          }}
+                        >
+                          <Avatar sx={{ width: 28, height: 28 }} />
+                        </Box>
+                      </Grid>
+
+                      <Grid item xs={12} sm={11} md={11} lg={11} xl={11}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                            height: "100%",
+                            pl: 1
+                          }}
+                        >
+                          <Typography variant="caption">
+                            asdasdasdasds asdasdasdasds asdasdasdasds
+                            asdasdasdasds asdasdasdasds asdasdasdasds
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
     </PanelFrame>
   )
 }

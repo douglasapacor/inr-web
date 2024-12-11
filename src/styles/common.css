@@ -87,7 +87,6 @@ body::-webkit-scrollbar-thumb:active {
   background-clip: padding-box;
   border-radius: 10px;
   border: 2px solid transparent;
-  background-clip: padding-box;
 }
 
 #TaskColumnAdd {
@@ -142,11 +141,11 @@ body::-webkit-scrollbar-thumb:active {
   flex-direction: column;
 }
 
-.item-title>a {
+.item-title > a {
   text-decoration: none;
 }
 
-.item-title>a:visited {
+.item-title > a:visited {
   color: #fff;
 }
 
@@ -179,7 +178,7 @@ body::-webkit-scrollbar-thumb:active {
 /* #endregion DesktopNavigation*/
 
 /* #region SlideShow */
-#SlideShow>* {
+#SlideShow > * {
   box-sizing: border-box;
 }
 
@@ -332,10 +331,12 @@ body::-webkit-scrollbar-thumb:active {
   justify-content: center;
   align-items: center;
   background: rgb(13, 71, 161);
-  background: linear-gradient(225deg,
-      rgba(13, 71, 161, 1) 0%,
-      rgba(13, 71, 161, 1) 48%,
-      rgba(33, 150, 243, 0.5298494397759104) 100%);
+  background: linear-gradient(
+    225deg,
+    rgba(13, 71, 161, 1) 0%,
+    rgba(13, 71, 161, 1) 48%,
+    rgba(33, 150, 243, 0.5298494397759104) 100%
+  );
 }
 
 /* #endregion */
