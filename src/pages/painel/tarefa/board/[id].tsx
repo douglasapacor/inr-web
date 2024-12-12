@@ -1,10 +1,10 @@
 import { PanelFrame } from "@/components"
+import Editor from "@/components/Editor"
 import {
   cardContentStyle,
   CssSelect,
   CssTextField
 } from "@/helpers/cardContentStyle"
-import colors from "@/helpers/colors"
 import { serverSide } from "@/helpers/serverside/boardContext"
 import { boardContext } from "@/helpers/types/boardContext"
 import {
@@ -41,9 +41,7 @@ import {
   MenuItem,
   Modal,
   OutlinedInput,
-  Select,
   Stack,
-  TextField,
   Tooltip,
   Typography
 } from "@mui/material"
@@ -60,10 +58,12 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
   const [cardModal, setCardModal] = useState(true)
+
   const [boardContent, setBoardContent] = useState<boardContext>(props)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [cardEl, setCardEl] = useState<null | HTMLElement>(null)
+
   const open = Boolean(anchorEl)
   const openCard = Boolean(cardEl)
 
@@ -81,17 +81,6 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
 
   const handleCardClose = () => {
     setCardEl(null)
-  }
-
-  const ITEM_HEIGHT = 48
-  const ITEM_PADDING_TOP = 8
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250
-      }
-    }
   }
 
   return (
@@ -142,7 +131,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
             }}
           >
             <Typography variant="body1" sx={{ marginRight: 1, color: "white" }}>
-              integrantes:{" "}
+              integrantes:
             </Typography>
 
             {boardContent.participants.map((part, index) => (
@@ -168,6 +157,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                           {cloumn.name}
                         </Box>
                       </Grid>
+
                       <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                         <Box sx={{ display: "flex", justifyContent: "center" }}>
                           <div
@@ -177,6 +167,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                             <MoreHoriz fontSize="small" />
                           </div>
                         </Box>
+
                         <Menu
                           anchorEl={anchorEl}
                           open={open}
@@ -304,6 +295,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                             >
                               {cards.name}
                             </Grid>
+
                             <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                               <div
                                 style={{ cursor: "pointer" }}
@@ -312,6 +304,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                                 <MoreHoriz fontSize="small" />
                               </div>
                             </Grid>
+
                             <Grid
                               item
                               xs={12}
@@ -419,6 +412,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
           </div>
         </Grid>
       </Grid>
+
       <Modal
         open={cardModal}
         onClose={() => {
@@ -455,14 +449,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
             <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <FormControl fullWidth>
-                    <CssTextField
-                      multiline
-                      minRows={26}
-                      label="Descrição"
-                      InputProps={{ style: { color: "white" } }}
-                    />
-                  </FormControl>
+                  <Editor />
                 </Grid>
 
                 <Grid item xs={12} sm={11} md={11} lg={11} xl={11}>
@@ -604,7 +591,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                       value={[]}
                       input={
                         <OutlinedInput
-                          id="select-multiple-chip"
+                          id="select-multiple-participantes-chip"
                           label="Participantes"
                         />
                       }
