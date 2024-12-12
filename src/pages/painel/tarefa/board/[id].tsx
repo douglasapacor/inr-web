@@ -41,6 +41,7 @@ import {
   MenuItem,
   Modal,
   OutlinedInput,
+  Paper,
   Stack,
   Tooltip,
   Typography
@@ -63,6 +64,8 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [cardEl, setCardEl] = useState<null | HTMLElement>(null)
+  const [editingText, setEditingText] = useState(false)
+  const [textContent, setTextContent] = useState("")
 
   const open = Boolean(anchorEl)
   const openCard = Boolean(cardEl)
@@ -260,7 +263,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                           borderRadius: 1,
                           cursor: "pointer"
                         }}
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <div
                           style={{
@@ -314,6 +317,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                               xl={12}
                             ></Grid>
                           </Grid>
+
                           <Menu
                             anchorEl={cardEl}
                             open={openCard}
@@ -449,7 +453,30 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
             <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <Editor />
+                  {editingText ? <Editor callBackSave={(contents: string, isChanged: boolean) => {
+                    if (isChanged) {
+                      setTextContent(contents)
+                    }
+                    setEditingText(false)
+                  }} width="100%" height="430px" content={textContent} onChange={(content: string) => {
+                    setTextContent(content)
+                  }} /> : <Paper sx={{ width: "100%", height: "530px", background: "#212121", color: "white", p: 1 }}>
+                    <div style={{ width: "100%", height: "100%" }} dangerouslySetInnerHTML={{ __html: textContent }} />
+                  </Paper>
+                  }
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                    {
+                      !editingText
+                        ? <Button onClick={() => { setEditingText(true) }}>editar</Button>
+                        : <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                          <Button>salvar</Button>
+                          <Button onClick={() => { setEditingText(false) }}>cancelar</Button>
+                        </Box>
+                    }
+                  </Box>
                 </Grid>
 
                 <Grid item xs={12} sm={11} md={11} lg={11} xl={11}>
@@ -527,7 +554,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                       labelId="columnSelect"
                       label="Coluna"
                       value={1}
-                      onChange={e => {}}
+                      onChange={e => { }}
                       MenuProps={{
                         PaperProps: {
                           sx: {
@@ -559,7 +586,7 @@ const BoardContent: NextPage<boardContext> = ({ ...props }) => {
                       variant="outlined"
                       labelId="stateSelect"
                       label="Status"
-                      onChange={e => {}}
+                      onChange={e => { }}
                       MenuProps={{
                         PaperProps: {
                           sx: {

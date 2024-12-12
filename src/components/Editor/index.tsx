@@ -1,28 +1,60 @@
+import { IEditor } from "@/helpers/types/IEditor"
 import dynamic from "next/dynamic"
-import { useState } from "react"
+import { FC, useState } from "react"
 
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false })
 import "suneditor/dist/css/suneditor.min.css"
 
-const Editor = () => {
-  const [editorContent, setEditorContent] = useState("")
-
-  const handleChange = (content: string) => {
-    setEditorContent(content)
-  }
-
+const Editor: FC<IEditor> = (props) => {
   return (
     <SunEditor
+      lang="pt_br"
+      height={props.height}
+      width={props.width}
       setOptions={{
         height: "300",
         buttonList: [
-          ["bold", "underline", "italic"],
-          ["link", "image"],
-          ["align", "list"]
-        ]
+          [
+            "undo",
+            "redo",
+            "font",
+            "fontSize",
+            "formatBlock",
+            "paragraphStyle",
+            "blockquote",
+            "bold",
+            "underline",
+            "italic",
+            "strike",
+            "subscript",
+            "superscript",
+            "fontColor",
+            "hiliteColor",
+            "textStyle",
+            "removeFormat",
+            "outdent",
+            "indent",
+            "align",
+            "horizontalRule",
+            "list",
+            "lineHeight",
+            "table",
+            "link",
+            "image",
+            "fullScreen",
+            "showBlocks",
+            "codeView",
+            "preview",
+            "save"
+          ]
+        ],
+        callBackSave: (contents: string, isChanged: boolean) => {
+          if (props.callBackSave)
+            props.callBackSave(contents, isChanged)
+        }
       }}
-      onChange={handleChange}
-      setContents={editorContent}
+      onChange={props.onChange}
+      setContents={props.content}
     />
   )
 }
