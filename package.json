@@ -34,11 +34,11 @@
     "material-ui-popup-state": "5.1.2",
     "next": "14.2.13",
     "react": "18.3.1",
-    "react-cookie": "^7.2.0",
+    "react-cookie": "7.2.0",
     "react-dom": "18.3.1",
     "react-hook-form": "7.52.2",
-    "suneditor": "^2.47.0",
-    "suneditor-react": "^3.6.1",
+    "suneditor": "2.47.0",
+    "suneditor-react": "3.6.1",
     "zod": "3.23.8"
   }
 }
