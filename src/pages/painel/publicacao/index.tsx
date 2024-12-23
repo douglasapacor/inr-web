@@ -1,4 +1,5 @@
 import { PanelFrame } from "@/components";
+import CampanhaInfo from "@/components/campanhaInfo";
 import { Add, ExpandMore } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Fab, FormControl, Grid, InputLabel, MenuItem, Pagination, Paper, Select } from "@mui/material";
 import { NextPage } from "next";
@@ -60,7 +61,7 @@ const publicacao: NextPage = props => {
         </Accordion>
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        <Paper sx={{ padding: 2 }}>info</Paper>
+        <CampanhaInfo />
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <Grid container spacing={2} alignItems="center">
