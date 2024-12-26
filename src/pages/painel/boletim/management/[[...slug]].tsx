@@ -34,8 +34,21 @@ const BoletimContent: NextPage<boletimManagement> = props => {
   const [alerMessage, setAlerMessage] = useState("")
   const [showAlert, setShowAlert] = useState(false)
   const [deleteModal, setDeleteModal] = useState(true)
-  const [sections, setSections] = useState<number[]>([])
+
+  const [sectionsSelected, setSectionsSelected] = useState<number[]>([])
+  const [boletinContent, setBoletinContent] = useState<{ id: number; name: string; itens: [] }[]>([])
+
   const router = useRouter()
+
+  const computeSections = () => { }
+
+  useEffect(() => {
+    for (let i = 0; i < sectionsSelected.length; i++) {
+      const finded = boletinContent.find(b => b.id === sectionsSelected[i])
+
+      if (finded) { } else { }
+    }
+  }, [sectionsSelected])
 
   return (
     <PanelFrame
@@ -80,10 +93,10 @@ const BoletimContent: NextPage<boletimManagement> = props => {
                 label="Sessões do boletim"
                 input={<OutlinedInput label="Sessões do boletim" />}
                 multiple
-                value={sections}
+                value={boletinContent.map(b => b.id)}
                 renderValue={selected => `${selected.length} selecionado(s)`}
                 onChange={(event: SelectChangeEvent<number[]>) => {
-                  setSections(event.target.value as number[])
+                  setSectionsSelected(event.target.value as number[])
                 }}
               >
                 {props.sections.map(item => (
@@ -91,29 +104,14 @@ const BoletimContent: NextPage<boletimManagement> = props => {
                     key={`menu-item-section-${item.id}`}
                     value={item.id}
                   >
-                    <Checkbox checked={sections.includes(item.id)} />
+                    <Checkbox checked={boletinContent.map(b => b.id).includes(item.id)} />
                     <ListItemText primary={item.name} />
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Grid>
-
-          {sections.map(section => (
-            <Grid
-              key={`item-section-selected-${section}`}
-              item
-              xs={2}
-              sm={2}
-              md={2}
-              lg={2}
-              xl={2}
-            >
-              <Box sx={{ width: "100%", height: "80px", background: "red" }}>
-                {props.sections.find(findItem => findItem.id === section)?.name}
-              </Box>
-            </Grid>
-          ))}
+          {/*  */}
         </Grid>
       </Paper>
       <Modal
@@ -122,50 +120,17 @@ const BoletimContent: NextPage<boletimManagement> = props => {
           setDeleteModal(false)
         }}
       >
-        <Box sx={deleteStyle}>
+        <Box sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          bgcolor: "#FAFAFA",
+          boxShadow: 24,
+          p: 2
+        }}>
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  p: 1
-                }}
-              >
-                <h4>EXCLUSÃO DE CONTEÚDO</h4>
-              </Box>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <Box
-                sx={{
-                  paddingLeft: 4,
-                  paddingRight: 4,
-                  marginBottom: 4
-                }}
-              >
-                Você tem certeza que deseja excluir esse item ? Essa ação é
-                irreversível.
-              </Box>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => {
-                    setDeleteModal(false)
-                  }}
-                >
-                  Cancelar
-                </Button>
-                <Button variant="contained" color="success">
-                  Confirmar
-                </Button>
-              </Box>
             </Grid>
           </Grid>
         </Box>
