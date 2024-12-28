@@ -7,31 +7,31 @@ const TransferList: FC<transferList> = ({ ...props }) => {
   const [leftChecked, setLeftChecked] = useState<contentListType[]>([])
   const [rightChecked, setRightChecked] = useState<contentListType[]>([])
 
-  const checkLeft = (value: contentListType) => {
-    const currentIndex = leftChecked.indexOf(value)
-    const newLeftChecked = [...leftChecked]
+  // const checkLeft = (value: contentListType) => {
+  //   const currentIndex = leftChecked.indexOf(value)
+  //   const newLeftChecked = [...leftChecked]
 
-    if (currentIndex === -1) {
-      newLeftChecked.push(value)
-    } else {
-      newLeftChecked.splice(currentIndex, 1)
-    }
+  //   if (currentIndex === -1) {
+  //     newLeftChecked.push(value)
+  //   } else {
+  //     newLeftChecked.splice(currentIndex, 1)
+  //   }
 
-    setLeftChecked(newLeftChecked)
-  }
+  //   setLeftChecked(newLeftChecked)
+  // }
 
-  const checkRight = (value: contentListType) => {
-    const currentIndex = rightChecked.indexOf(value)
-    const newRightChecked = [...rightChecked]
+  // const checkRight = (value: contentListType) => {
+  //   const currentIndex = rightChecked.indexOf(value)
+  //   const newRightChecked = [...rightChecked]
 
-    if (currentIndex === -1) {
-      newRightChecked.push(value)
-    } else {
-      newRightChecked.splice(currentIndex, 1)
-    }
+  //   if (currentIndex === -1) {
+  //     newRightChecked.push(value)
+  //   } else {
+  //     newRightChecked.splice(currentIndex, 1)
+  //   }
 
-    setRightChecked(newRightChecked)
-  }
+  //   setRightChecked(newRightChecked)
+  // }
 
   return (
     <Grid
@@ -40,7 +40,7 @@ const TransferList: FC<transferList> = ({ ...props }) => {
       sx={{ justifyContent: "center", alignItems: "center" }}
     >
       <Grid item xs={12} sm={5} md={5} lg={5} xl={5}>
-        <CustomList content={props.in} checked={leftChecked} />
+        <CustomList content={[]} checked={leftChecked} />
       </Grid>
 
       <Grid item xs={12} sm={2} md={2} lg={2} xl={2}>

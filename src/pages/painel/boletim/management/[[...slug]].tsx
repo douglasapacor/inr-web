@@ -592,15 +592,7 @@ const BoletimContent: NextPage<boletimManagement> = props => {
               </Box>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <TransferList
-                in={[
-                  { id: 1, name: "aaa" },
-                  { id: 2, name: "aaa" },
-                  { id: 3, name: "aaa" },
-                  { id: 4, name: "aaa" },
-                  { id: 5, name: "aaa" }
-                ]}
-              />
+              {/* <TransferList /> */}
             </Grid>
           </Grid>
         </Box>
