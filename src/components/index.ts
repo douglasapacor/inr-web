@@ -10,6 +10,7 @@ import DataGrid from "./DataGrid"
 import ApplicationDrawer from "./ApplicationDrawer"
 import LoadingBox from "./loadingBox"
 import UserDrawer from "./UserDrawer"
+import TransferList from "./TransferList"
 
 export {
   SiteFrame,
@@ -23,5 +24,6 @@ export {
   DataGrid,
   ApplicationDrawer,
   LoadingBox,
-  UserDrawer
+  UserDrawer,
+  TransferList
 }

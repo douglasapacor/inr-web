@@ -17,7 +17,7 @@ import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { deleteStyle } from "@/helpers/deleteStyle"
+import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
 
 export const getServerSideProps: GetServerSideProps<
   componentManagement

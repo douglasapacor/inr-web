@@ -7,32 +7,54 @@ const serverSide = async (
   try {
     const response = constructor()
 
-    response.sections = [
+    response.sectionsList = [
       {
         id: 1,
-        name: "Notícias"
+        name: "Notícias",
+        color: "#3F51B5"
       },
       {
         id: 2,
-        name: "Legislação"
+        name: "Jurisprudencia",
+        color: "#2196F3"
       },
       {
         id: 3,
-        name: "Opnião"
+        name: "Legislação",
+        color: "#03A9F4"
       },
       {
         id: 4,
-        name: "Jurisprudencia"
+        name: "Opnião",
+        color: "#00BCD4"
       },
       {
         id: 5,
-        name: "Pareceres"
+        name: "Perguntas e respostas",
+        color: "#009688"
       },
       {
         id: 6,
-        name: "Menssagens"
+        name: "Mensagens dos editores",
+        color: "#4CAF50"
+      },
+      {
+        id: 7,
+        name: "Pareceres CGJ SP",
+        color: "#8BC34A"
+      },
+      {
+        id: 8,
+        name: "Suplementos da consultoria INR",
+        color: "#CDDC39"
+      },
+      {
+        id: 9,
+        name: "Histórias do ofício",
+        color: "#FFEB3B"
       }
     ]
+
     return {
       props: response
     }

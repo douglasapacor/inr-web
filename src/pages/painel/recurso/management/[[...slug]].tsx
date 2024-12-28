@@ -1,7 +1,7 @@
 import { PanelFrame } from "@/components"
 import security from "@/config/actions/security"
 import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/deleteStyle"
+import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
 import serverSide from "@/helpers/serverside/recursos"
 import {
   actionFeatures,

@@ -17,7 +17,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { acaoManagement, action } from "@/helpers/types/acao"
 import { locationIcon, pageMode } from "@/helpers/types/geral"
-import { deleteStyle } from "@/helpers/deleteStyle"
+import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
 
 export const getServerSideProps: GetServerSideProps<
   acaoManagement

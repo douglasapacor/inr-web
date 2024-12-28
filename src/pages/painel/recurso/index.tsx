@@ -20,7 +20,7 @@ import {
 import { DataGrid, PanelFrame } from "@/components"
 import security from "@/config/actions/security"
 import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/deleteStyle"
+import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
 import { serverSide } from "@/helpers/serverside/recursosIndex"
 import { featureIndexServerSide } from "@/helpers/types/recursosIndex"
 import fetchApi from "@/lib/fetchApi"

@@ -2,7 +2,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
 import { groupType, contructor } from "../types/group"
 import fetchApi from "@/lib/fetchApi"
 import security from "@/config/actions/security"
-import colors from "../colors"
+import colors from "../styleObject/colors"
 
 const serverSide = async (
   context: GetServerSidePropsContext

@@ -18,7 +18,7 @@ import { Add } from "@mui/icons-material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { deleteStyle } from "@/helpers/deleteStyle"
+import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
 
 const componentes: NextPage = () => {
   const [alerMessage, setAlerMessage] = useState("")

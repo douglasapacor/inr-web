@@ -15,7 +15,7 @@ import {
 import { DataGrid, PanelFrame } from "@/components"
 import security from "@/config/actions/security"
 import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/deleteStyle"
+import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
 import fetchApi from "@/lib/fetchApi"
 import { Add } from "@mui/icons-material"
 import { NextPage } from "next"
