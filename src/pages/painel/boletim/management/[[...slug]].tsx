@@ -1,5 +1,4 @@
 import { PanelFrame, TransferList } from "@/components"
-import { contentListType } from "@/components/TransferList/types"
 import { serverSide } from "@/helpers/serverside/boletimManagement"
 import {
   boletimManagement,
@@ -28,7 +27,6 @@ import {
   RadioGroup,
   Select,
   SelectChangeEvent,
-  TextField,
   Typography
 } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
@@ -92,6 +90,7 @@ const BoletimContent: NextPage<boletimManagement> = props => {
       if (!idSessao) throw new Error("Erro ao selecionar sessção")
 
       const tmp = { ...boletim }
+
       setAddSectionName(idSessao.name)
 
       setSectionContentModal(true)
@@ -101,7 +100,7 @@ const BoletimContent: NextPage<boletimManagement> = props => {
     }
   }
 
-  const deleteContentInSection = (index: number) => {}
+  const deleteContentInSection = (index: number) => { }
 
   return (
     <PanelFrame
@@ -566,7 +565,7 @@ const BoletimContent: NextPage<boletimManagement> = props => {
       >
         <Box
           sx={{
-            width: "60%",
+            width: "70%",
             position: "absolute",
             top: "50%",
             left: "50%",
@@ -592,7 +591,16 @@ const BoletimContent: NextPage<boletimManagement> = props => {
               </Box>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              {/* <TransferList /> */}
+              <TransferList source={[
+                { id: 1, name: "aaaaaa" },
+                { id: 2, name: "cccccc" },
+                { id: 3, name: "bbbbbb" }]}
+                out={(selected: {
+                  id: number;
+                  name: string;
+                }[]) => {
+                  console.log(selected);
+                }} />
             </Grid>
           </Grid>
         </Box>
