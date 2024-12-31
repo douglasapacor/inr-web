@@ -32,6 +32,8 @@ import {
 import { GetServerSideProps, NextPage } from "next"
 import { useEffect, useState } from "react"
 
+type b = {}
+
 export const getServerSideProps: GetServerSideProps<
   boletimManagement
 > = async context => {
@@ -100,7 +102,7 @@ const BoletimContent: NextPage<boletimManagement> = props => {
     }
   }
 
-  const deleteContentInSection = (index: number) => { }
+  const deleteContentInSection = (index: number) => {}
 
   return (
     <PanelFrame
@@ -557,6 +559,7 @@ const BoletimContent: NextPage<boletimManagement> = props => {
       </Grid>
 
       {/* Modal add content in section */}
+
       <Modal
         open={sectionContentModal}
         onClose={() => {
@@ -590,17 +593,23 @@ const BoletimContent: NextPage<boletimManagement> = props => {
                 <Typography variant="h6">{addSectionName}</Typography>
               </Box>
             </Grid>
+
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <TransferList source={[
-                { id: 1, name: "aaaaaa" },
-                { id: 2, name: "cccccc" },
-                { id: 3, name: "bbbbbb" }]}
-                out={(selected: {
-                  id: number;
-                  name: string;
-                }[]) => {
-                  console.log(selected);
-                }} />
+              <TransferList<{ id: number; name: string }>
+                source={[
+                  { id: 1, name: "aaaaaa" },
+                  { id: 2, name: "cccccc" },
+                  { id: 3, name: "bbbbbb" }
+                ]}
+                out={(
+                  selected: {
+                    id: number
+                    name: string
+                  }[]
+                ) => {
+                  console.log(selected)
+                }}
+              />
             </Grid>
           </Grid>
         </Box>
