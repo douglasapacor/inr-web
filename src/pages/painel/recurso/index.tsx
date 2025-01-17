@@ -14,8 +14,7 @@ import {
   Select,
   SelectChangeEvent,
   Switch,
-  TextField,
-  Typography
+  TextField
 } from "@mui/material"
 import { DataGrid, PanelFrame } from "@/components"
 import security from "@/config/actions/security"
@@ -52,7 +51,7 @@ const recursos: NextPage<featureIndexServerSide> = props => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [gridLoading, setGridLoading] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
-  const [deleteThis, setDeleteThis] = useState<number | null>(null)
+  const [deleteThis, setDeleteThis] = useState<number | undefined>(undefined)
   const [deviceList, setDeviceList] = useState<deviceList[]>(props.device.list)
   const ctx = useContextMaster()
   const router = useRouter()
@@ -327,8 +326,9 @@ const recursos: NextPage<featureIndexServerSide> = props => {
                 <MenuItem value={0}>Selecione...</MenuItem>
                 {deviceList.map(device => (
                   <MenuItem
-                    key={`device-item-${new Date().getDate()}-${device.id}-${device.deviceid
-                      }`}
+                    key={`device-item-${new Date().getDate()}-${device.id}-${
+                      device.deviceid
+                    }`}
                     value={device.id}
                   >
                     {device.name}
@@ -489,7 +489,7 @@ const recursos: NextPage<featureIndexServerSide> = props => {
                   variant="contained"
                   color="error"
                   onClick={() => {
-                    setDeleteThis(null)
+                    setDeleteThis(undefined)
                     setDeleteModal(false)
                   }}
                 >

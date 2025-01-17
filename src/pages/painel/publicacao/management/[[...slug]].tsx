@@ -8,26 +8,28 @@ const publicacaoManagement: NextPage = props => {
   const [showAlert, setShowAlert] = useState(false)
   const router = useRouter()
 
-  return <PanelFrame
-    alerMessage={alerMessage}
-    showAlert={showAlert}
-    title="Publicações"
-    locals={[
-      {
-        href: "/painel/inicio",
-        iconName: "home",
-        text: "Home"
-      },
-      {
-        href: "/painel/publicacao",
-        iconName: "podcasts",
-        text: "Publicações"
-      }
-    ]}
-    closeAlert={() => {
-      setShowAlert(false)
-    }}
-  ></PanelFrame>
+  return (
+    <PanelFrame
+      alerMessage={alerMessage}
+      showAlert={showAlert}
+      title="Publicações"
+      locals={[
+        {
+          href: "/painel/inicio",
+          iconName: "home",
+          text: "Home"
+        },
+        {
+          href: "/painel/publicacao",
+          iconName: "podcasts",
+          text: "Publicações"
+        }
+      ]}
+      closeAlert={() => {
+        setShowAlert(false)
+      }}
+    ></PanelFrame>
+  )
 }
 
 export default publicacaoManagement

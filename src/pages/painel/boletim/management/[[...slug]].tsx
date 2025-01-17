@@ -1,4 +1,4 @@
-import { PanelFrame, TransferList } from "@/components"
+import { ModalSectionContent, PanelFrame } from "@/components"
 import { serverSide } from "@/helpers/serverside/boletimManagement"
 import {
   boletimManagement,
@@ -32,8 +32,6 @@ import {
 import { GetServerSideProps, NextPage } from "next"
 import { useEffect, useState } from "react"
 
-type b = {}
-
 export const getServerSideProps: GetServerSideProps<
   boletimManagement
 > = async context => {
@@ -45,10 +43,10 @@ const BoletimContent: NextPage<boletimManagement> = props => {
   const [showAlert, setShowAlert] = useState(false)
 
   const [deleteModal, setDeleteModal] = useState(false)
-  const [sectionContentModal, setSectionContentModal] = useState(false)
   const [contentPositionModal, setContentPositionModal] = useState(false)
 
   // Modal Add content in section
+  const [sectionContentModal, setSectionContentModal] = useState(false)
   const [addSectionName, setAddSectionName] = useState<string>("")
 
   // Lista para alimentar select
@@ -85,16 +83,9 @@ const BoletimContent: NextPage<boletimManagement> = props => {
     setBoletim(tmp)
   }, [selectedSections])
 
-  const addContentInSection = (index: number, sectionId: number) => {
+  const addContentInSection = (sectionName: string, sectionId: number) => {
     try {
-      const idSessao = props.sectionsList.find(sec => sec.id === sectionId)
-
-      if (!idSessao) throw new Error("Erro ao selecionar sessção")
-
-      const tmp = { ...boletim }
-
-      setAddSectionName(idSessao.name)
-
+      setAddSectionName(sectionName)
       setSectionContentModal(true)
     } catch (error: any) {
       setAlerMessage(error.message)
@@ -136,7 +127,7 @@ const BoletimContent: NextPage<boletimManagement> = props => {
             }}
           >
             <Grid container spacing={3} alignItems="center">
-              <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
+              <Grid item xs={12} sm={9} md={9} lg={9} xl={9}>
                 <Box
                   sx={{
                     width: "100%",
@@ -174,7 +165,7 @@ const BoletimContent: NextPage<boletimManagement> = props => {
                 </Box>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <Grid item xs={12} sm={3} md={3} lg={3} xl={3}>
                 <div
                   style={{
                     width: "100%",
@@ -383,7 +374,7 @@ const BoletimContent: NextPage<boletimManagement> = props => {
                                 <IconButton
                                   onClick={() => {
                                     addContentInSection(
-                                      secIndex,
+                                      secContent.nome,
                                       secContent.sectionId
                                     )
                                   }}
@@ -558,110 +549,13 @@ const BoletimContent: NextPage<boletimManagement> = props => {
         </Grid>
       </Grid>
 
-      {/* Modal add content in section */}
-
-      <Modal
+      <ModalSectionContent
         open={sectionContentModal}
-        onClose={() => {
+        title={addSectionName}
+        close={() => {
           setSectionContentModal(false)
         }}
-      >
-        <Box
-          sx={{
-            width: "70%",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "#FAFAFA",
-            boxShadow: 24,
-            p: 2
-          }}
-        >
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <Box
-                sx={{
-                  width: "100%",
-                  paddingLeft: 3,
-                  paddingTop: 1,
-                  paddingBottom: 1,
-                  background: theme => theme.palette.primary.main,
-                  color: "whitesmoke"
-                }}
-              >
-                <Typography variant="h6">{addSectionName}</Typography>
-              </Box>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <TransferList<{ id: number; name: string }>
-                source={[
-                  { id: 1, name: "aaaaaa" },
-                  { id: 2, name: "cccccc" },
-                  { id: 3, name: "bbbbbb" }
-                ]}
-                out={(
-                  selected: {
-                    id: number
-                    name: string
-                  }[]
-                ) => {
-                  console.log(selected)
-                }}
-              />
-            </Grid>
-          </Grid>
-        </Box>
-      </Modal>
-
-      <Modal
-        open={contentPositionModal}
-        onClose={() => {
-          setContentPositionModal(false)
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "#FAFAFA",
-            boxShadow: 24,
-            p: 2
-          }}
-        >
-          <Grid container>
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              pos
-            </Grid>
-          </Grid>
-        </Box>
-      </Modal>
-
-      <Modal
-        open={deleteModal}
-        onClose={() => {
-          setDeleteModal(false)
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "#FAFAFA",
-            boxShadow: 24,
-            p: 2
-          }}
-        >
-          <Grid container>
-            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}></Grid>
-          </Grid>
-        </Box>
-      </Modal>
+      />
     </PanelFrame>
   )
 }

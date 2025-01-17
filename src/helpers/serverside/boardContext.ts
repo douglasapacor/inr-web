@@ -6,6 +6,7 @@ const serverSide = async (
 ): Promise<GetServerSidePropsResult<boardContext>> => {
   try {
     const response = constructor()
+
     response.boardName = "task do doido"
 
     response.participants = [
@@ -39,6 +40,7 @@ const serverSide = async (
         ]
       }
     ]
+
     return {
       props: response
     }

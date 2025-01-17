@@ -34,7 +34,7 @@ body::-webkit-scrollbar-thumb:active {
 /* #endregion Scroll*/
 
 /*  #region taskScroll*/
-#TaskContainer {
+.TaskContainer {
   display: flex;
   width: 100%;
   height: 66vh;
@@ -47,20 +47,20 @@ body::-webkit-scrollbar-thumb:active {
   flex-shrink: 0;
 }
 
-#TaskContainer::-webkit-scrollbar {
+.TaskContainer::-webkit-scrollbar {
   height: 10px;
 }
 
-#TaskContainer::-webkit-scrollbar-track {
+.TaskContainer::-webkit-scrollbar-track {
   background: #0d47a1;
 }
 
-#TaskContainer::-webkit-scrollbar-thumb {
+.TaskContainer::-webkit-scrollbar-thumb {
   background: #212121;
   background-clip: padding-box;
 }
 
-#TaskColumn {
+.TaskColumn {
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
@@ -74,15 +74,15 @@ body::-webkit-scrollbar-thumb:active {
   padding: 10px;
 }
 
-#TaskColumn::-webkit-scrollbar {
+.TaskColumn::-webkit-scrollbar {
   width: 8px;
 }
 
-#TaskColumn::-webkit-scrollbar-track {
+.TaskColumn::-webkit-scrollbar-track {
   background: #212121;
 }
 
-#TaskColumn::-webkit-scrollbar-thumb {
+.TaskColumn::-webkit-scrollbar-thumb {
   background: #9e9e9e;
   background-clip: padding-box;
   border-radius: 10px;

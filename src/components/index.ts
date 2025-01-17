@@ -10,7 +10,11 @@ import DataGrid from "./DataGrid"
 import ApplicationDrawer from "./ApplicationDrawer"
 import LoadingBox from "./loadingBox"
 import UserDrawer from "./UserDrawer"
-import TransferList from "./TransferList"
+import ModalSectionContent from "./Boletim/ModalSectionContent"
+import Members from "./Tarefa/Members"
+import Columns from "./Tarefa/Columns"
+import CardDetails from "./Tarefa/CardDetails"
+import NewBoardModal from "./Tarefa/NewBoardModal"
 
 export {
   SiteFrame,
@@ -25,5 +29,9 @@ export {
   ApplicationDrawer,
   LoadingBox,
   UserDrawer,
-  TransferList
+  ModalSectionContent,
+  Members,
+  Columns,
+  CardDetails,
+  NewBoardModal
 }

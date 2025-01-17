@@ -131,8 +131,8 @@ const componentes: NextPage = () => {
         {
           name: name,
           deviceId: deviceId,
-          limit: rowsPerPage,
-          offset: rpp
+          limit: rpp,
+          offset: page
         },
         ctx.user ? ctx.user.credential : ""
       )
