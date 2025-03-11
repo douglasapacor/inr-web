@@ -1,4 +1,4 @@
-import apiConfigs from "../apiConfigs"
+import apiConfigs from "../api"
 
 const legacy = {
   home: {

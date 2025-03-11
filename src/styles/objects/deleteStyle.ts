@@ -8,4 +8,5 @@ const deleteStyle = {
   boxShadow: 24,
   p: 2
 }
+
 export { deleteStyle }

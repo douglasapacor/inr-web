@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
-import { boardContext, constructor } from "../types/boardContext"
+import { boardContext, constructor } from "./types/boardContext"
 
 const serverSide = async (
   context: GetServerSidePropsContext

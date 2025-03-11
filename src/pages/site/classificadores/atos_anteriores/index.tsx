@@ -1,6 +1,6 @@
 import { SiteFrame } from "@/components"
 import { serverSide } from "@/helpers/serverside/atosAnteriores"
-import { atosAnterioresServerProps } from "@/helpers/types/atosAnteriores"
+import { atosAnterioresServerProps } from "@/serverside/types/atosAnteriores"
 import { Container, Grid } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
 

@@ -1,7 +1,7 @@
 import { SiteFrame } from "@/components"
 import ClassifierContent from "@/components/Classifiers/ClassifierContent"
 import legacy from "@/config/actions/legacy"
-import fetchApi from "@/lib/fetchApi"
+import fetchApi from "@/lib/fetch"
 import { Box, Container, Divider, Grid, Typography } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
 

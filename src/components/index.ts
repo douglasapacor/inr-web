@@ -1,37 +1,39 @@
-import { SiteFrame } from "./SiteFrame"
-import { Topo } from "./Topo"
-import { NavBar } from "./NavBar"
+import ApplicationDrawer from "./ApplicationDrawer"
+import { Banner } from "./Banner"
+import ModalSectionContent from "./Boletim/ModalSectionContent"
 import { BottomLocation } from "./BottomLocation"
 import { BottomNavigation } from "./BottomNavigation"
-import { MobileNavbar } from "./MobileNavbar"
-import { Banner } from "./Banner"
-import { PanelFrame } from "./PanelFrame"
 import DataGrid from "./DataGrid"
-import ApplicationDrawer from "./ApplicationDrawer"
+import Editor from "./Editor"
 import LoadingBox from "./loadingBox"
-import UserDrawer from "./UserDrawer"
-import ModalSectionContent from "./Boletim/ModalSectionContent"
-import Members from "./Tarefa/Members"
-import Columns from "./Tarefa/Columns"
+import { MobileNavbar } from "./MobileNavbar"
+import { NavBar } from "./NavBar"
+import { PanelFrame } from "./PanelFrame"
+import { SiteFrame } from "./SiteFrame"
 import CardDetails from "./Tarefa/CardDetails"
+import Columns from "./Tarefa/Columns"
+import Members from "./Tarefa/Members"
 import NewBoardModal from "./Tarefa/NewBoardModal"
+import { Topo } from "./Topo"
+import UserDrawer from "./UserDrawer"
 
 export {
-  SiteFrame,
-  Topo,
-  NavBar,
+  ApplicationDrawer,
+  Banner,
   BottomLocation,
   BottomNavigation,
-  MobileNavbar,
-  Banner,
-  PanelFrame,
-  DataGrid,
-  ApplicationDrawer,
-  LoadingBox,
-  UserDrawer,
-  ModalSectionContent,
-  Members,
-  Columns,
   CardDetails,
-  NewBoardModal
+  Columns,
+  DataGrid,
+  Editor,
+  LoadingBox,
+  Members,
+  MobileNavbar,
+  ModalSectionContent,
+  NavBar,
+  NewBoardModal,
+  PanelFrame,
+  SiteFrame,
+  Topo,
+  UserDrawer
 }

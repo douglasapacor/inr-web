@@ -1,3 +1,12 @@
+import { DataGrid, PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
+import fetchApi from "@/lib/fetch"
+import { serverSide } from "@/serverside/recursosIndex"
+import { deviceList } from "@/serverside/types/recursos"
+import { featureIndexServerSide } from "@/serverside/types/recursosIndex"
+import { deleteStyle } from "@/styles/objects/deleteStyle"
+import { Add } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -16,18 +25,9 @@ import {
   Switch,
   TextField
 } from "@mui/material"
-import { DataGrid, PanelFrame } from "@/components"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
-import { serverSide } from "@/helpers/serverside/recursosIndex"
-import { featureIndexServerSide } from "@/helpers/types/recursosIndex"
-import fetchApi from "@/lib/fetchApi"
-import { Add } from "@mui/icons-material"
 import { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { deviceList } from "@/helpers/types/recursos"
 
 export const getServerSideProps: GetServerSideProps<
   featureIndexServerSide
@@ -69,8 +69,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
       setDeleteModal(false)
 
       const response = await fetchApi.del(
-        security.feature.delete(deleteThis),
-        ctx.user ? ctx.user.credential : ""
+        security.feature.delete(deleteThis)
+        // ctx.user ? ctx.user.credential : ""
       )
 
       if (response.success) {
@@ -103,8 +103,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
           path: path,
           limit: rowsPerPage,
           offset: page
-        },
-        ctx.user ? ctx.user.credential : ""
+        }
+        // ctx.user ? ctx.user.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
@@ -136,8 +136,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
           path: path,
           limit: rowsPerPage,
           offset: p
-        },
-        ctx.user ? ctx.user.credential : ""
+        }
+        // ctx.user ? ctx.user.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
@@ -169,8 +169,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
           path: path,
           limit: rpp,
           offset: page
-        },
-        ctx.user ? ctx.user.credential : ""
+        }
+        // ctx.user ? ctx.user.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
@@ -197,8 +197,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
           deviceId: 0,
           limit: 5,
           offset: page
-        },
-        ctx.user ? ctx.user.credential : ""
+        }
+        // ctx.user ? ctx.user.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)

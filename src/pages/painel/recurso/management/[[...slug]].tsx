@@ -1,14 +1,14 @@
 import { PanelFrame } from "@/components"
 import security from "@/config/actions/security"
 import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
 import serverSide from "@/helpers/serverside/recursos"
+import fetchApi from "@/lib/fetch"
 import {
   actionFeatures,
   deviceList,
   featureManagement
-} from "@/helpers/types/recursos"
-import fetchApi from "@/lib/fetchApi"
+} from "@/serverside/types/recursos"
+import { deleteStyle } from "@/styles/objects/deleteStyle"
 import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import {
   Box,

@@ -1,3 +1,9 @@
+import { DataGrid, PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
+import fetchApi from "@/lib/fetch"
+import { deleteStyle } from "@/styles/objects/deleteStyle"
+import { Add } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -9,15 +15,8 @@ import {
   Modal,
   Paper,
   Switch,
-  TextField,
-  Typography
+  TextField
 } from "@mui/material"
-import { DataGrid, PanelFrame } from "@/components"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
-import fetchApi from "@/lib/fetchApi"
-import { Add } from "@mui/icons-material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"

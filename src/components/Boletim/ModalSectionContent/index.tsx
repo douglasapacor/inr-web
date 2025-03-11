@@ -1,3 +1,5 @@
+import DataGrid from "@/components/DataGrid"
+import { Close, Delete, Search } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -8,16 +10,13 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   TextField,
   Typography
 } from "@mui/material"
 import { FC } from "react"
-import { modalSectionContentType } from "./type"
 import style from "./style"
-import { Close, Delete, Search } from "@mui/icons-material"
-import DataGrid from "@/components/DataGrid"
+import { modalSectionContentType } from "./type"
 
 const ModalSectionContent: FC<modalSectionContentType> = props => {
   return (

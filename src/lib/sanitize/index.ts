@@ -1,4 +1,4 @@
-import { specials, specialsCleared } from "./base"
+import { specials, specialsCleared } from "../base"
 
 const sanitize = (text: string) => {
   return {

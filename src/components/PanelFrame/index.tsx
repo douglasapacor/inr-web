@@ -18,7 +18,7 @@ import {
   Toolbar,
   Typography
 } from "@mui/material"
-import { FC, ReactNode, useEffect, useState } from "react"
+import { FC, ReactNode } from "react"
 import ApplicationBar from "./ApplicationBar"
 import { AccountCircle, Close, Menu } from "@mui/icons-material"
 import LoadingBox from "../loadingBox"
@@ -52,7 +52,7 @@ export const PanelFrame: FC<{
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <ApplicationBar position="absolute" open={masterContext.lMenu}>
+      <ApplicationBar position="absolute" open={true}>
         <Toolbar
           sx={{
             pr: "24px"
@@ -63,7 +63,7 @@ export const PanelFrame: FC<{
               edge="start"
               color="inherit"
               onClick={() => {
-                masterContext.revertLeftState()
+                // masterContext.revertLeftState()
               }}
             >
               <Menu />
@@ -89,7 +89,7 @@ export const PanelFrame: FC<{
               edge="start"
               color="inherit"
               onClick={() => {
-                masterContext.revertRigthState()
+                // masterContext.revertRigthState()
               }}
             >
               <AccountCircle />
@@ -105,7 +105,7 @@ export const PanelFrame: FC<{
           }
         }}
         variant="permanent"
-        open={masterContext.lMenu}
+        open={true}
       >
         <Toolbar
           sx={{
@@ -137,7 +137,7 @@ export const PanelFrame: FC<{
               }}
               component="nav"
             >
-              {masterContext.user
+              {/* {true
                 ? masterContext.user.access.map((item: any, index: any) =>
                     item.visible ? (
                       <ListItemButton
@@ -155,7 +155,7 @@ export const PanelFrame: FC<{
                       ""
                     )
                   )
-                : ""}
+                : ""} */}
             </List>
           )}
         </Toolbar>
@@ -168,7 +168,7 @@ export const PanelFrame: FC<{
           }
         }}
         variant="permanent"
-        open={masterContext.rMenu}
+        // open={masterContext.rMenu}
         anchor="right"
       >
         <Toolbar
@@ -200,14 +200,14 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  {masterContext.user && masterContext.user.photo !== "" ? (
+                  {/* {masterContext.user && masterContext.user.photo !== "" ? (
                     <Avatar
                       sx={{ width: 102, height: 102 }}
                       src={masterContext.user.photo}
                     />
                   ) : (
                     <Avatar sx={{ width: 102, height: 102 }} />
-                  )}
+                  )} */}
                 </Box>
               </ListItem>
               <ListItem>
@@ -218,7 +218,7 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  <i>{masterContext.user && masterContext.user.name}</i>
+                  {/* <i>{masterContext.user && masterContext.user.name}</i> */}
                 </Box>
               </ListItem>
               <Divider />
@@ -248,7 +248,7 @@ export const PanelFrame: FC<{
 
               <ListItemButton
                 onClick={() => {
-                  masterContext.logout()
+                  // masterContext.logout()
                 }}
               >
                 <ListItemIcon>

@@ -1,7 +1,7 @@
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
-import { constructor, institucionalType } from "../types/institucional"
-import fetchApi from "@/lib/fetchApi"
 import legacy from "@/config/actions/legacy"
+import fetchApi from "@/lib/fetch"
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
+import { constructor, institucionalType } from "./types/institucional"
 
 const serverSide = async (
   context: GetServerSidePropsContext

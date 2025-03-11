@@ -1,7 +1,7 @@
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
-import { construtor, featureManagement } from "../types/recursos"
-import fetchApi from "@/lib/fetchApi"
 import security from "@/config/actions/security"
+import fetchApi from "@/lib/fetch"
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
+import { construtor, featureManagement } from "./types/recursos"
 
 const serverSide = async (
   context: GetServerSidePropsContext

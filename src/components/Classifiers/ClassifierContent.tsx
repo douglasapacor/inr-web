@@ -1,7 +1,5 @@
 import legacy from "@/config/actions/legacy"
-import parse from "html-react-parser"
-import he from "he"
-import fetchApi from "@/lib/fetchApi"
+import fetchApi from "@/lib/fetch"
 import { ArrowUpward, ExpandMore } from "@mui/icons-material"
 import {
   Accordion,
@@ -14,6 +12,8 @@ import {
   Icon,
   Skeleton
 } from "@mui/material"
+import he from "he"
+import parse from "html-react-parser"
 import { FC, useState } from "react"
 
 type classifierBarContent = {

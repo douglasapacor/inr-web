@@ -1,5 +1,5 @@
 import { FC, ReactNode, createContext, useContext } from "react"
-import { ContextoLimited, limitedCtxDefault } from "./limitedCtxProperties"
+import { ContextoLimited, limitedCtxDefault } from "./props"
 
 const limitedCtx = createContext<ContextoLimited>(limitedCtxDefault)
 

@@ -1,6 +1,6 @@
 import { SiteFrame } from "@/components"
 import legacy from "@/config/actions/legacy"
-import fetchApi from "@/lib/fetchApi"
+import fetchApi from "@/lib/fetch"
 import { Container, Grid } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
 type classifiersPR = {

@@ -1,6 +1,6 @@
 import management from "@/config/actions/management"
 import { useContextMaster } from "@/context/Master"
-import fetchApi from "@/lib/fetchApi"
+import fetchApi from "@/lib/fetch"
 import { Close } from "@mui/icons-material"
 import {
   Autocomplete,
@@ -57,8 +57,6 @@ const NewBoardModal: FC<newBoardModal> = props => {
   useEffect(() => {
     feedOptions()
   }, [inputValue])
-
-  const deleteThis = async (id: number) => {}
 
   return (
     <Modal open={props.open}>

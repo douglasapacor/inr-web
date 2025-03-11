@@ -4,7 +4,7 @@ import {
   boletimManagement,
   buletimType,
   sectionType
-} from "@/helpers/types/buletimManagement"
+} from "@/serverside/types/buletimManagement"
 import { ArrowBack, Delete, Save } from "@mui/icons-material"
 import {
   Box,

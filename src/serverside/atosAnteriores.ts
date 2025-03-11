@@ -1,7 +1,7 @@
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
-import { atosAnterioresServerProps, construtor } from "../types/atosAnteriores"
-import fetchApi from "@/lib/fetchApi"
 import legacy from "@/config/actions/legacy"
+import fetchApi from "@/lib/fetch"
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
+import { atosAnterioresServerProps, construtor } from "./types/atosAnteriores"
 
 const serverSide = async (
   context: GetServerSidePropsContext

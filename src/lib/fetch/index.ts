@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios"
-import { defaultResponse } from "./fetchApiProperties"
+import { defaultResponse } from "./props"
 
 const instance = axios.create()
 
@@ -161,11 +161,11 @@ const del = async <T = any>(
   }
 }
 
-const fetchApi = {
+const fetch = {
   get,
   post,
   put,
   del
 }
 
-export default fetchApi
+export default fetch

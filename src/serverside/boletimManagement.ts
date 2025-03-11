@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
-import { boletimManagement, constructor } from "../types/buletimManagement"
+import { boletimManagement, constructor } from "./types/buletimManagement"
 
 const serverSide = async (
   context: GetServerSidePropsContext

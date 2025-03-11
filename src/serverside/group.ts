@@ -1,8 +1,8 @@
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
-import { groupType, contructor } from "../types/group"
-import fetchApi from "@/lib/fetchApi"
 import security from "@/config/actions/security"
-import colors from "../styleObject/colors"
+import fetchApi from "@/lib/fetch"
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
+import colors from "../lib/colors"
+import { contructor, groupType } from "./types/group"
 
 const serverSide = async (
   context: GetServerSidePropsContext

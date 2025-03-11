@@ -1,13 +1,8 @@
 import { SiteFrame } from "@/components"
-import { serverSide } from "@/helpers/serverside/institucional"
-import { institucionalType } from "@/helpers/types/institucional"
+import { institucionalType } from "@/serverside/types/institucional"
 import { Box, Container, Grid } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
-import React from "react"
-
-const nameStyleObject = {
-  textAlign: "center"
-}
+import { serverSide } from "../../serverside/institucional"
 
 export const getServerSideProps: GetServerSideProps<
   institucionalType

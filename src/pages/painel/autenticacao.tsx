@@ -1,6 +1,6 @@
 import security from "@/config/actions/security"
 import { useContextMaster } from "@/context/Master"
-import fetchApi from "@/lib/fetchApi"
+import fetchApi from "@/lib/fetch"
 import { Close, Visibility, VisibilityOff } from "@mui/icons-material"
 import {
   Box,
@@ -34,20 +34,25 @@ const AutenticacaoPainel: NextPage = () => {
   const router = useRouter()
   const masterContext = useContextMaster()
   const closeAlert = () => setAlert(false)
+
   const handleClickShowPassword = () => setShowPassword(show => !show)
+
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault()
   }
+
   const handleMouseUpPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault()
   }
+
   const goToRecoveryPassword = () => {
     router.push("/painel/recuperar-senha")
   }
+
   const autehticationUser = async () => {
     try {
       if (user === "") {
@@ -79,7 +84,7 @@ const AutenticacaoPainel: NextPage = () => {
 
       if (!result.success) throw new Error(result.message)
 
-      masterContext.login(result.data)
+      // masterContext.login(result.data)
 
       router.push("/painel/inicio")
     } catch (error: any) {

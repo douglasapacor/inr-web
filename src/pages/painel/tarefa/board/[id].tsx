@@ -4,9 +4,9 @@ import {
   cardContentStyle,
   CssSelect,
   CssTextField
-} from "@/helpers/styleObject/cardContentStyle"
+} from "@/styles/objects/cardContentStyle"
 import { serverSide } from "@/helpers/serverside/boardContext"
-import { boardContext } from "@/helpers/types/boardContext"
+import { boardContext } from "@/serverside/types/boardContext"
 import { Add, ArrowBack, AttachFile, Close, Send } from "@mui/icons-material"
 import {
   Avatar,

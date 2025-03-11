@@ -1,7 +1,3 @@
-import createEmotionCache from "@/styles/createcache"
-import theme from "@/styles/theme"
-import createEmotionServer from "@emotion/server/create-instance"
-import { AppType } from "next/app"
 import Document, {
   DocumentContext,
   DocumentProps,
@@ -10,11 +6,31 @@ import Document, {
   Main,
   NextScript
 } from "next/document"
+import theme from "@/styles/theme"
+import createEmotionServer from "@emotion/server/create-instance"
+import { AppType } from "next/app"
 import React, { JSX } from "react"
 import { MyAppProps } from "./_app"
+import createCache from "@emotion/cache"
+
+const isBrowser = typeof document !== "undefined"
 
 interface MyDocumentProps extends DocumentProps {
   emotionStyleTags: JSX.Element[]
+}
+
+function createEmotionCache() {
+  let insertionPoint
+
+  if (isBrowser) {
+    const emotionInsertionPoint = document.querySelector<HTMLMetaElement>(
+      'meta[name="emotion-insertion-point"]'
+    )
+
+    insertionPoint = emotionInsertionPoint ?? undefined
+  }
+
+  return createCache({ key: "mui-style", insertionPoint })
 }
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {

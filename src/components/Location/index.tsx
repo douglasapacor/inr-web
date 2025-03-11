@@ -1,4 +1,4 @@
-import { generateRandomString } from "@/lib/helpers/random"
+import { generateRandomString } from "@/lib/random"
 import { Breadcrumbs, Icon, Link } from "@mui/material"
 import { FC, ReactNode } from "react"
 

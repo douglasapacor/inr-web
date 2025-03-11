@@ -1,12 +1,12 @@
-import { Banner, SiteFrame } from "@/components"
-import BannerHighlight from "@/components/BannerHighlight"
-import Highlight from "@/components/Highlight"
-import serverSide from "@/helpers/serverside/inicio"
 import {
   advertisingType,
   destaqueLinksType,
   inicioServerProps
-} from "@/helpers/types/inicio"
+} from "@/serverside/types/inicio"
+import { Banner, SiteFrame } from "@/components"
+import BannerHighlight from "@/components/BannerHighlight"
+import Highlight from "@/components/Highlight"
+import serverSide from "../../serverside/inicio"
 import { Box, Container, Grid } from "@mui/material"
 import { GetServerSideProps, NextPage } from "next"
 

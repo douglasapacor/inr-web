@@ -1,12 +1,12 @@
 import { SiteFrame } from "@/components"
 import legacy from "@/config/actions/legacy"
-import fetchApi from "@/lib/fetchApi"
-import { Box, Button, Container, Divider, Grid } from "@mui/material"
-import { GetServerSideProps, NextPage } from "next"
-import parse from "html-react-parser"
-import he from "he"
-import sanitize from "@/lib/helpers/sinitize"
+import fetchApi from "@/lib/fetch"
+import sanitize from "@/lib/sanitize/index"
 import { KeyboardArrowDown } from "@mui/icons-material"
+import { Box, Button, Container, Divider, Grid } from "@mui/material"
+import he from "he"
+import parse from "html-react-parser"
+import { GetServerSideProps, NextPage } from "next"
 
 type bulletinProps = {
   title: string

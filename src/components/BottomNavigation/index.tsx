@@ -1,9 +1,9 @@
-import { Box, Container, Grid } from "@mui/material";
-import type { FC } from "react";
-const height = 280;
-const fontSize = "0.85em";
-const pLeft = "20px";
-const pTop = "20px";
+import { Box, Container, Grid } from "@mui/material"
+import type { FC } from "react"
+const height = 280
+const fontSize = "0.85em"
+const pLeft = "20px"
+const pTop = "20px"
 
 export const BottomNavigation: FC = ({ ...props }) => {
   return (
@@ -11,7 +11,7 @@ export const BottomNavigation: FC = ({ ...props }) => {
       sx={{
         width: "100%",
         height: height,
-        background: (theme) => theme.palette.primary.dark,
+        background: theme => theme.palette.primary.dark
       }}
     >
       <Container>
@@ -27,7 +27,7 @@ export const BottomNavigation: FC = ({ ...props }) => {
                 flexDirection: "column",
                 color: "#F5F5F5",
                 fontSize: fontSize,
-                fontFamily: "Segoe UI, sans-serif",
+                fontFamily: "Segoe UI, sans-serif"
               }}
             >
               <a>INSTITUCIONAL</a>
@@ -45,7 +45,7 @@ export const BottomNavigation: FC = ({ ...props }) => {
                 flexDirection: "column",
                 color: "#F5F5F5",
                 fontSize: fontSize,
-                fontFamily: "Segoe UI, sans-serif",
+                fontFamily: "Segoe UI, sans-serif"
               }}
             >
               <a>BOLETIM ELETRÔNICO</a>
@@ -70,7 +70,7 @@ export const BottomNavigation: FC = ({ ...props }) => {
                 flexDirection: "column",
                 color: "#F5F5F5",
                 fontSize: fontSize,
-                fontFamily: "Segoe UI, sans-serif",
+                fontFamily: "Segoe UI, sans-serif"
               }}
             >
               <a>CLASSIFICADORES INR</a>
@@ -92,7 +92,7 @@ export const BottomNavigation: FC = ({ ...props }) => {
                 flexDirection: "column",
                 color: "#F5F5F5",
                 fontSize: fontSize,
-                fontFamily: "Segoe UI, sans-serif",
+                fontFamily: "Segoe UI, sans-serif"
               }}
             >
               <a>SALAS TEMÁTICAS</a>
@@ -110,7 +110,7 @@ export const BottomNavigation: FC = ({ ...props }) => {
                 flexDirection: "column",
                 color: "#F5F5F5",
                 fontSize: fontSize,
-                fontFamily: "Segoe UI, sans-serif",
+                fontFamily: "Segoe UI, sans-serif"
               }}
             >
               <a>SERVIÇOS</a>
@@ -132,7 +132,7 @@ export const BottomNavigation: FC = ({ ...props }) => {
                 flexDirection: "column",
                 color: "#F5F5F5",
                 fontSize: fontSize,
-                fontFamily: "Segoe UI, sans-serif",
+                fontFamily: "Segoe UI, sans-serif"
               }}
             >
               <a>BASE DE DADOS</a>
@@ -141,5 +141,5 @@ export const BottomNavigation: FC = ({ ...props }) => {
         </Grid>
       </Container>
     </Box>
-  );
-};
+  )
+}

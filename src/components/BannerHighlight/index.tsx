@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material"
-import { FC } from "react"
-import parse from "html-react-parser"
 import he from "he"
+import parse from "html-react-parser"
+import { FC } from "react"
 const BannerHighlight: FC<{
   textImg: string
 }> = props => {

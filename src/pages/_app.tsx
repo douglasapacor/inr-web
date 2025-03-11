@@ -1,17 +1,31 @@
-import createEmotionCache from "@/styles/createcache"
-import theme from "@/styles/theme"
 import { CacheProvider, EmotionCache } from "@emotion/react"
+import createCache from "@emotion/cache"
+import { CssBaseline, ThemeProvider } from "@mui/material"
+import theme from "@/styles/theme"
 import "@fontsource/roboto/300.css"
 import "@fontsource/roboto/400.css"
 import "@fontsource/roboto/500.css"
 import "@fontsource/roboto/700.css"
 import "@/styles/common.css"
-import { CssBaseline, ThemeProvider } from "@mui/material"
 import type { AppProps } from "next/app"
 import Head from "next/head"
 import MasterCtxControll from "@/context/Master"
 import LimitedCtxControll from "@/context/Limited"
 import { CookiesProvider } from "react-cookie"
+const isBrowser = typeof document !== "undefined"
+function createEmotionCache() {
+  let insertionPoint
+
+  if (isBrowser) {
+    const emotionInsertionPoint = document.querySelector<HTMLMetaElement>(
+      'meta[name="emotion-insertion-point"]'
+    )
+
+    insertionPoint = emotionInsertionPoint ?? undefined
+  }
+
+  return createCache({ key: "mui-style", insertionPoint })
+}
 const clientSideEmotionCache = createEmotionCache()
 export interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache

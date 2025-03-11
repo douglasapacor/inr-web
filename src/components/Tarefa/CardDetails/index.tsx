@@ -2,7 +2,7 @@ import {
   cardContentStyle,
   CssSelect,
   CssTextField
-} from "@/helpers/styleObject/cardContentStyle"
+} from "@/styles/objects/cardContentStyle"
 import Editor from "@/components/Editor"
 import { AttachFile, Close, Send } from "@mui/icons-material"
 import {

@@ -1,3 +1,11 @@
+import { PanelFrame } from "@/components"
+import security from "@/config/actions/security"
+import fetchApi from "@/lib/fetch"
+import { serverSide } from "@/serverside/group"
+import { featureGroupType, groupType } from "@/serverside/types/group"
+import { deleteStyle } from "@/styles/objects/deleteStyle"
+import theme from "@/styles/theme"
+import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import {
   Box,
   Button,
@@ -14,15 +22,6 @@ import {
   TextField,
   Typography
 } from "@mui/material"
-import { PanelFrame } from "@/components"
-import security from "@/config/actions/security"
-import { useContextMaster } from "@/context/Master"
-import { deleteStyle } from "@/helpers/styleObject/deleteStyle"
-import { serverSide } from "@/helpers/serverside/group"
-import { featureGroupType, groupType } from "@/helpers/types/group"
-import fetchApi from "@/lib/fetchApi"
-import theme from "@/styles/theme"
-import { ArrowBackIosNew, Delete, Save } from "@mui/icons-material"
 import { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -50,7 +49,7 @@ const GrupoManagement: NextPage<groupType> = props => {
     props.features
   )
   const router = useRouter()
-  const ctx = useContextMaster()
+  // const ctx = useContextMaster()
 
   const requestConfirmation = () => {
     setDeleteModal(true)
@@ -64,8 +63,8 @@ const GrupoManagement: NextPage<groupType> = props => {
       setLoading(true)
 
       const response = await fetchApi.del(
-        security.group.delete(id),
-        ctx.user ? ctx.user.credential : ""
+        security.group.delete(id)
+        // ctx.user ? ctx.user.credential : ""
       )
 
       if (response.success) {
@@ -102,8 +101,8 @@ const GrupoManagement: NextPage<groupType> = props => {
           super: superGroup,
           color: color,
           features: f
-        },
-        ctx.user ? ctx.user.credential : ""
+        }
+        // ctx.user ? ctx.user.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -145,8 +144,8 @@ const GrupoManagement: NextPage<groupType> = props => {
           super: superGroup,
           color,
           features: f
-        },
-        ctx.user ? ctx.user.credential : ""
+        }
+        // ctx.user ? ctx.user.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -205,8 +204,9 @@ const GrupoManagement: NextPage<groupType> = props => {
           href:
             props.pageMode === "creating"
               ? "/painel/grupo/management/new"
-              : `/painel/grupo/management/${router.query.slug ? router.query.slug[0] : ""
-              }`,
+              : `/painel/grupo/management/${
+                  router.query.slug ? router.query.slug[0] : ""
+                }`,
           iconName: props.locationIcon,
           text:
             props.pageMode === "creating"
