@@ -4,7 +4,7 @@ import { NextPage } from "next"
 
 const home: NextPage = () => {
   return (
-    <PanelFrame dense>
+    <PanelFrame dense requiredPath="/inicio">
       <Grid container spacing={5}>
         <Grid item xs={12} sm={3} md={3} lg={3} xl={3}>
           <Paper sx={{ width: "100%", padding: 2 }}>

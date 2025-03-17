@@ -79,13 +79,13 @@ const AutenticacaoPainel: NextPage = () => {
 
       const result = await fetchApi.post(security.user.authentication, {
         login: user,
-        password: password
+        password: password,
+        keepConnected: keepConnected
       })
 
       if (!result.success) throw new Error(result.message)
 
-      // masterContext.login(result.data)
-
+      masterContext.login(result.data)
       router.push("/painel/inicio")
     } catch (error: any) {
       setLock(false)

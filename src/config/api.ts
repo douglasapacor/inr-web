@@ -1,5 +1,5 @@
 export default {
-  legacy: process.env.LEGACY,
-  security: process.env.SECURITY,
-  management: process.env.MANAGEMENT
+  legacy: "http://localhost:3001",
+  security: "http://localhost:3002",
+  management: "http://localhost:3004"
 }

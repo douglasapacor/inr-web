@@ -1,3 +1,5 @@
+import { useContextMaster } from "@/context/Master"
+import { AccountCircle, Close, Menu } from "@mui/icons-material"
 import {
   Avatar,
   Backdrop,
@@ -18,15 +20,13 @@ import {
   Toolbar,
   Typography
 } from "@mui/material"
-import { FC, ReactNode } from "react"
-import ApplicationBar from "./ApplicationBar"
-import { AccountCircle, Close, Menu } from "@mui/icons-material"
-import LoadingBox from "../loadingBox"
 import { useRouter } from "next/router"
+import { FC, ReactNode } from "react"
 import ApplicationDrawer from "../ApplicationDrawer"
-import UserDrawer from "../UserDrawer"
+import LoadingBox from "../loadingBox"
 import Location from "../Location"
-import { useContextMaster } from "@/context/Master"
+import UserDrawer from "../UserDrawer"
+import ApplicationBar from "./ApplicationBar"
 
 export type local = {
   text: string
@@ -45,14 +45,15 @@ export const PanelFrame: FC<{
   closeAlert?: () => void
   alerMessage?: string
   dense?: boolean
+  requiredPath?: string
 }> = ({ ...props }) => {
   const router = useRouter()
   const masterContext = useContextMaster()
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <ApplicationBar position="absolute" open={true}>
+
+      <ApplicationBar position="absolute" open={masterContext.left}>
         <Toolbar
           sx={{
             pr: "24px"
@@ -63,7 +64,7 @@ export const PanelFrame: FC<{
               edge="start"
               color="inherit"
               onClick={() => {
-                // masterContext.revertLeftState()
+                masterContext.changeLeft()
               }}
             >
               <Menu />
@@ -89,7 +90,7 @@ export const PanelFrame: FC<{
               edge="start"
               color="inherit"
               onClick={() => {
-                // masterContext.revertRigthState()
+                masterContext.changeRigth()
               }}
             >
               <AccountCircle />
@@ -105,7 +106,7 @@ export const PanelFrame: FC<{
           }
         }}
         variant="permanent"
-        open={true}
+        open={masterContext.left}
       >
         <Toolbar
           sx={{
@@ -137,9 +138,9 @@ export const PanelFrame: FC<{
               }}
               component="nav"
             >
-              {/* {true
-                ? masterContext.user.access.map((item: any, index: any) =>
-                    item.visible ? (
+              {masterContext.data
+                ? masterContext.data.access.map((item: any, index: any) => {
+                    return item.visible ? (
                       <ListItemButton
                         key={`menu-left-${index}-item`}
                         onClick={() => {
@@ -154,8 +155,8 @@ export const PanelFrame: FC<{
                     ) : (
                       ""
                     )
-                  )
-                : ""} */}
+                  })
+                : ""}
             </List>
           )}
         </Toolbar>
@@ -168,7 +169,7 @@ export const PanelFrame: FC<{
           }
         }}
         variant="permanent"
-        // open={masterContext.rMenu}
+        open={masterContext.rigth}
         anchor="right"
       >
         <Toolbar
@@ -200,14 +201,14 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  {/* {masterContext.user && masterContext.user.photo !== "" ? (
+                  {masterContext.data && masterContext.data.photo !== "" ? (
                     <Avatar
                       sx={{ width: 102, height: 102 }}
-                      src={masterContext.user.photo}
+                      src={masterContext.data.photo}
                     />
                   ) : (
                     <Avatar sx={{ width: 102, height: 102 }} />
-                  )} */}
+                  )}
                 </Box>
               </ListItem>
               <ListItem>
@@ -218,7 +219,7 @@ export const PanelFrame: FC<{
                     justifyContent: "center"
                   }}
                 >
-                  {/* <i>{masterContext.user && masterContext.user.name}</i> */}
+                  <i>{masterContext.data && masterContext.data.name}</i>
                 </Box>
               </ListItem>
               <Divider />
@@ -248,7 +249,7 @@ export const PanelFrame: FC<{
 
               <ListItemButton
                 onClick={() => {
-                  // masterContext.logout()
+                  masterContext.logout()
                 }}
               >
                 <ListItemIcon>
