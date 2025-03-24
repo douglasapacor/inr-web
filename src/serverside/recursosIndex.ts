@@ -17,7 +17,7 @@ const serverSide = async (
         limit: 5,
         offset: 0
       },
-      context.req.cookies["master-key-inr"]
+      context.req.cookies["inrCredencial"]
     )
 
     if (!compList.success) throw new Error()

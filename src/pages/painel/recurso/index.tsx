@@ -69,8 +69,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
       setDeleteModal(false)
 
       const response = await fetchApi.del(
-        security.feature.delete(deleteThis)
-        // ctx.user ? ctx.user.credential : ""
+        security.feature.delete(deleteThis),
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (response.success) {
@@ -103,8 +103,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
           path: path,
           limit: rowsPerPage,
           offset: page
-        }
-        // ctx.user ? ctx.user.credential : ""
+        },
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
@@ -136,8 +136,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
           path: path,
           limit: rowsPerPage,
           offset: p
-        }
-        // ctx.user ? ctx.user.credential : ""
+        },
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
@@ -169,8 +169,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
           path: path,
           limit: rpp,
           offset: page
-        }
-        // ctx.user ? ctx.user.credential : ""
+        },
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
@@ -197,8 +197,8 @@ const recursos: NextPage<featureIndexServerSide> = props => {
           deviceId: 0,
           limit: 5,
           offset: page
-        }
-        // ctx.user ? ctx.user.credential : ""
+        },
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)

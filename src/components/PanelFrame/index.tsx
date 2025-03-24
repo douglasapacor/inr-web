@@ -140,7 +140,7 @@ export const PanelFrame: FC<{
             >
               {masterContext.data
                 ? masterContext.data.access.map((item: any, index: any) => {
-                    return item.visible ? (
+                    return item.visible && item.deviceId === 1 ? (
                       <ListItemButton
                         key={`menu-left-${index}-item`}
                         onClick={() => {
@@ -227,13 +227,13 @@ export const PanelFrame: FC<{
                 <Typography variant="caption">MENU DO USUÁRIO</Typography>
               </ListItem>
 
-              {/* {globalContext.usuario.authorized
-                ? globalContext.usuario.ambiente.usuario.map(
-                    (item: any, index: any) => (
+              {masterContext.data
+                ? masterContext.data.access.map((item: any, index: any) => {
+                    return item.visible && item.deviceId === 2 ? (
                       <ListItemButton
                         key={`menu-left-${index}-item`}
                         onClick={() => {
-                          router.push(item.path)
+                          router.push(`/painel${item.path}`)
                         }}
                       >
                         <ListItemIcon>
@@ -241,9 +241,11 @@ export const PanelFrame: FC<{
                         </ListItemIcon>
                         <ListItemText primary={item.name} />
                       </ListItemButton>
+                    ) : (
+                      ""
                     )
-                  )
-                : ""} */}
+                  })
+                : ""}
 
               <Divider />
 

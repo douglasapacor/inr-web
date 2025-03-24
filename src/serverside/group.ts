@@ -8,7 +8,8 @@ const serverSide = async (
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<groupType>> => {
   try {
-    if (!context.req.cookies["master-key-inr"]) throw new Error("no Auth")
+    if (!context.req.cookies["inrCredencial"])
+      throw new Error("no Authentication")
 
     const urlSlug = context.params?.slug
     if (!urlSlug) throw new Error("no Slug")
@@ -18,7 +19,7 @@ const serverSide = async (
 
     const featureList = await fetchApi.get(
       security.feature.getAll,
-      context.req.cookies["master-key-inr"]
+      context.req.cookies["inrCredencial"]
     )
 
     if (!featureList.success) throw new Error("no feature list")
@@ -39,7 +40,7 @@ const serverSide = async (
     } else {
       const grp = await fetchApi.get(
         security.group.select(+urlSlug[0]),
-        context.req.cookies["master-key-inr"]
+        context.req.cookies["inrCredencial"]
       )
 
       if (!grp.success) throw new Error("group not finded")
@@ -75,8 +76,11 @@ const serverSide = async (
       }
     }
 
+    console.log(content)
+
     return { props: content }
   } catch (error: any) {
+    console.log(error)
     return { props: contructor() }
   }
 }

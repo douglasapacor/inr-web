@@ -1,11 +1,10 @@
 import { PanelFrame } from "@/components"
-import { Grid, Paper } from "@mui/material"
 import { NextPage } from "next"
 
 const home: NextPage = () => {
   return (
     <PanelFrame dense requiredPath="/inicio">
-      <Grid container spacing={5}>
+      {/* <Grid container spacing={5}>
         <Grid item xs={12} sm={3} md={3} lg={3} xl={3}>
           <Paper sx={{ width: "100%", padding: 2 }}>
             Classificadores: 11100
@@ -28,7 +27,7 @@ const home: NextPage = () => {
             Mensagens ao usuários
           </Paper>
         </Grid>
-      </Grid>
+      </Grid> */}
     </PanelFrame>
   )
 }

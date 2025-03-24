@@ -1,5 +1,6 @@
 import { PanelFrame } from "@/components"
 import security from "@/config/actions/security"
+import { useContextMaster } from "@/context/Master"
 import fetchApi from "@/lib/fetch"
 import { serverSide } from "@/serverside/group"
 import { featureGroupType, groupType } from "@/serverside/types/group"
@@ -49,7 +50,7 @@ const GrupoManagement: NextPage<groupType> = props => {
     props.features
   )
   const router = useRouter()
-  // const ctx = useContextMaster()
+  const ctx = useContextMaster()
 
   const requestConfirmation = () => {
     setDeleteModal(true)
@@ -63,8 +64,8 @@ const GrupoManagement: NextPage<groupType> = props => {
       setLoading(true)
 
       const response = await fetchApi.del(
-        security.group.delete(id)
-        // ctx.user ? ctx.user.credential : ""
+        security.group.delete(id),
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (response.success) {
@@ -101,8 +102,8 @@ const GrupoManagement: NextPage<groupType> = props => {
           super: superGroup,
           color: color,
           features: f
-        }
-        // ctx.user ? ctx.user.credential : ""
+        },
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -144,8 +145,8 @@ const GrupoManagement: NextPage<groupType> = props => {
           super: superGroup,
           color,
           features: f
-        }
-        // ctx.user ? ctx.user.credential : ""
+        },
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)

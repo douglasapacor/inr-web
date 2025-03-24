@@ -1,8 +1,8 @@
 import { PanelFrame } from "@/components"
 import security from "@/config/actions/security"
 import { useContextMaster } from "@/context/Master"
-import serverSide from "@/helpers/serverside/recursos"
 import fetchApi from "@/lib/fetch"
+import serverSide from "@/serverside/recursos"
 import {
   actionFeatures,
   deviceList,
@@ -80,7 +80,7 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
           icon,
           path
         },
-        ctx.user ? ctx.user.credential : ""
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -117,7 +117,7 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
           icon,
           path
         },
-        ctx.user ? ctx.user.credential : ""
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!apiResult.success) throw new Error(apiResult.message)
@@ -143,7 +143,7 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
 
       const response = await fetchApi.del(
         security.feature.delete(id),
-        ctx.user ? ctx.user.credential : ""
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (response.success) {
@@ -178,7 +178,7 @@ const recursoSelecionado: NextPage<featureManagement> = props => {
           limit: 5,
           offset: page
         },
-        ctx.user ? ctx.user.credential : ""
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)

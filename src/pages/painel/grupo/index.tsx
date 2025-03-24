@@ -62,7 +62,7 @@ const GrupoIndex: NextPage = props => {
           limit: rowsPerPage,
           offset: page
         },
-        ctx.user ? ctx.user.credential : ""
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
@@ -91,7 +91,7 @@ const GrupoIndex: NextPage = props => {
 
       const response = await fetchApi.del(
         security.group.delete(deleteThis),
-        ctx.user ? ctx.user.credential : ""
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (response.success) {
@@ -123,7 +123,7 @@ const GrupoIndex: NextPage = props => {
           limit: rowsPerPage,
           offset: p
         },
-        ctx.user ? ctx.user.credential : ""
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)
@@ -153,7 +153,7 @@ const GrupoIndex: NextPage = props => {
           limit: rpp,
           offset: page
         },
-        ctx.user ? ctx.user.credential : ""
+        ctx.data ? ctx.data.credential : ""
       )
 
       if (!dataSearch.success) throw new Error(dataSearch.message)

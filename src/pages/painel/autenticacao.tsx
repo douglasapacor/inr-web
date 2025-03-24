@@ -86,6 +86,7 @@ const AutenticacaoPainel: NextPage = () => {
       if (!result.success) throw new Error(result.message)
 
       masterContext.login(result.data)
+
       router.push("/painel/inicio")
     } catch (error: any) {
       setLock(false)

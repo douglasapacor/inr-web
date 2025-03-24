@@ -7,7 +7,7 @@ const serverSide = async (
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<featureManagement>> => {
   try {
-    if (!context.req.cookies["master-key-inr"]) throw new Error()
+    if (!context.req.cookies["inrCredencial"]) throw new Error()
 
     const urlSlug = context.params?.slug
     if (!urlSlug) throw new Error()
@@ -16,7 +16,7 @@ const serverSide = async (
 
     const actions = await fetchApi.get(
       security.action.getAll,
-      context.req.cookies["master-key-inr"]
+      context.req.cookies["inrCredencial"]
     )
 
     if (!actions.success) throw new Error()
@@ -37,7 +37,7 @@ const serverSide = async (
 
       const response = await fetchApi.get(
         security.feature.select(+urlSlug[0]),
-        context.req.cookies["master-key-inr"]
+        context.req.cookies["inrCredencial"]
       )
 
       if (response.success) {
@@ -57,7 +57,7 @@ const serverSide = async (
 
       const featureActions = await fetchApi.get(
         security.feature.actions(+urlSlug[0]),
-        context.req.cookies["master-key-inr"]
+        context.req.cookies["inrCredencial"]
       )
 
       if (featureActions.success) {
@@ -81,7 +81,7 @@ const serverSide = async (
         limit: 5,
         offset: 0
       },
-      context.req.cookies["master-key-inr"]
+      context.req.cookies["inrCredencial"]
     )
 
     if (!compList.success) throw new Error()

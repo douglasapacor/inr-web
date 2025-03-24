@@ -1,5 +1,5 @@
 import { ModalSectionContent, PanelFrame } from "@/components"
-import { serverSide } from "@/helpers/serverside/boletimManagement"
+import { serverSide } from "@/serverside/boletimManagement"
 import {
   boletimManagement,
   buletimType,
@@ -20,7 +20,6 @@ import {
   InputLabel,
   ListItemText,
   MenuItem,
-  Modal,
   OutlinedInput,
   Paper,
   Radio,
